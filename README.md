@@ -8,6 +8,10 @@
 <a name="see-also"></a>
 ## See Also
 
+**Docs:**
+
+- [Chroma Animation Guide](http://chroma.razer.com/ChromaGuide/) - Visual examples of the Chroma Animation API methods
+
 **Plugins:**
 
 - [CChromaEditor](https://github.com/RazerOfficial/CChromaEditor) - C++ native MFC library for playing and editing Chroma animations
