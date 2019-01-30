@@ -681,6 +681,9 @@ void PrintLegend()
 		fprintf(stdout, "\r\n");
 	}
 
+	fprintf(stdout, "CSDK SAMPLE APP\r\n");
+	fprintf(stdout, "\r\n");
+
 	fprintf(stdout, "Use UP and DOWN arrows to select animation and press ENTER.\r\n");
 	fprintf(stdout, "\r\n");
 
