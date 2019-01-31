@@ -163,12 +163,14 @@
     <ClInclude Include="Razer\RzChromaSDKDefines.h" />
     <ClInclude Include="Razer\RzChromaSDKTypes.h" />
     <ClInclude Include="Razer\RzErrors.h" />
+    <ClInclude Include="Razer\VerifyLibrarySignature.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RazerKeyboardMapping.cpp" />
     <ClCompile Include="Razer\ChromaAnimationAPI.cpp" />
+    <ClCompile Include="Razer\VerifyLibrarySignature.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="HandleInput.cpp" />
     <ClCompile Include="Razer\ChromaSDKPluginTypes.cpp" />

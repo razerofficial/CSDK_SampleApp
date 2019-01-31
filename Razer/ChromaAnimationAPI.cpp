@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ChromaAnimationAPI.h"
+#include "VerifyLibrarySignature.h"
 
 using namespace ChromaSDK;
 
@@ -497,6 +498,12 @@ int ChromaAnimationAPI::InitAPI()
 	if (library == NULL)
 	{
 		fprintf(stderr, "Failed to load Chroma Editor Library!\r\n");
+		return -1;
+	}
+
+ 	if (!VerifyLibrarySignature(L"CChromaEditorLibrary", library))
+	{
+		fprintf(stderr, "Failed to load Chroma Editor Library reason: invalid signature!\r\n");
 		return -1;
 	}
 
