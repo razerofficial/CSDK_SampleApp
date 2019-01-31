@@ -501,11 +501,14 @@ int ChromaAnimationAPI::InitAPI()
 		return -1;
 	}
 
+#if false
+	// when editor DLL is digitally signed
  	if (!VerifyLibrarySignature(L"CChromaEditorLibrary", library))
 	{
 		fprintf(stderr, "Failed to load Chroma Editor Library reason: invalid signature!\r\n");
 		return -1;
 	}
+#endif
 
 	//fprintf(stderr, "Loaded Chroma Editor DLL!\r\n");
 

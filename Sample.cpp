@@ -920,6 +920,8 @@ bool ExecuteEffect()
 	switch (_gSelection)
 	{
 	case 0:
+		ChromaAnimationAPI::StopAll();
+		ChromaAnimationAPI::CloseAll();
 		ChromaAnimationAPI::ClearAll();
 		ChromaAnimationAPI::Uninit();
 		return true;
