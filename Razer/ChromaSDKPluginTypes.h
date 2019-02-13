@@ -44,6 +44,16 @@ namespace ChromaSDK
 		DE_Mouse,
 	};
 
+	enum class EChromaSDKDeviceEnum
+	{
+		DE_ChromaLink = 0,
+		DE_Headset,
+		DE_Keyboard,
+		DE_Keypad,
+		DE_Mouse,
+		DE_Mousepad,
+	};
+
 	enum EChromaSDKKeyboardKey
 	{
 		KK_ESC,
