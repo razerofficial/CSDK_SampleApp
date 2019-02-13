@@ -30,14 +30,14 @@ namespace ChromaSDK
 		DE_2D,
 	};
 
-	enum EChromaSDKDevice1DEnum
+	enum class EChromaSDKDevice1DEnum
 	{
 		DE_ChromaLink = 0,
 		DE_Headset,
 		DE_Mousepad,
 	};
 
-	enum EChromaSDKDevice2DEnum
+	enum class EChromaSDKDevice2DEnum
 	{
 		DE_Keyboard = 0,
 		DE_Keypad,
