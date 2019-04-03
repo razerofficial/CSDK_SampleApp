@@ -3417,6 +3417,7 @@ void PrintLegend()
 	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
 	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
 	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
+	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
 	fprintf(stdout, "[%s] Effect %d\r\n", IsSelected(), ++effect);
 
 	fprintf(stdout, "\r\n");
@@ -3448,6 +3449,13 @@ int main()
 	fprintf(stderr, "App launched!\r\n");
 	if (ChromaAnimationAPI::InitAPI() != 0)
 	{
+		return -1;
+	}
+
+	RZRESULT result = ChromaAnimationAPI::Init();
+	if (result != 0)
+	{
+		fprintf(stderr, "Failed to initialize Chroma! %d", result);
 		return -1;
 	}
 
