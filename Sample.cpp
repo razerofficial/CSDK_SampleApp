@@ -38,6 +38,8 @@ void ShowEffect1()
 		ChromaAnimationAPI::CloseAnimationName(baseLayer);
 		// open the blank animation, passing a reference to the base animation when loading has completed
 		ChromaAnimationAPI::GetAnimation(baseLayer);
+		// use immediate mode to skip preloading
+		ChromaAnimationAPI::UsePreloadingName(baseLayer, false);
 		// play the animation on the dynamic canvas
 		ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
 #ifdef USE_EFFECT_CACHE
@@ -64,6 +66,8 @@ void ShowEffect1ChromaLink()
 		ChromaAnimationAPI::CloseAnimationName(baseLayer);
 		// open the blank animation, passing a reference to the base animation when loading has completed
 		ChromaAnimationAPI::GetAnimation(baseLayer);
+		// use immediate mode to skip preloading
+		ChromaAnimationAPI::UsePreloadingName(baseLayer, false);
 		// play the animation on the dynamic canvas
 		ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
 #ifdef USE_EFFECT_CACHE
@@ -90,6 +94,8 @@ void ShowEffect1Headset()
 		ChromaAnimationAPI::CloseAnimationName(baseLayer);
 		// open the blank animation, passing a reference to the base animation when loading has completed
 		ChromaAnimationAPI::GetAnimation(baseLayer);
+		// use immediate mode to skip preloading
+		ChromaAnimationAPI::UsePreloadingName(baseLayer, false);
 		// play the animation on the dynamic canvas
 		ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
 #ifdef USE_EFFECT_CACHE
@@ -116,6 +122,8 @@ void ShowEffect1Mousepad()
 		ChromaAnimationAPI::CloseAnimationName(baseLayer);
 		// open the blank animation, passing a reference to the base animation when loading has completed
 		ChromaAnimationAPI::GetAnimation(baseLayer);
+		// use immediate mode to skip preloading
+		ChromaAnimationAPI::UsePreloadingName(baseLayer, false);
 		// play the animation on the dynamic canvas
 		ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
 #ifdef USE_EFFECT_CACHE
@@ -3369,7 +3377,8 @@ void PrintLegend()
 
 	_gIndex = -1;
 
-	fprintf(stdout, "[%s] Quit\r\n", IsSelected());
+	fprintf(stdout, "[%s] Quit\t\t", IsSelected());
+	fprintf(stdout, "[%c] Clear Cache\r\n", 'C');
 
 	int effect = 0;
 	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
@@ -3496,8 +3505,16 @@ int main()
 	HandleInput inputDown = HandleInput(VK_DOWN);
 	HandleInput inputBackspace = HandleInput(VK_BACK);
 	HandleInput inputEnter = HandleInput(VK_RETURN);
+	HandleInput inputC = HandleInput('C');
 	while (true)
 	{
+		if (inputC.WasReleased())
+		{
+			_gCacheEffect.clear();
+			ChromaAnimationAPI::StopAll();
+			ChromaAnimationAPI::CloseAll();
+			fprintf(stdout, "Cache cleared.\r\n");
+		}
 		if (inputUp.WasReleased())
 		{
 			ClearManualInput();
