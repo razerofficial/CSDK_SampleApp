@@ -255,6 +255,30 @@ typedef void(*PLUGIN_COPY_KEY_COLOR_NAME)(const char* sourceAnimation, const cha
 */
 typedef double(*PLUGIN_COPY_KEY_COLOR_NAME_D)(const char* sourceAnimation, const char* targetAnimation, double frameId, double rzkey);
 /*
+	Copy animation color for a set of keys from the source animation to the
+	target animation for the given frame. Reference the source and target by
+	id.
+*/
+typedef void(*PLUGIN_COPY_KEYS_COLOR)(int sourceAnimationId, int targetAnimationId, int frameId, int* keys, int size);
+/*
+	Copy animation color for a set of keys from the source animation to the
+	target animation for the given frame. Reference the source and target by
+	name.
+*/
+typedef void(*PLUGIN_COPY_KEYS_COLOR_NAME)(const char* sourceAnimation, const char* targetAnimation, int frameId, int* keys, int size);
+/*
+	Copy animation color for a set of keys from the source animation to the
+	target animation from the source frame to the target frame. Reference the
+	source and target by id.
+*/
+typedef void(*PLUGIN_COPY_KEYS_COLOR_OFFSET)(int sourceAnimationId, int targetAnimationId, int sourceFrameId, int targetFrameId, int* keys, int size);
+/*
+	Copy animation color for a set of keys from the source animation to the
+	target animation from the source frame to the target frame. Reference the
+	source and target by name.
+*/
+typedef void(*PLUGIN_COPY_KEYS_COLOR_OFFSET_NAME)(const char* sourceAnimation, const char* targetAnimation, int sourceFrameId, int targetFrameId, int* keys, int size);
+/*
 	Copy source animation to target animation for the given frame. Source and
 	target are referenced by id.
 */
@@ -1162,7 +1186,7 @@ typedef double(*PLUGIN_HAS_ANIMATION_LOOP_NAME_D)(const char* path);
 	Initialize the ChromaSDK. Zero indicates  success, otherwise failure. Many
 	API methods auto initialize the ChromaSDK if not already initialized.
 */
-typedef int(*PLUGIN_INIT)();
+typedef RZRESULT(*PLUGIN_INIT)();
 /*
 	D suffix for limited data types.
 */
@@ -2320,7 +2344,7 @@ typedef double(*PLUGIN_TRIM_START_FRAMES_NAME_D)(const char* path, double number
 /*
 	Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns -1 upon failure.
 */
-typedef int(*PLUGIN_UNINIT)();
+typedef RZRESULT(*PLUGIN_UNINIT)();
 /*
 	D suffix for limited data types.
 */
@@ -2361,6 +2385,20 @@ typedef int(*PLUGIN_UPDATE_FRAME)(int animationId, int frameIndex, float duratio
 	the idle animation is disabled. `Device` uses `EChromaSDKDeviceEnum` enums.
 */
 typedef void(*PLUGIN_USE_IDLE_ANIMATION)(int device, bool flag);
+/*
+	Set idle animation flag for all devices.
+*/
+typedef void(*PLUGIN_USE_IDLE_ANIMATIONS)(bool flag);
+/*
+	Set preloading animation flag, which is set to true by default. Reference
+	animation by id.
+*/
+typedef void(*PLUGIN_USE_PRELOADING)(int animationId, bool flag);
+/*
+	Set preloading animation flag, which is set to true by default. Reference
+	animation by name.
+*/
+typedef void(*PLUGIN_USE_PRELOADING_NAME)(const char* path, bool flag);
 #pragma endregion
 
 #define CHROMASDK_DECLARE_METHOD(Signature, FieldName) static Signature FieldName;
@@ -2611,6 +2649,30 @@ namespace ChromaSDK
 			D suffix for limited data types.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_NAME_D, CopyKeyColorNameD);
+		/*
+			Copy animation color for a set of keys from the source animation to the
+			target animation for the given frame. Reference the source and target by
+			id.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEYS_COLOR, CopyKeysColor);
+		/*
+			Copy animation color for a set of keys from the source animation to the
+			target animation for the given frame. Reference the source and target by
+			name.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEYS_COLOR_NAME, CopyKeysColorName);
+		/*
+			Copy animation color for a set of keys from the source animation to the
+			target animation from the source frame to the target frame. Reference the
+			source and target by id.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEYS_COLOR_OFFSET, CopyKeysColorOffset);
+		/*
+			Copy animation color for a set of keys from the source animation to the
+			target animation from the source frame to the target frame. Reference the
+			source and target by name.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEYS_COLOR_OFFSET_NAME, CopyKeysColorOffsetName);
 		/*
 			Copy source animation to target animation for the given frame. Source and
 			target are referenced by id.
@@ -4718,6 +4780,20 @@ namespace ChromaSDK
 			the idle animation is disabled. `Device` uses `EChromaSDKDeviceEnum` enums.
 		*/
 		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_IDLE_ANIMATION, UseIdleAnimation);
+		/*
+			Set idle animation flag for all devices.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_IDLE_ANIMATIONS, UseIdleAnimations);
+		/*
+			Set preloading animation flag, which is set to true by default. Reference
+			animation by id.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_PRELOADING, UsePreloading);
+		/*
+			Set preloading animation flag, which is set to true by default. Reference
+			animation by name.
+		*/
+		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_PRELOADING_NAME, UsePreloadingName);
 #pragma endregion
 
 		static int InitAPI();
