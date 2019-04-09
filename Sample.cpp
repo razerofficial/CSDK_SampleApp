@@ -429,7 +429,7 @@ void ShowEffect6()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	// fade the start of the animation starting at frame zero to 40
 	ChromaAnimationAPI::FadeStartFramesName(baseLayer, 40);
 	// play the animation on the dynamic canvas
@@ -446,7 +446,7 @@ void ShowEffect6ChromaLink()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	// fade the start of the animation starting at frame zero to 40
 	ChromaAnimationAPI::FadeStartFramesName(baseLayer, 40);
 	// play the animation on the dynamic canvas
@@ -463,7 +463,7 @@ void ShowEffect6Headset()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	// fade the start of the animation starting at frame zero to 40
 	ChromaAnimationAPI::FadeStartFramesName(baseLayer, 40);
 	// play the animation on the dynamic canvas
@@ -480,7 +480,7 @@ void ShowEffect6Mousepad()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	// fade the start of the animation starting at frame zero to 40
 	ChromaAnimationAPI::FadeStartFramesName(baseLayer, 40);
 	// play the animation on the dynamic canvas
@@ -497,7 +497,7 @@ void ShowEffect6Mouse()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	// fade the start of the animation starting at frame zero to 40
 	ChromaAnimationAPI::FadeStartFramesName(baseLayer, 40);
 	// play the animation on the dynamic canvas
@@ -514,7 +514,7 @@ void ShowEffect7()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	// fade the end of the animation starting at frame length - 40 (60)
 	ChromaAnimationAPI::FadeEndFramesName(baseLayer, 40);
 	// play the animation on the dynamic canvas
@@ -531,7 +531,7 @@ void ShowEffect7ChromaLink()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	// fade the end of the animation starting at frame length - 40 (60)
 	ChromaAnimationAPI::FadeEndFramesName(baseLayer, 40);
 	// play the animation on the dynamic canvas
@@ -548,7 +548,7 @@ void ShowEffect7Headset()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	// fade the end of the animation starting at frame length - 40 (60)
 	ChromaAnimationAPI::FadeEndFramesName(baseLayer, 40);
 	// play the animation on the dynamic canvas
@@ -565,7 +565,7 @@ void ShowEffect7Mousepad()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	// fade the end of the animation starting at frame length - 40 (60)
 	ChromaAnimationAPI::FadeEndFramesName(baseLayer, 40);
 	// play the animation on the dynamic canvas
@@ -582,7 +582,7 @@ void ShowEffect7Mouse()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	// fade the end of the animation starting at frame length - 40 (60)
 	ChromaAnimationAPI::FadeEndFramesName(baseLayer, 40);
 	// play the animation on the dynamic canvas
@@ -599,7 +599,7 @@ void ShowEffect8()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	// fade the start of the animation starting at frame zero to 40
 	ChromaAnimationAPI::FadeStartFramesName(baseLayer, 40);
 	// fade the end of the animation starting at frame length - 40 (60)
@@ -618,7 +618,7 @@ void ShowEffect8ChromaLink()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	// fade the start of the animation starting at frame zero to 40
 	ChromaAnimationAPI::FadeStartFramesName(baseLayer, 40);
 	// fade the end of the animation starting at frame length - 40 (60)
@@ -637,7 +637,7 @@ void ShowEffect8Headset()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	// fade the start of the animation starting at frame zero to 40
 	ChromaAnimationAPI::FadeStartFramesName(baseLayer, 40);
 	// fade the end of the animation starting at frame length - 40 (60)
@@ -656,7 +656,7 @@ void ShowEffect8Mousepad()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	// fade the start of the animation starting at frame zero to 40
 	ChromaAnimationAPI::FadeStartFramesName(baseLayer, 40);
 	// fade the end of the animation starting at frame length - 40 (60)
@@ -675,7 +675,7 @@ void ShowEffect8Mouse()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	// fade the start of the animation starting at frame zero to 40
 	ChromaAnimationAPI::FadeStartFramesName(baseLayer, 40);
 	// fade the end of the animation starting at frame length - 40 (60)
@@ -694,7 +694,7 @@ void ShowEffect9()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	//integer number of times to blink during animation
 	int speed = 2;
 	// loop over all frames in the layer
@@ -718,7 +718,7 @@ void ShowEffect9ChromaLink()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	//integer number of times to blink during animation
 	int speed = 2;
 	// loop over all frames in the layer
@@ -742,7 +742,7 @@ void ShowEffect9Headset()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	//integer number of times to blink during animation
 	int speed = 2;
 	// loop over all frames in the layer
@@ -766,7 +766,7 @@ void ShowEffect9Mousepad()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	//integer number of times to blink during animation
 	int speed = 2;
 	// loop over all frames in the layer
@@ -790,7 +790,7 @@ void ShowEffect9Mouse()
 	// the length of the animation
 	int frameCount = 50;
 	// set all frames to white, with all frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033, 255, 255, 255);
+	ChromaAnimationAPI::MakeBlankFramesRGBName(baseLayer, frameCount, 0.033f, 255, 255, 255);
 	//integer number of times to blink during animation
 	int speed = 2;
 	// loop over all frames in the layer
@@ -1596,7 +1596,7 @@ void ShowEffect21()
 	ChromaAnimationAPI::GetAnimation(layer2);
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// copy non zero colors from layer 2 to the base layer
 	ChromaAnimationAPI::CopyNonZeroAllKeysAllFramesName(layer2, baseLayer);
 	// play the animation on the dynamic canvas
@@ -1615,7 +1615,7 @@ void ShowEffect21ChromaLink()
 	ChromaAnimationAPI::GetAnimation(layer2);
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// copy non zero colors from layer 2 to the base layer
 	ChromaAnimationAPI::CopyNonZeroAllKeysAllFramesName(layer2, baseLayer);
 	// play the animation on the dynamic canvas
@@ -1634,7 +1634,7 @@ void ShowEffect21Headset()
 	ChromaAnimationAPI::GetAnimation(layer2);
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// copy non zero colors from layer 2 to the base layer
 	ChromaAnimationAPI::CopyNonZeroAllKeysAllFramesName(layer2, baseLayer);
 	// play the animation on the dynamic canvas
@@ -1653,7 +1653,7 @@ void ShowEffect21Mousepad()
 	ChromaAnimationAPI::GetAnimation(layer2);
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// copy non zero colors from layer 2 to the base layer
 	ChromaAnimationAPI::CopyNonZeroAllKeysAllFramesName(layer2, baseLayer);
 	// play the animation on the dynamic canvas
@@ -1672,7 +1672,7 @@ void ShowEffect21Mouse()
 	ChromaAnimationAPI::GetAnimation(layer2);
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// copy non zero colors from layer 2 to the base layer
 	ChromaAnimationAPI::CopyNonZeroAllKeysAllFramesName(layer2, baseLayer);
 	// play the animation on the dynamic canvas
@@ -1692,7 +1692,7 @@ void ShowEffect22()
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
 	// setup background color on the base layer
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// replace darker colors with background color
 	ChromaAnimationAPI::FillThresholdColorsAllFramesName(layer2, 64, background);
 	// copy non zero colors from layer 2 to the base layer
@@ -1714,7 +1714,7 @@ void ShowEffect22ChromaLink()
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
 	// setup background color on the base layer
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// replace darker colors with background color
 	ChromaAnimationAPI::FillThresholdColorsAllFramesName(layer2, 64, background);
 	// copy non zero colors from layer 2 to the base layer
@@ -1736,7 +1736,7 @@ void ShowEffect22Headset()
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
 	// setup background color on the base layer
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// replace darker colors with background color
 	ChromaAnimationAPI::FillThresholdColorsAllFramesName(layer2, 64, background);
 	// copy non zero colors from layer 2 to the base layer
@@ -1758,7 +1758,7 @@ void ShowEffect22Mousepad()
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
 	// setup background color on the base layer
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// replace darker colors with background color
 	ChromaAnimationAPI::FillThresholdColorsAllFramesName(layer2, 64, background);
 	// copy non zero colors from layer 2 to the base layer
@@ -1780,7 +1780,7 @@ void ShowEffect22Mouse()
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
 	// setup background color on the base layer
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// replace darker colors with background color
 	ChromaAnimationAPI::FillThresholdColorsAllFramesName(layer2, 64, background);
 	// copy non zero colors from layer 2 to the base layer
@@ -1802,7 +1802,7 @@ void ShowEffect23()
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
 	// setup background color on the base layer
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// Add non zero colors from layer 2 to the base layer
 	ChromaAnimationAPI::AddNonZeroAllKeysAllFramesName(layer2, baseLayer);
 	// play the animation on the dynamic canvas
@@ -1822,7 +1822,7 @@ void ShowEffect23ChromaLink()
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
 	// setup background color on the base layer
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// Add non zero colors from layer 2 to the base layer
 	ChromaAnimationAPI::AddNonZeroAllKeysAllFramesName(layer2, baseLayer);
 	// play the animation on the dynamic canvas
@@ -1842,7 +1842,7 @@ void ShowEffect23Headset()
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
 	// setup background color on the base layer
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// Add non zero colors from layer 2 to the base layer
 	ChromaAnimationAPI::AddNonZeroAllKeysAllFramesName(layer2, baseLayer);
 	// play the animation on the dynamic canvas
@@ -1862,7 +1862,7 @@ void ShowEffect23Mousepad()
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
 	// setup background color on the base layer
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// Add non zero colors from layer 2 to the base layer
 	ChromaAnimationAPI::AddNonZeroAllKeysAllFramesName(layer2, baseLayer);
 	// play the animation on the dynamic canvas
@@ -1882,7 +1882,7 @@ void ShowEffect23Mouse()
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
 	// setup background color on the base layer
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// Add non zero colors from layer 2 to the base layer
 	ChromaAnimationAPI::AddNonZeroAllKeysAllFramesName(layer2, baseLayer);
 	// play the animation on the dynamic canvas
@@ -1902,7 +1902,7 @@ void ShowEffect24()
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
 	// setup background color on the base layer
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// Add non zero colors from layer 2 to the base layer
 	ChromaAnimationAPI::SubtractNonZeroAllKeysAllFramesName(layer2, baseLayer);
 	// play the animation on the dynamic canvas
@@ -1922,7 +1922,7 @@ void ShowEffect24ChromaLink()
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
 	// setup background color on the base layer
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// Add non zero colors from layer 2 to the base layer
 	ChromaAnimationAPI::SubtractNonZeroAllKeysAllFramesName(layer2, baseLayer);
 	// play the animation on the dynamic canvas
@@ -1942,7 +1942,7 @@ void ShowEffect24Headset()
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
 	// setup background color on the base layer
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// Add non zero colors from layer 2 to the base layer
 	ChromaAnimationAPI::SubtractNonZeroAllKeysAllFramesName(layer2, baseLayer);
 	// play the animation on the dynamic canvas
@@ -1962,7 +1962,7 @@ void ShowEffect24Mousepad()
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
 	// setup background color on the base layer
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// Add non zero colors from layer 2 to the base layer
 	ChromaAnimationAPI::SubtractNonZeroAllKeysAllFramesName(layer2, baseLayer);
 	// play the animation on the dynamic canvas
@@ -1982,7 +1982,7 @@ void ShowEffect24Mouse()
 	int frameCount = ChromaAnimationAPI::GetFrameCountName(layer2);
 	// setup background color on the base layer
 	int background = ChromaAnimationAPI::GetRGB(127, 0, 0);
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, background);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, background);
 	// Add non zero colors from layer 2 to the base layer
 	ChromaAnimationAPI::SubtractNonZeroAllKeysAllFramesName(layer2, baseLayer);
 	// play the animation on the dynamic canvas
@@ -2923,7 +2923,7 @@ void ShowEffect37()
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 	int frameCount = 20;
 	// Start with blank frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, 0);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, 0);
 	// Fill all frames with black and white static
 	ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesName(baseLayer);
 	// slow down the random frames so it can be seen
@@ -2941,7 +2941,7 @@ void ShowEffect37ChromaLink()
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 	int frameCount = 20;
 	// Start with blank frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, 0);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, 0);
 	// Fill all frames with black and white static
 	ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesName(baseLayer);
 	// slow down the random frames so it can be seen
@@ -2959,7 +2959,7 @@ void ShowEffect37Headset()
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 	int frameCount = 20;
 	// Start with blank frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, 0);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, 0);
 	// Fill all frames with black and white static
 	ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesName(baseLayer);
 	// slow down the random frames so it can be seen
@@ -2977,7 +2977,7 @@ void ShowEffect37Mousepad()
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 	int frameCount = 20;
 	// Start with blank frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, 0);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, 0);
 	// Fill all frames with black and white static
 	ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesName(baseLayer);
 	// slow down the random frames so it can be seen
@@ -2995,7 +2995,7 @@ void ShowEffect37Mouse()
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 	int frameCount = 20;
 	// Start with blank frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, 0);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, 0);
 	// Fill all frames with black and white static
 	ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesName(baseLayer);
 	// slow down the random frames so it can be seen
@@ -3013,7 +3013,7 @@ void ShowEffect38()
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 	int frameCount = 20;
 	// Start with blank frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, 0);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, 0);
 	// Fill all frames with black and white static
 	ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesName(baseLayer);
 	// slow down the random frames so it can be seen
@@ -3035,7 +3035,7 @@ void ShowEffect38ChromaLink()
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 	int frameCount = 20;
 	// Start with blank frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, 0);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, 0);
 	// Fill all frames with black and white static
 	ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesName(baseLayer);
 	// slow down the random frames so it can be seen
@@ -3057,7 +3057,7 @@ void ShowEffect38Headset()
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 	int frameCount = 20;
 	// Start with blank frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, 0);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, 0);
 	// Fill all frames with black and white static
 	ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesName(baseLayer);
 	// slow down the random frames so it can be seen
@@ -3079,7 +3079,7 @@ void ShowEffect38Mousepad()
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 	int frameCount = 20;
 	// Start with blank frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, 0);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, 0);
 	// Fill all frames with black and white static
 	ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesName(baseLayer);
 	// slow down the random frames so it can be seen
@@ -3101,7 +3101,7 @@ void ShowEffect38Mouse()
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 	int frameCount = 20;
 	// Start with blank frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, 0);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, 0);
 	// Fill all frames with black and white static
 	ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesName(baseLayer);
 	// slow down the random frames so it can be seen
@@ -3123,7 +3123,7 @@ void ShowEffect39()
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 	int frameCount = 20;
 	// Start with blank frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, 0);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, 0);
 	// Fill all frames with black and white static
 	ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesName(baseLayer);
 	// slow down the random frames so it can be seen
@@ -3144,7 +3144,7 @@ void ShowEffect39ChromaLink()
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 	int frameCount = 20;
 	// Start with blank frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, 0);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, 0);
 	// Fill all frames with black and white static
 	ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesName(baseLayer);
 	// slow down the random frames so it can be seen
@@ -3165,7 +3165,7 @@ void ShowEffect39Headset()
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 	int frameCount = 20;
 	// Start with blank frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, 0);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, 0);
 	// Fill all frames with black and white static
 	ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesName(baseLayer);
 	// slow down the random frames so it can be seen
@@ -3186,7 +3186,7 @@ void ShowEffect39Mousepad()
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 	int frameCount = 20;
 	// Start with blank frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, 0);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, 0);
 	// Fill all frames with black and white static
 	ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesName(baseLayer);
 	// slow down the random frames so it can be seen
@@ -3207,7 +3207,7 @@ void ShowEffect39Mouse()
 	ChromaAnimationAPI::GetAnimation(baseLayer);
 	int frameCount = 20;
 	// Start with blank frames set to 30FPS
-	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033, 0);
+	ChromaAnimationAPI::MakeBlankFramesName(baseLayer, frameCount, 0.033f, 0);
 	// Fill all frames with black and white static
 	ChromaAnimationAPI::FillRandomColorsBlackAndWhiteAllFramesName(baseLayer);
 	// slow down the random frames so it can be seen
@@ -3462,7 +3462,17 @@ int main()
 	}
 
 	RZRESULT result = ChromaAnimationAPI::Init();
-	if (result != 0)
+	if (result == RZRESULT_DLL_NOT_FOUND)
+	{
+		fprintf(stderr, "Chroma DLL is not found! %d", result);
+		return -1;
+	}
+	else if (result == RZRESULT_DLL_INVALID_SIGNATURE)
+	{
+		fprintf(stderr, "Chroma DLL has an invalid signature! %d", result);
+		return -1;
+	}
+	else if (result != 0)
 	{
 		fprintf(stderr, "Failed to initialize Chroma! %d", result);
 		return -1;
