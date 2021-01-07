@@ -3,6 +3,7 @@
 **Table of Contents**
 
 * [See Also](#see-also)
+* [Quick Start](#quick-start)
 * [About](#about)
 
 <a name="see-also"></a>
@@ -31,6 +32,19 @@
 - [UE4_XDK_SampleApp](https://github.com/razerofficial/UE4_XDK_SampleApp) - UE4 Chroma samples and runtime module with Blueprint library for the ChromaSDK
 
 - [UnityNativeChromaSDK](https://github.com/RazerOfficial/UnityNativeChromaSDK) - Unity native library for the ChromaSDK
+
+
+<a name="quick-start"></a>
+## Quick Start ##
+
+* Install [Synapse](https://www.razer.com/synapse-3)
+
+* Make sure the Chroma Connect module is installed.
+
+![image_2](images/image_2.png)
+
+* If you don't have Chroma hardware, you can see Chroma effects with the [Chroma Emulator](https://github.com/razerofficial/ChromaEmulator)
+
 
 <a name="about"></a>
 ## About
