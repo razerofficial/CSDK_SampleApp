@@ -4727,7 +4727,25 @@ int main()
 		return -1;
 	}
 
-	RZRESULT result = ChromaAnimationAPI::Init();
+    ChromaSDK::APPINFOTYPE appInfo = {};
+
+    _tcscpy_s(appInfo.Title, 256, _T("CSDK Sample Application"));
+    _tcscpy_s(appInfo.Description, 1024, _T("A sample application using Razer Chroma SDK"));
+    _tcscpy_s(appInfo.Author.Name, 256, _T("Razer"));
+    _tcscpy_s(appInfo.Author.Contact, 256, _T("https://developer.razer.com/chroma"));
+
+    //appInfo.SupportedDevice = 
+    //    0x01 | // Keyboards
+    //    0x02 | // Mice
+    //    0x04 | // Headset
+    //    0x08 | // Mousepads
+    //    0x10 | // Keypads
+    //    0x20   // ChromaLink devices
+    //    ;
+    appInfo.SupportedDevice = (0x01 | 0x02 | 0x04 | 0x08 | 0x10 | 0x20);
+    appInfo.Category = 1;
+
+	RZRESULT result = ChromaAnimationAPI::InitSDK(&appInfo);
 	if (result == RZRESULT_DLL_NOT_FOUND)
 	{
 		fprintf(stderr, "Chroma DLL is not found! %d", result);
