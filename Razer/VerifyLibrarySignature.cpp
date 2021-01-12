@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "VerifyLibrarySignature.h"
 #include <psapi.h>
 #include <wintrust.h>

@@ -1,5 +1,4 @@
-﻿#include "stdafx.h"
-#include "Razer\ChromaAnimationAPI.h"
+﻿#include "Razer\ChromaAnimationAPI.h"
 #include "RazerKeyboardMapping.h"
 
 using namespace ChromaSDK;

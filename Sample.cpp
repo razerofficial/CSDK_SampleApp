@@ -1,10 +1,9 @@
 ﻿// CSDKGame.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
-
 #include <chrono>
 #include <iostream>
+#include <tchar.h>
 
 #include "HandleInput.h"
 #include "Razer\ChromaSDKPluginTypes.h"
