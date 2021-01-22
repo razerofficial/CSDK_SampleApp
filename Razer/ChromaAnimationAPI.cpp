@@ -525,20 +525,6 @@ int ChromaAnimationAPI::InitAPI()
 		return -1;
 	}
 
-#if false
-	// when editor DLL is digitally signed
-	if (!VerifyLibrarySignature::VerifyModule(library))
-	{
-		fprintf(stderr, "Failed to load Chroma Editor Library reason: invalid signature!\r\n");
-
-		// unload the library
-		FreeLibrary(library);
-		library = NULL;
-
-		return -1;
-	}
-#endif
-
 	//fprintf(stderr, "Loaded Chroma Editor DLL!\r\n");
 
 #pragma region API validation

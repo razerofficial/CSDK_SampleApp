@@ -4594,7 +4594,7 @@ void ShowEffect47Keypad()
 }
 
 
-int _gSelection = 0;
+int _gSelection = 1;
 const int MAX_SELECTION = 47;
 int _gIndex = 0;
 char _gTextBuffer[16];
@@ -4625,16 +4625,14 @@ void PrintLegend()
 		fprintf(stdout, "\r\n");
 	}
 
-	fprintf(stdout, "CSDK SAMPLE APP\r\n");
+	fprintf(stdout, "C++ CHROMA SAMPLE APP\r\n");
 	fprintf(stdout, "\r\n");
 
 	fprintf(stdout, "Use UP and DOWN arrows to select animation and press ENTER.\r\n");
+    fprintf(stdout, "Use ESCAPE to QUIT.\r\n");
 	fprintf(stdout, "\r\n");
 
-	_gIndex = -1;
-
-	fprintf(stdout, "[%s] Quit\t\t", IsSelected());
-	fprintf(stdout, "[%c] Clear Cache\r\n", 'C');
+	_gIndex = 0;
 
 	int effect = 0;
 	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
@@ -4716,7 +4714,7 @@ void ClearManualInput()
 	_gManualInput[1] = ' ';
 }
 
-bool ExecuteEffect();
+void ExecuteEffect();
 
 int main()
 {
@@ -4798,12 +4796,21 @@ int main()
 	HandleInput inputDown = HandleInput(VK_DOWN);
 	HandleInput inputBackspace = HandleInput(VK_BACK);
 	HandleInput inputEnter = HandleInput(VK_RETURN);
+    HandleInput inputEscape = HandleInput(VK_ESCAPE);
 	while (true)
 	{
-		if (inputUp.WasReleased())
+        if (inputEscape.WasReleased())
+        {
+            ChromaAnimationAPI::StopAll();
+            ChromaAnimationAPI::CloseAll();
+            ChromaAnimationAPI::ClearAll();
+            ChromaAnimationAPI::Uninit();
+            break;
+        }
+		else if (inputUp.WasReleased())
 		{
 			ClearManualInput();
-			if (_gSelection > 0)
+			if (_gSelection > 1)
 			{
 				--_gSelection;
 			}
@@ -4891,10 +4898,7 @@ int main()
 			PrintLegend();
 			ClearManualInput();
 
-			if (ExecuteEffect())
-			{
-				return 0;
-			}
+            ExecuteEffect();
 		}
 		Sleep(1);
 	}
@@ -4902,20 +4906,13 @@ int main()
     return 0;
 }
 
-bool ExecuteEffect()
+void ExecuteEffect()
 {
 	// get current time
 	high_resolution_clock::time_point timer = high_resolution_clock::now();
 
 	switch (_gSelection)
 	{
-	case 0:
-		ChromaAnimationAPI::StopAll();
-		ChromaAnimationAPI::CloseAll();
-		ChromaAnimationAPI::ClearAll();
-		ChromaAnimationAPI::Uninit();
-		return true;
-
     case 1:
         ShowEffect1();
         ShowEffect1ChromaLink();
@@ -5298,6 +5295,4 @@ bool ExecuteEffect()
 	duration<double, milli> time_span = high_resolution_clock::now() - timer;
 	float deltaTime = (float)(time_span.count() / 1000.0f);
 	fprintf(stdout, "Elapsed time: %f\r\n\r\n", deltaTime);
-
-	return false;
 }

@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "HandleInput.h"
 
 #include "windows.h"
