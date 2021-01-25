@@ -4629,62 +4629,19 @@ void PrintLegend()
 	_gIndex = 0;
 
 	int effect = 0;
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\r\n", IsSelected(), ++effect);
-
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\r\n", IsSelected(), ++effect);
-
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\r\n", IsSelected(), ++effect);
-
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\r\n", IsSelected(), ++effect);
-
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\r\n", IsSelected(), ++effect);
-
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\r\n", IsSelected(), ++effect);
-
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\r\n", IsSelected(), ++effect);
-
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-	fprintf(stdout, "[%s] Effect %d\r\n", IsSelected(), ++effect);
-
-    fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-    fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-    fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-    fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-    fprintf(stdout, "[%s] Effect %d\r\n", IsSelected(), ++effect);
-
-    fprintf(stdout, "[%s] Effect %d\t\t", IsSelected(), ++effect);
-    fprintf(stdout, "[%s] Effect %d\r\n", IsSelected(), ++effect);    
+    for (int effect = 1; effect <= MAX_SELECTION; ++effect)
+    {
+        fprintf(stdout, "[%s] Effect %d", IsSelected(), effect);
+        if (effect % 5 == 0 ||
+            effect == MAX_SELECTION)
+        {
+            fprintf(stdout, "\r\n");
+        }
+        else
+        {
+            fprintf(stdout, "\t\t");
+        }
+    }	
 
 	fprintf(stdout, "\r\n");
 	fprintf(stdout, "\r\n");
