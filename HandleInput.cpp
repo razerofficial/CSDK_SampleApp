@@ -13,6 +13,10 @@ int HandleInput::GetKey()
 }
 bool HandleInput::WasReleased()
 {
+	if (GetConsoleWindow() != GetForegroundWindow())
+	{
+		return false;
+	}
 	if (GetAsyncKeyState(_mKey) != 0)
 	{
 		_mWasPressed = true;
