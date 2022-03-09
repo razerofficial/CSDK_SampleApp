@@ -23,32 +23,32 @@
     <ProjectGuid>{01B77012-4E5C-4154-A177-9780EEF3C9FB}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>CSDK_SampleApp</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -137,7 +137,8 @@
       </Command>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>CopyLibrary.cmd</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -160,21 +161,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CpuUsage.h" />
     <ClInclude Include="RazerKeyboardMapping.h" />
     <ClInclude Include="Razer\ChromaAnimationAPI.h" />
     <ClInclude Include="HandleInput.h" />
+    <ClInclude Include="Razer\ChromaLogger.h" />
     <ClInclude Include="Razer\ChromaSDKPluginTypes.h" />
     <ClInclude Include="Razer\RzChromaSDKDefines.h" />
     <ClInclude Include="Razer\RzChromaSDKTypes.h" />
     <ClInclude Include="Razer\RzErrors.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="VerifyLibrarySignature.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CpuUsage.cpp" />
     <ClCompile Include="HandleInput.cpp" />
     <ClCompile Include="RazerKeyboardMapping.cpp" />
     <ClCompile Include="Razer\ChromaAnimationAPI.cpp" />
+    <ClCompile Include="Razer\ChromaLogger.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="Razer\ChromaSDKPluginTypes.cpp" />
+    <ClCompile Include="VerifyLibrarySignature.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CChromaEditorLibrary.dll">

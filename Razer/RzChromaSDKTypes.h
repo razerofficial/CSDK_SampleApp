@@ -821,6 +821,20 @@ namespace ChromaSDK
             RZCOLOR Color;  //!< Color of the effect.
         } STATIC_EFFECT_TYPE;
     }
+
+    namespace Stream
+    {
+        enum class StreamStatusType
+        {
+            READY = 0, // ready for commands
+            AUTHORIZING = 1, // the session is being authorized
+            BROADCASTING = 2, // the session is being broadcast
+            WATCHING = 3, // A stream is being watched
+            NOT_AUTHORIZED = 4, // The session is not authorized
+            BROADCAST_DUPLICATE = 5, // The session has duplicate broadcasters
+            SERVICE_OFFLINE = 6, // The service is offline
+        };
+    }
 }
 
 #endif

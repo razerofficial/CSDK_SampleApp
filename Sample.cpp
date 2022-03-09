@@ -6,6 +6,7 @@
 #include <tchar.h>
 
 #include "HandleInput.h"
+#include "CpuUsage.h"
 #include "Razer\ChromaSDKPluginTypes.h"
 #include "Razer\ChromaAnimationAPI.h"
 #include "RazerKeyboardMapping.h"
@@ -4289,7 +4290,7 @@ void ShowEffect45()
         for (int frameId = 0; frameId < frameCount; ++frameId) {
             t += speed;
             float hp = fabsf(cos(MATH_PI / 2.0f + t));
-            for (int i = 0; i < size(keys); ++i) {
+            for (unsigned int i = 0; i < size(keys); ++i) {
                 float ratio = (i + 1) / (float)size(keys);
                 int color = ChromaAnimationAPI::GetRGB(0, (int)(255 * (1 - hp)), 0);
                 if ((i + 1) / (float)(size(keys) + 1) < hp) {
@@ -4597,6 +4598,17 @@ char _gManualInput[] = {
 	' ',
 };
 
+char _gShortcode[7] = { 0 };
+char _gStreamId[48] = { 0 };
+char _gStreamKey[48] = { 0 };
+unsigned char _gLenShortcode = 0;
+unsigned char _gLenStreamId = 0;
+unsigned char _gLenStreamKey = 0;
+
+const char* g_FocusGuid = "UnitTest";
+char g_Focus[48] = { 0 };
+unsigned char g_LenFocus = 0;
+
 const char* IsSelected()
 {
 	++_gIndex;
@@ -4606,11 +4618,17 @@ const char* IsSelected()
 	}
 	else
 	{
+        if (_gIndex <= 0)
+        {
+            return " ";
+        }
 		memset(_gTextBuffer, 0, size(_gTextBuffer));
 		sprintf_s(_gTextBuffer, "%d", _gIndex);
 		return _gTextBuffer;
 	}
 }
+
+CpuUsage _gUsage;
 
 void PrintLegend()
 {
@@ -4624,11 +4642,54 @@ void PrintLegend()
 
 	fprintf(stdout, "Use UP and DOWN arrows to select animation and press ENTER.\r\n");
     fprintf(stdout, "Use ESCAPE to QUIT.\r\n");
-	fprintf(stdout, "\r\n");
 
-	_gIndex = 0;
+    if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
+    {
+        fprintf(stdout, "Streaming Info (SUPPORTED):\r\n");
+		ChromaSDK::Stream::StreamStatusType status = ChromaAnimationAPI::CoreStreamGetStatus();
+		fprintf(stdout, "Status: %s\r\n", ChromaAnimationAPI::CoreStreamGetStatusString(status));
+        if (_gLenShortcode > 0)
+        {
+            fprintf(stdout, "Shortcode: %s\r\n", _gShortcode);
+        }
+        if (_gLenStreamId > 0)
+        {
+            fprintf(stdout, "StreamId: %s\r\n", _gStreamId);
+        }
+        if (_gLenStreamKey > 0)
+        {
+            fprintf(stdout, "StreamKey: %s\r\n", _gStreamKey);
+        }
+        if (g_LenFocus > 0)
+        {
+            fprintf(stdout, "Focus: %s\r\n", g_Focus);
+        }
 
-	int effect = 0;
+        short cpuUsage = _gUsage.GetUsage();
+        cout << "CPU usage: " << cpuUsage << "%" << endl;
+
+        fprintf(stdout, "\r\n");
+    }
+    
+
+    if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
+    {
+        _gIndex = -10;
+        fprintf(stdout, "[%s] Request Shortcode\r\n", IsSelected());
+        fprintf(stdout, "[%s] Request StreamId\r\n", IsSelected());
+        fprintf(stdout, "[%s] Request StreamKey\r\n", IsSelected());
+        fprintf(stdout, "[%s] Release Shortcode\r\n", IsSelected());
+        fprintf(stdout, "[%s] Broadcast\t\t", IsSelected());
+        fprintf(stdout, "[%s] BroadcastEnd\r\n", IsSelected());
+        fprintf(stdout, "[%s] Watch\t\t", IsSelected());
+        fprintf(stdout, "[%s] WatchEnd\r\n", IsSelected());
+        fprintf(stdout, "[%s] GetFocus\t\t", IsSelected());
+        fprintf(stdout, "[%s] SetFocus\r\n", IsSelected());
+    }
+    else
+    {
+        _gIndex = 0;
+    }
     for (int effect = 1; effect <= MAX_SELECTION; ++effect)
     {
         fprintf(stdout, "[%s] Effect %d", IsSelected(), effect);
@@ -4645,7 +4706,14 @@ void PrintLegend()
 
 	fprintf(stdout, "\r\n");
 	fprintf(stdout, "\r\n");
-	fprintf(stdout, "[%d] Press ENTER to play selection. ", _gSelection);
+    if (_gSelection > 0)
+    {
+        fprintf(stdout, "[%d] Press ENTER to play selection. ", _gSelection);
+    }
+    else
+    {
+        fprintf(stdout, "[ ] Press ENTER to play selection. ");
+    }
 
 	fprintf(stdout, "\r\n");
 	if (_gManualInput[0] != ' ')
@@ -4667,13 +4735,26 @@ void ClearManualInput()
 
 void ExecuteEffect();
 
+void Cleanup()
+{
+	ChromaAnimationAPI::StopAll();
+	ChromaAnimationAPI::CloseAll();
+	RZRESULT result = ChromaAnimationAPI::Uninit();
+	ChromaAnimationAPI::UnloadLibrarySDK();
+	if (result != RZRESULT_SUCCESS)
+	{
+		cerr << "Failed to uninitialize Chroma!" << endl;
+		exit(1);
+	}
+}
+
 int main()
 {
-	fprintf(stderr, "App launched!\r\n");
-	if (ChromaAnimationAPI::InitAPI() != 0)
-	{
-		return -1;
-	}
+    fprintf(stderr, "App launched!\r\n");
+    if (ChromaAnimationAPI::InitAPI() != RZRESULT_SUCCESS)
+    {
+        return -1;
+    }
 
     ChromaSDK::APPINFOTYPE appInfo = {};
 
@@ -4695,62 +4776,68 @@ int main()
     appInfo.Category = 1;
 
 	RZRESULT result = ChromaAnimationAPI::InitSDK(&appInfo);
-	if (result == RZRESULT_DLL_NOT_FOUND)
+	if (result != RZRESULT_SUCCESS)
 	{
-		fprintf(stderr, "Chroma DLL is not found! %d", result);
-		return -1;
+		cerr << "Failed to initialize Chroma!" << endl;
+		ChromaAnimationAPI::UnloadLibrarySDK();
+		exit(1);
 	}
-	else if (result == RZRESULT_DLL_INVALID_SIGNATURE)
-	{
-		fprintf(stderr, "Chroma DLL has an invalid signature! %d", result);
-		return -1;
-	}
-	else if (result != 0)
-	{
-		fprintf(stderr, "Failed to initialize Chroma! %d", result);
-		return -1;
-	}
+	Sleep(100); //wait for init
 
-	// sample for getting the mapping between potential UI key binding enums and RZKEY
-	RazerKeyboardMapping* mapping = RazerKeyboardMapping::GetInstance();
-	int key = mapping->GetRZKEY(2);
+    if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
+    {
+        _gSelection = -9;
+    }
 
-	HandleInput numKeys[] =
-	{
-		HandleInput('0'),
-		HandleInput('1'),
-		HandleInput('2'),
-		HandleInput('3'),
-		HandleInput('4'),
-		HandleInput('5'),
-		HandleInput('6'),
-		HandleInput('7'),
-		HandleInput('8'),
-		HandleInput('9'),
-	};
+    // sample for getting the mapping between potential UI key binding enums and RZKEY
+    RazerKeyboardMapping* mapping = RazerKeyboardMapping::GetInstance();
+    int key = mapping->GetRZKEY(2);
 
-	HandleInput numpadKeys[] =
-	{
-		HandleInput(VK_NUMPAD0),
-		HandleInput(VK_NUMPAD1),
-		HandleInput(VK_NUMPAD2),
-		HandleInput(VK_NUMPAD3),
-		HandleInput(VK_NUMPAD4),
-		HandleInput(VK_NUMPAD5),
-		HandleInput(VK_NUMPAD6),
-		HandleInput(VK_NUMPAD7),
-		HandleInput(VK_NUMPAD8),
-		HandleInput(VK_NUMPAD9),
-	};
+    HandleInput numKeys[] =
+    {
+        HandleInput('0'),
+        HandleInput('1'),
+        HandleInput('2'),
+        HandleInput('3'),
+        HandleInput('4'),
+        HandleInput('5'),
+        HandleInput('6'),
+        HandleInput('7'),
+        HandleInput('8'),
+        HandleInput('9'),
+    };
 
-	PrintLegend();
-	HandleInput inputUp = HandleInput(VK_UP);
-	HandleInput inputDown = HandleInput(VK_DOWN);
-	HandleInput inputBackspace = HandleInput(VK_BACK);
-	HandleInput inputEnter = HandleInput(VK_RETURN);
+    HandleInput numpadKeys[] =
+    {
+        HandleInput(VK_NUMPAD0),
+        HandleInput(VK_NUMPAD1),
+        HandleInput(VK_NUMPAD2),
+        HandleInput(VK_NUMPAD3),
+        HandleInput(VK_NUMPAD4),
+        HandleInput(VK_NUMPAD5),
+        HandleInput(VK_NUMPAD6),
+        HandleInput(VK_NUMPAD7),
+        HandleInput(VK_NUMPAD8),
+        HandleInput(VK_NUMPAD9),
+    };
+
+    PrintLegend();
+    HandleInput inputUp = HandleInput(VK_UP);
+    HandleInput inputDown = HandleInput(VK_DOWN);
+    HandleInput inputBackspace = HandleInput(VK_BACK);
+    HandleInput inputEnter = HandleInput(VK_RETURN);
     HandleInput inputEscape = HandleInput(VK_ESCAPE);
-	while (true)
-	{
+
+    int autoPrint = 0;
+
+    while (true)
+    {
+        if (++autoPrint > 100)
+        {
+            autoPrint = 0;
+            PrintLegend();
+        }
+
         if (inputEscape.WasReleased())
         {
             ChromaAnimationAPI::StopAll();
@@ -4759,18 +4846,22 @@ int main()
             ChromaAnimationAPI::Uninit();
             break;
         }
-		else if (inputUp.WasReleased())
-		{
-			ClearManualInput();
-			if (_gSelection > 1)
+        else if (inputUp.WasReleased())
+        {
+            ClearManualInput();
+            if (ChromaAnimationAPI::CoreStreamSupportsStreaming() && _gSelection > -9)
+            {
+                --_gSelection;
+            }
+			else if (_gSelection > 1)
 			{
 				--_gSelection;
 			}
 			PrintLegend();
-			if (_gSelection > 0)
-			{
-				ExecuteEffect();
-			}
+            if (_gSelection > 1)
+            {
+                ExecuteEffect();
+            }
 		}
 		
 
@@ -4782,10 +4873,10 @@ int main()
 				_gSelection++;
 			}
 			PrintLegend();
-			if (_gSelection > 0)
-			{
-				ExecuteEffect();
-			}
+            if (_gSelection > 1)
+            {
+                ExecuteEffect();
+            }
 		}
 
 		bool hasManualInput = false;
@@ -4851,9 +4942,16 @@ int main()
 			ClearManualInput();
 
             ExecuteEffect();
+
+            if (_gSelection < 1)
+            {
+                PrintLegend();
+            }
 		}
 		Sleep(1);
 	}
+
+	Cleanup();
 
     return 0;
 }
@@ -4865,6 +4963,74 @@ void ExecuteEffect()
 
 	switch (_gSelection)
 	{
+    case -9:
+        if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
+        {
+            ChromaAnimationAPI::CoreStreamGetAuthShortcode(_gShortcode, &_gLenShortcode, "PC", "CSDK Sample App");
+        }
+        break;
+    case -8:
+        if (ChromaAnimationAPI::CoreStreamSupportsStreaming() && _gLenShortcode > 0)
+        {
+            ChromaAnimationAPI::CoreStreamGetId(_gShortcode, _gStreamId, &_gLenStreamId);
+        }
+        break;
+    case -7:
+        if (ChromaAnimationAPI::CoreStreamSupportsStreaming() && _gLenShortcode > 0)
+        {
+            ChromaAnimationAPI::CoreStreamGetKey(_gShortcode, _gStreamKey, &_gLenStreamKey);
+        }
+        break;
+    case -6:
+        if (ChromaAnimationAPI::CoreStreamSupportsStreaming() && _gLenShortcode > 0)
+        {
+            if (ChromaAnimationAPI::CoreStreamReleaseShortcode(_gShortcode))
+            {
+                memset(_gShortcode, 0, size(_gShortcode));
+                _gLenShortcode = 0;
+            }
+        }
+        break;
+    case -5:
+        if (ChromaAnimationAPI::CoreStreamSupportsStreaming() &&
+            _gLenStreamId > 0 && _gLenStreamKey > 0)
+        {
+            ChromaAnimationAPI::CoreStreamBroadcast(_gStreamId, _gStreamKey);
+        }
+        break;
+    case -4:
+        if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
+        {
+            ChromaAnimationAPI::CoreStreamBroadcastEnd();
+        }
+        break;
+    case -3:
+        if (ChromaAnimationAPI::CoreStreamSupportsStreaming() &&
+            _gLenStreamId > 0)
+        {
+            unsigned long long timestamp = 0;
+            ChromaAnimationAPI::CoreStreamWatch(_gStreamId, timestamp);
+        }
+        break;
+    case -2:
+        if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
+        {
+            ChromaAnimationAPI::CoreStreamWatchEnd();
+        }
+        break;
+    case -1:
+        if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
+        {
+            ChromaAnimationAPI::CoreStreamGetFocus(g_Focus, &g_LenFocus);
+        }
+        break;
+    case 0:
+        if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
+        {
+            ChromaAnimationAPI::CoreStreamSetFocus(g_FocusGuid);
+            ChromaAnimationAPI::CoreStreamGetFocus(g_Focus, &g_LenFocus);
+        }
+        break;
     case 1:
         ShowEffect1();
         ShowEffect1ChromaLink();

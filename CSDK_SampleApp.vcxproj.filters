@@ -39,6 +39,15 @@
     <ClInclude Include="RazerKeyboardMapping.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Razer\ChromaLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VerifyLibrarySignature.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CpuUsage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Razer\ChromaSDKPluginTypes.cpp">
@@ -54,6 +63,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HandleInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Razer\ChromaLogger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VerifyLibrarySignature.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CpuUsage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
