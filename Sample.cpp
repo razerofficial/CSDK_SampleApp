@@ -4966,7 +4966,7 @@ void ExecuteEffect()
     case -9:
         if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
         {
-            ChromaAnimationAPI::CoreStreamGetAuthShortcode(_gShortcode, &_gLenShortcode, "PC", "CSDK Sample App");
+            ChromaAnimationAPI::CoreStreamGetAuthShortcode(_gShortcode, &_gLenShortcode, L"PC", L"CSDK Sample App 好");
         }
         break;
     case -8:
