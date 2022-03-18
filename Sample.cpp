@@ -4414,9 +4414,9 @@ void ShowEffect46()
         for (int frameId = 0; frameId < frameCount; ++frameId) {
             t += speed;
             float hp = fabsf(cos(MATH_PI / 2.0f + t));
-            for (int i = 0; i < size(keys); ++i) {
+            for (unsigned int i = 0; i < size(keys); ++i) {
                 float ratio = (i + 1) / (float)size(keys);
-                int color = ChromaAnimationAPI::GetRGB(255 * (1 - hp), 255 * (1 - hp), 0);
+                int color = ChromaAnimationAPI::GetRGB((int)(255 * (1 - hp)), (int)(255 * (1 - hp)), 0);
                 if (((i + 1) / ((float)size(keys) + 1)) < hp) {
                     color = ChromaAnimationAPI::GetRGB(255, 255, 0);
                 }
