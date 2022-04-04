@@ -4189,7 +4189,7 @@ void ShowEffect44()
      Keyboard::RZKEY::RZKEY_M,
      Keyboard::RZKEY::RZKEY_F1,
     };
-    ChromaAnimationAPI::CopyKeysColorAllFramesName(layer2, baseLayer, keys, size(keys));
+    ChromaAnimationAPI::CopyKeysColorAllFramesName(layer2, baseLayer, keys, (int)size(keys));
     ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
     ChromaAnimationAPI::SetChromaCustomColorAllFramesName(baseLayer);
     ChromaAnimationAPI::OverrideFrameDurationName(baseLayer, 0.033f);
@@ -4630,7 +4630,7 @@ const char* IsSelected()
 
 CpuUsage _gUsage;
 
-void PrintLegend()
+void PrintLegend(bool supportsStreaming)
 {
 	for (int i = 0; i < 25; ++i)
 	{
@@ -4643,7 +4643,7 @@ void PrintLegend()
 	fprintf(stdout, "Use UP and DOWN arrows to select animation and press ENTER.\r\n");
     fprintf(stdout, "Use ESCAPE to QUIT.\r\n");
 
-    if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
+    if (supportsStreaming)
     {
         fprintf(stdout, "Streaming Info (SUPPORTED):\r\n");
 		ChromaSDK::Stream::StreamStatusType status = ChromaAnimationAPI::CoreStreamGetStatus();
@@ -4672,7 +4672,7 @@ void PrintLegend()
     }
     
 
-    if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
+    if (supportsStreaming)
     {
         _gIndex = -10;
         fprintf(stdout, "[%s] Request Shortcode\r\n", IsSelected());
@@ -4733,7 +4733,7 @@ void ClearManualInput()
 	_gManualInput[1] = ' ';
 }
 
-void ExecuteEffect();
+void ExecuteEffect(bool supportsStreaming);
 
 void Cleanup()
 {
@@ -4784,7 +4784,9 @@ int main()
 	}
 	Sleep(100); //wait for init
 
-    if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
+	bool supportsStreaming = ChromaAnimationAPI::CoreStreamSupportsStreaming();
+
+    if (supportsStreaming)
     {
         _gSelection = -9;
     }
@@ -4821,7 +4823,7 @@ int main()
         HandleInput(VK_NUMPAD9),
     };
 
-    PrintLegend();
+    PrintLegend(supportsStreaming);
     HandleInput inputUp = HandleInput(VK_UP);
     HandleInput inputDown = HandleInput(VK_DOWN);
     HandleInput inputBackspace = HandleInput(VK_BACK);
@@ -4835,7 +4837,7 @@ int main()
         if (++autoPrint > 100)
         {
             autoPrint = 0;
-            PrintLegend();
+            PrintLegend(supportsStreaming);
         }
 
         if (inputEscape.WasReleased())
@@ -4849,7 +4851,7 @@ int main()
         else if (inputUp.WasReleased())
         {
             ClearManualInput();
-            if (ChromaAnimationAPI::CoreStreamSupportsStreaming() && _gSelection > -9)
+            if (supportsStreaming && _gSelection > -9)
             {
                 --_gSelection;
             }
@@ -4857,10 +4859,10 @@ int main()
 			{
 				--_gSelection;
 			}
-			PrintLegend();
+			PrintLegend(supportsStreaming);
             if (_gSelection > 1)
             {
-                ExecuteEffect();
+                ExecuteEffect(supportsStreaming);
             }
 		}
 		
@@ -4872,10 +4874,10 @@ int main()
 			{
 				_gSelection++;
 			}
-			PrintLegend();
+			PrintLegend(supportsStreaming);
             if (_gSelection > 1)
             {
-                ExecuteEffect();
+                ExecuteEffect(supportsStreaming);
             }
 		}
 
@@ -4933,19 +4935,19 @@ int main()
 			{
 				_gSelection = val;
 			}
-			PrintLegend();
+			PrintLegend(supportsStreaming);
 		}
 
 		if (inputEnter.WasReleased())
 		{
-			PrintLegend();
+			PrintLegend(supportsStreaming);
 			ClearManualInput();
 
-            ExecuteEffect();
+            ExecuteEffect(supportsStreaming);
 
             if (_gSelection < 1)
             {
-                PrintLegend();
+                PrintLegend(supportsStreaming);
             }
 		}
 		Sleep(1);
@@ -4956,7 +4958,7 @@ int main()
     return 0;
 }
 
-void ExecuteEffect()
+void ExecuteEffect(bool supportsStreaming)
 {
 	// get current time
 	high_resolution_clock::time_point timer = high_resolution_clock::now();
@@ -4964,25 +4966,25 @@ void ExecuteEffect()
 	switch (_gSelection)
 	{
     case -9:
-        if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
+        if (supportsStreaming)
         {
             ChromaAnimationAPI::CoreStreamGetAuthShortcode(_gShortcode, &_gLenShortcode, L"PC", L"CSDK Sample App 好");
         }
         break;
     case -8:
-        if (ChromaAnimationAPI::CoreStreamSupportsStreaming() && _gLenShortcode > 0)
+        if (supportsStreaming && _gLenShortcode > 0)
         {
             ChromaAnimationAPI::CoreStreamGetId(_gShortcode, _gStreamId, &_gLenStreamId);
         }
         break;
     case -7:
-        if (ChromaAnimationAPI::CoreStreamSupportsStreaming() && _gLenShortcode > 0)
+        if (supportsStreaming && _gLenShortcode > 0)
         {
             ChromaAnimationAPI::CoreStreamGetKey(_gShortcode, _gStreamKey, &_gLenStreamKey);
         }
         break;
     case -6:
-        if (ChromaAnimationAPI::CoreStreamSupportsStreaming() && _gLenShortcode > 0)
+        if (supportsStreaming && _gLenShortcode > 0)
         {
             if (ChromaAnimationAPI::CoreStreamReleaseShortcode(_gShortcode))
             {
@@ -4992,20 +4994,20 @@ void ExecuteEffect()
         }
         break;
     case -5:
-        if (ChromaAnimationAPI::CoreStreamSupportsStreaming() &&
+        if (supportsStreaming &&
             _gLenStreamId > 0 && _gLenStreamKey > 0)
         {
             ChromaAnimationAPI::CoreStreamBroadcast(_gStreamId, _gStreamKey);
         }
         break;
     case -4:
-        if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
+        if (supportsStreaming)
         {
             ChromaAnimationAPI::CoreStreamBroadcastEnd();
         }
         break;
     case -3:
-        if (ChromaAnimationAPI::CoreStreamSupportsStreaming() &&
+        if (supportsStreaming &&
             _gLenStreamId > 0)
         {
             unsigned long long timestamp = 0;
@@ -5013,19 +5015,19 @@ void ExecuteEffect()
         }
         break;
     case -2:
-        if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
+        if (supportsStreaming)
         {
             ChromaAnimationAPI::CoreStreamWatchEnd();
         }
         break;
     case -1:
-        if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
+        if (supportsStreaming)
         {
             ChromaAnimationAPI::CoreStreamGetFocus(g_Focus, &g_LenFocus);
         }
         break;
     case 0:
-        if (ChromaAnimationAPI::CoreStreamSupportsStreaming())
+        if (supportsStreaming)
         {
             ChromaAnimationAPI::CoreStreamSetFocus(g_FocusGuid);
             ChromaAnimationAPI::CoreStreamGetFocus(g_Focus, &g_LenFocus);

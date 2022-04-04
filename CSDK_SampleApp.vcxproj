@@ -187,7 +187,13 @@
     <None Include="CChromaEditorLibrary.dll">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="CChromaEditorLibrary.pdb">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="CChromaEditorLibrary64.dll">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="CChromaEditorLibrary64.pdb">
       <DeploymentContent>true</DeploymentContent>
     </None>
   </ItemGroup>

@@ -78,5 +78,7 @@
   <ItemGroup>
     <None Include="CChromaEditorLibrary.dll" />
     <None Include="CChromaEditorLibrary64.dll" />
+    <None Include="CChromaEditorLibrary64.pdb" />
+    <None Include="CChromaEditorLibrary.pdb" />
   </ItemGroup>
 </Project>
