@@ -4740,10 +4740,7 @@ void Cleanup()
 	ChromaAnimationAPI::StopAll();
 	ChromaAnimationAPI::CloseAll();
 	RZRESULT result = ChromaAnimationAPI::Uninit();
-	if (ChromaAnimationAPI::UninitAPI() != 0)
-	{
-		fprintf(stderr, "Failed to uninit Chroma API!\r\n");
-	}
+	ChromaAnimationAPI::UninitAPI();
 	if (result != RZRESULT_SUCCESS)
 	{
 		cerr << "Failed to uninitialize Chroma!" << endl;
@@ -4865,10 +4862,6 @@ int main()
 
         if (inputEscape.WasReleased())
         {
-            ChromaAnimationAPI::StopAll();
-            ChromaAnimationAPI::CloseAll();
-            ChromaAnimationAPI::ClearAll();
-            ChromaAnimationAPI::Uninit();
             break;
         }
         else if (inputUp.WasReleased())

@@ -42,10 +42,10 @@
     <ClInclude Include="Razer\ChromaLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VerifyLibrarySignature.h">
+    <ClInclude Include="CpuUsage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CpuUsage.h">
+    <ClInclude Include="Razer\VerifyLibrarySignature.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -68,17 +68,11 @@
     <ClCompile Include="Razer\ChromaLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VerifyLibrarySignature.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CpuUsage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="CChromaEditorLibrary.dll" />
-    <None Include="CChromaEditorLibrary64.dll" />
-    <None Include="CChromaEditorLibrary64.pdb" />
-    <None Include="CChromaEditorLibrary.pdb" />
+    <ClCompile Include="Razer\VerifyLibrarySignature.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

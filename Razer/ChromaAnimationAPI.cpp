@@ -4,10 +4,19 @@
 #include <iostream>
 #include <tchar.h>
 
+
+# ifdef _WIN64
+#define CHROMA_EDITOR_DLL	L"CChromaEditorLibrary64.dll"
+#else
+#define CHROMA_EDITOR_DLL	L"CChromaEditorLibrary.dll"
+#endif
+
+
 using namespace ChromaSDK;
 using namespace std;
 
 HMODULE ChromaAnimationAPI::_sLibrary = nullptr;
+bool ChromaAnimationAPI::_sInvalidSignature = false;
 bool ChromaAnimationAPI::_sIsInitializedAPI = false;
 
 #define CHROMASDK_DECLARE_METHOD_IMPL(Signature, FieldName) Signature ChromaAnimationAPI::FieldName = nullptr;
@@ -556,23 +565,50 @@ if (FieldName == nullptr) \
 
 int ChromaAnimationAPI::InitAPI()
 {
+	// abort load if an invalid signature was detected
+	if (_sInvalidSignature)
+	{
+		return RZRESULT_DLL_INVALID_SIGNATURE;
+	}
+
 	if (_sIsInitializedAPI)
 	{
 		return 0;
 	}
 
-	HMODULE library = LoadLibrary(CHROMA_EDITOR_DLL);
-	if (library == NULL)
+	wchar_t filename[MAX_PATH]; //this is a char buffer
+	GetModuleFileNameW(NULL, filename, sizeof(filename));
+
+	std::wstring path;
+	const size_t last_slash_idx = std::wstring(filename).rfind('\\');
+	if (std::string::npos != last_slash_idx)
 	{
-		//ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library!\r\n");
+		path = std::wstring(filename).substr(0, last_slash_idx);
+	}
+
+	path += L"\\";
+	path += CHROMA_EDITOR_DLL;
+
+	// check the library file version
+	if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path.c_str(), 1, 0, 0, 1))
+	{
+		ChromaLogger::fprintf(stderr, "Detected old version of Chroma Editor Library!\r\n");
+		return RZRESULT_DLL_NOT_FOUND;
+	}
+
+	HMODULE library = LoadLibrary(path.c_str());
+	if (library == NULL)
+	{ 
+		ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library!\r\n");
         return RZRESULT_DLL_NOT_FOUND;
 	}
 
-#if false
-	// when editor DLL is digitally signed
-	if (!VerifyLibrarySignature::VerifyModule(library))
+#ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
+	_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library, false);
+#endif
+ 	if (_sInvalidSignature)
 	{
-		ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library reason: invalid signature!\r\n");
+		ChromaLogger::fprintf(stderr, "Chroma Editor Library has an invalid signature!\r\n");
 
 		// unload the library
 		FreeLibrary(library);
@@ -580,7 +616,6 @@ int ChromaAnimationAPI::InitAPI()
 
 		return -1;
 	}
-#endif
 
 	_sLibrary = library;
 	

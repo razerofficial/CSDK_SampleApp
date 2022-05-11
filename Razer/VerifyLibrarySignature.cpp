@@ -22,7 +22,7 @@ namespace ChromaSDK
 {
 
 	// Source: https://docs.microsoft.com/en-us/windows/desktop/seccrypto/example-c-program--verifying-the-signature-of-a-pe-file
-	BOOL VerifyLibrarySignature::VerifyModule(HMODULE hModule)
+	BOOL VerifyLibrarySignature::VerifyModule(HMODULE hModule, const bool validatePath)
 	{
 		TCHAR szFilePath[MAX_PATH];
 		if (GetModuleFileNameEx(GetCurrentProcess(),
@@ -30,10 +30,20 @@ namespace ChromaSDK
 			szFilePath,
 			MAX_PATH) > 0)
 		{
-			if ((IsValidPath(szFilePath) == TRUE) &&
-				(IsFileSigned(szFilePath) == TRUE))
+			if (validatePath)
 			{
-				return TRUE;
+				if ((IsValidPath(szFilePath) == TRUE) &&
+					(IsFileSigned(szFilePath) == TRUE))
+				{
+					return TRUE;
+				}
+			}
+			else
+			{
+				if (IsFileSigned(szFilePath) == TRUE)
+				{
+					return TRUE;
+				}
 			}
 		}
 
@@ -328,7 +338,7 @@ namespace ChromaSDK
 		return bResult;
 	}
 
-	BOOL VerifyLibrarySignature::IsFileVersionSameOrNewer(PTCHAR szFileName, const int minMajor, const int minMinor, const int minRevision, const int minBuild)
+	BOOL VerifyLibrarySignature::IsFileVersionSameOrNewer(const wchar_t* szFileName, const int minMajor, const int minMinor, const int minRevision, const int minBuild)
 	{
 		wstring fileName = szFileName;
 		std::filesystem::path p = fileName.c_str();
@@ -362,7 +372,7 @@ namespace ChromaSDK
 							const int revision = (verInfo->dwFileVersionLS >> 16) & 0xffff;
 							const int build = (verInfo->dwFileVersionLS >> 0) & 0xffff;
 
-							ChromaLogger::fprintf(stdout, "File Version: %d.%d.%d.%d\n", major, minor, revision, build);
+							ChromaLogger::wprintf(L"File Version: %d.%d.%d.%d %s\r\n", major, minor, revision, build, szFileName);
 
 							// Anything less than the min version returns false
 
