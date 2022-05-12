@@ -4630,7 +4630,7 @@ const char* IsSelected()
 
 CpuUsage _gUsage;
 
-void PrintLegend(bool supportsStreaming)
+void PrintLegend(bool supportsStreaming, BYTE platform)
 {
 	for (int i = 0; i < 25; ++i)
 	{
@@ -4640,8 +4640,12 @@ void PrintLegend(bool supportsStreaming)
 	fprintf(stdout, "C++ CHROMA SAMPLE APP\r\n");
 	fprintf(stdout, "\r\n");
 
-	fprintf(stdout, "Use UP and DOWN arrows to select animation and press ENTER.\r\n");
-    fprintf(stdout, "Use ESCAPE to QUIT.\r\n");
+	fprintf(stdout, "Use `UP` and `DOWN` arrows to select animation and press `ENTER`.\r\n");
+	if (supportsStreaming)
+	{
+		fprintf(stdout, "Use `P` to switch streaming platforms. ");
+	}
+    fprintf(stdout, "Use `ESCAPE` to QUIT.\r\n");
 
     if (supportsStreaming)
     {
@@ -4675,7 +4679,24 @@ void PrintLegend(bool supportsStreaming)
     if (supportsStreaming)
     {
         _gIndex = -10;
-        fprintf(stdout, "[%s] Request Shortcode\r\n", IsSelected());
+        fprintf(stdout, "[%s] Request Shortcode for Platform: ", IsSelected());
+
+		switch (platform)
+		{
+		case 0:
+			fprintf(stdout, "Windows PC (PC)\r\n");
+			break;
+		case 1:
+			fprintf(stdout, "Windows Cloud (LUNA)\r\n");
+			break;
+		case 2:
+			fprintf(stdout, "Windows Cloud (GEFORCE NOW)\r\n");
+			break;
+		case 3:
+			fprintf(stdout, "Windows Cloud (GAME PASS)\r\n");
+			break;
+		}
+
         fprintf(stdout, "[%s] Request StreamId\r\n", IsSelected());
         fprintf(stdout, "[%s] Request StreamKey\r\n", IsSelected());
         fprintf(stdout, "[%s] Release Shortcode\r\n", IsSelected());
@@ -4733,7 +4754,7 @@ void ClearManualInput()
 	_gManualInput[1] = ' ';
 }
 
-void ExecuteEffect(bool supportsStreaming);
+void ExecuteEffect(bool supportsStreaming, BYTE platform);
 
 void Cleanup()
 {
@@ -4843,11 +4864,14 @@ int main()
         HandleInput(VK_NUMPAD9),
     };
 
-    PrintLegend(supportsStreaming);
+	BYTE platform = 0;
+
+    PrintLegend(supportsStreaming, platform);
     HandleInput inputUp = HandleInput(VK_UP);
     HandleInput inputDown = HandleInput(VK_DOWN);
     HandleInput inputBackspace = HandleInput(VK_BACK);
     HandleInput inputEnter = HandleInput(VK_RETURN);
+	HandleInput inputPlatform = HandleInput('P');
     HandleInput inputEscape = HandleInput(VK_ESCAPE);
 
     int autoPrint = 0;
@@ -4857,13 +4881,19 @@ int main()
         if (++autoPrint > 100)
         {
             autoPrint = 0;
-            PrintLegend(supportsStreaming);
+            PrintLegend(supportsStreaming, platform);
         }
 
         if (inputEscape.WasReleased())
         {
             break;
         }
+		else if (inputPlatform.WasReleased())
+		{
+			ClearManualInput();
+			platform = (platform + 1) % 4; //PC, AMAZON LUNA, MS GAME PASS, NVIDIA GFN
+			PrintLegend(supportsStreaming, platform);
+		}
         else if (inputUp.WasReleased())
         {
             ClearManualInput();
@@ -4875,10 +4905,10 @@ int main()
 			{
 				--_gSelection;
 			}
-			PrintLegend(supportsStreaming);
+			PrintLegend(supportsStreaming, platform);
             if (_gSelection > 1)
             {
-                ExecuteEffect(supportsStreaming);
+                ExecuteEffect(supportsStreaming, platform);
             }
 		}
 		
@@ -4890,10 +4920,10 @@ int main()
 			{
 				_gSelection++;
 			}
-			PrintLegend(supportsStreaming);
+			PrintLegend(supportsStreaming, platform);
             if (_gSelection > 1)
             {
-                ExecuteEffect(supportsStreaming);
+                ExecuteEffect(supportsStreaming, platform);
             }
 		}
 
@@ -4951,19 +4981,19 @@ int main()
 			{
 				_gSelection = val;
 			}
-			PrintLegend(supportsStreaming);
+			PrintLegend(supportsStreaming, platform);
 		}
 
 		if (inputEnter.WasReleased())
 		{
-			PrintLegend(supportsStreaming);
+			PrintLegend(supportsStreaming, platform);
 			ClearManualInput();
 
-            ExecuteEffect(supportsStreaming);
+            ExecuteEffect(supportsStreaming, platform);
 
             if (_gSelection < 1)
             {
-                PrintLegend(supportsStreaming);
+                PrintLegend(supportsStreaming, platform);
             }
 		}
 		Sleep(1);
@@ -4974,7 +5004,7 @@ int main()
     return 0;
 }
 
-void ExecuteEffect(bool supportsStreaming)
+void ExecuteEffect(bool supportsStreaming, BYTE platform)
 {
 	// get current time
 	high_resolution_clock::time_point timer = high_resolution_clock::now();
@@ -4984,7 +5014,23 @@ void ExecuteEffect(bool supportsStreaming)
     case -9:
         if (supportsStreaming)
         {
-            ChromaAnimationAPI::CoreStreamGetAuthShortcode(_gShortcode, &_gLenShortcode, L"PC", L"CSDK Sample App 好");
+			wstring strPlatform = L"PC";
+			switch (platform)
+			{
+			case 0:
+				strPlatform = L"PC";
+				break;
+			case 1:
+				strPlatform = L"LUNA";
+				break;
+			case 2:
+				strPlatform = L"GEFORCE_NOW";
+				break;
+			case 3:
+				strPlatform = L"GAME_PASS";
+				break;
+			}
+			ChromaAnimationAPI::CoreStreamGetAuthShortcode(_gShortcode, &_gLenShortcode, strPlatform.c_str(), L"CSDK Sample App 好");
         }
         break;
     case -8:
