@@ -9,6 +9,12 @@
 * [See Also](#see-also)
 * [Quick Start](#quick-start)
 * [About](#about)
+* [Security](#security)
+* [Chroma Editor Library](#chroma-editor-library)
+* [Windows PC](#windows-pc)
+* [Windows Cloud](#windows-cloud)
+* [API Class](#api-class)
+* [Initialization](#initialization)
 * [API](#api)
 
 <a name="see-also"></a>
@@ -44,6 +50,114 @@ The `CSDK Sample App` is a C++ console app that shows the animations from the [C
 **Screenshot:**
 
 ![image_1](/images/image_1.png)
+
+---
+
+<a name="security"></a>
+
+## Security
+
+The C++ Chroma Editor Library loads the core Razer DLL `RzChromaSDK.dll` and the Razer stream library `RzChromaStreamPlugin.dll`. To avoid a 3rd party injecting malicious code, the C++ Chroma Editor Library checks for a valid signature on the Razer libraries. The DLL issuer is validated to be `Razer USA Ltd.` Init and InitSDK will return `RZRESULT_DLL_INVALID_SIGNATURE` if the signature check fails.
+
+The sample apps use the `CHECK_CHROMA_LIBRARY_SIGNATURE` preprocessor definition to enable signature checking on the Chroma Editor Library. Signature checking can be used on the Razer libraries downloaded from Github releases.
+
+```
+#ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
+ _sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library, false);
+#endif
+```
+
+<a name="chroma-editor-library"></a>
+
+## Chroma Editor Library
+
+The `Chroma Editor Library` is a helper library for Chroma animation playback and realtime manipulation of Chroma animations.
+
+The latest versions of the `Chroma Editor Library` can be found in [Releases](https://github.com/razerofficial/CChromaEditor/releases) for `Windows-PC` and `Windows-Cloud`.
+
+<a name="windows-pc"></a>
+
+## Windows PC
+
+For `Windows PC` builds the `RzChromaSDK.dll` and `RzChromaStreamPlugin.dll` are not packaged with the build. These libraries are automatically updated and managed by Synapse and the Chroma Connect module. Avoid including these files in your build folder for `Windows PC` builds.
+
+**32-bit libraries**
+
+```
+Win32BuildFolder\CChromaEditorLibrary.dll
+```
+
+**64-bit libraries**
+
+```
+Win64BuildFolder\CChromaEditorLibrary64.dll
+```
+
+<a name="windows-cloud"></a>
+
+## Windows Cloud
+
+`Windows Cloud` builds run on cloud platforms using `Windows` such as `Amazon Luna`, `Microsoft Game Pass`, and `NVidia GeForce Now`. Game instances run in the cloud without direct access to Chroma hardware. By running the `Windows Cloud` version of the library `Chroma` effects can reach your local machine and connected hardware. Cloud instances won't have Synapse installed which requires special cloud versions of the libraries. The `Chroma Editor Library` uses the core `RzChromaSDK` low-level library to send Chroma effects to the cloud with the `RzChromaStreamPlugin` streaming library. Viewers can watch the cloud stream via the [Razer Stream Portal](https://stream.razer.com/).
+
+**32-bit libraries**
+
+```
+Win32BuildFolder\CChromaEditorLibrary.dll
+Win32BuildFolder\RzChromaSDK.dll
+Win32BuildFolder\RzChromaStreamPlugin.dll
+```
+
+**64-bit libraries**
+
+```
+Win64BuildFolder\CChromaEditorLibrary64.dll
+Win64BuildFolder\RzChromaSDK64.dll
+Win64BuildFolder\RzChromaStreamPlugin64.dll
+```
+
+<a name="api-class"></a>
+
+## API Class
+
+The `ChromaAnimationAPI` class provides a wrapper for the Chroma Editor Library. The wrapper for the API can be found at [Razer/ChromaAnimationAPI.h](Razer/ChromaAnimationAPI.h) and [Razer/ChromaAnimationAPI.cpp](Razer/ChromaAnimationAPI.cpp).
+
+<a name="initialization"></a>
+
+## Initialization
+
+---
+
+The `ChromaAnimationAPI::InitSDK()` method returns `RZRESULT_SUCCESS` when initialization has succeeded. Avoid making calls to the Chroma API when anything other than success is returned. A unsuccessful result indicates `Chroma` is not present on the machine.
+
+```
+ APPINFOTYPE appInfo = {};
+
+ _tcscpy_s(appInfo.Title, 256, _T("Sample Game Title"));
+ _tcscpy_s(appInfo.Description, 1024, _T("Sample Game Description"));
+ _tcscpy_s(appInfo.Author.Name, 256, _T("Company Name"));
+ _tcscpy_s(appInfo.Author.Contact, 256, _T("Company Website or Email"));
+
+ //appInfo.SupportedDevice = 
+ //    0x01 | // Keyboards
+ //    0x02 | // Mice
+ //    0x04 | // Headset
+ //    0x08 | // Mousepads
+ //    0x10 | // Keypads
+ //    0x20   // ChromaLink devices
+ appInfo.SupportedDevice = (0x01 | 0x02 | 0x04 | 0x08 | 0x10 | 0x20);
+ //    0x01 | // Utility. (To specifiy this is an utility application)
+ //    0x02   // Game. (To specifiy this is a game);
+ appInfo.Category = 0x02;
+
+ RZRESULT result = ChromaAnimationAPI::InitSDK(&appInfo);
+ if (result != RZRESULT_SUCCESS)
+ {
+  ChromaLogger::printf("Failed to initialize Chroma SDK with error=%ld\r\n", result);
+ 
+  // avoid making Chroma API calls after a non-zero init result
+  return;
+ }
+```
 
 <a name="api"></a>
 
@@ -9101,6 +9215,7 @@ double result = ChromaAnimationAPI::SubtractThresholdColorsMinMaxRGBNameD(
 **PluginTrimEndFrames**
 
 Trim the end of the animation. The length of the animation will be the lastFrameId
+
 * 1. Reference the animation by id.
 
 ```C++
@@ -9118,6 +9233,7 @@ ChromaAnimationAPI::TrimEndFrames(
 **PluginTrimEndFramesName**
 
 Trim the end of the animation. The length of the animation will be the lastFrameId
+
 * 1. Reference the animation by name.
 
 ```C++
