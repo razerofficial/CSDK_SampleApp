@@ -4758,14 +4758,20 @@ void ExecuteEffect(bool supportsStreaming, BYTE platform);
 
 void Cleanup()
 {
-	ChromaAnimationAPI::StopAll();
-	ChromaAnimationAPI::CloseAll();
-	RZRESULT result = ChromaAnimationAPI::Uninit();
-	ChromaAnimationAPI::UninitAPI();
-	if (result != RZRESULT_SUCCESS)
+	if (ChromaAnimationAPI::GetIsInitializedAPI())
 	{
-		cerr << "Failed to uninitialize Chroma!" << endl;
-		exit(1);
+		if (ChromaAnimationAPI::IsInitialized())
+		{
+			ChromaAnimationAPI::StopAll();
+			ChromaAnimationAPI::CloseAll();
+			RZRESULT result = ChromaAnimationAPI::Uninit();
+			ChromaAnimationAPI::UninitAPI();
+			if (result != RZRESULT_SUCCESS)
+			{
+				cerr << "Failed to uninitialize Chroma!" << endl;
+				exit(1);
+			}
+		}
 	}
 }
 
