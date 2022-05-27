@@ -75,7 +75,7 @@ The `Chroma Editor Library` is a helper library for Chroma animation playback an
 
 The latest versions of the `Chroma Editor Library` can be found in [Releases](https://github.com/razerofficial/CChromaEditor/releases) for `Windows-PC` and `Windows-Cloud`.
 
-**C++ Chroma Sample App - Streaming on Windows PC and Cloud**
+**C++ Chroma Animation Sample App - Streaming on Windows PC and Cloud**
 
 <a target="_blank" href="https://www.youtube.com/watch?v=zy_VJtSksOU"><img src="https://img.youtube.com/vi/zy_VJtSksOU/0.jpg"/></a>
 
