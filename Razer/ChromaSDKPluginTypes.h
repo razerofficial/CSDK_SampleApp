@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-#include <Windows.h>
+#define WIN32_LEAN_AND_MEAN
+#include "Windows.h"
 #include "RzChromaSDKDefines.h"
 #include "RzChromaSDKTypes.h"
 #include "RzErrors.h"

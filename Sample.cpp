@@ -4777,6 +4777,14 @@ void Cleanup()
 
 int main()
 {
+	/*
+	sprintf_s(_gStreamId, "%s", "SOME_GUID"); //debugging
+	_gLenStreamId = strlen(_gStreamId);
+
+	sprintf_s(_gStreamKey, "%s", "SOME GUID"); //debugging
+	_gLenStreamKey = strlen(_gStreamKey);
+	*/
+
     fprintf(stderr, "App launched!\r\n");
     if (ChromaAnimationAPI::InitAPI() != RZRESULT_SUCCESS)
     {
@@ -4912,7 +4920,7 @@ int main()
 				--_gSelection;
 			}
 			PrintLegend(supportsStreaming, platform);
-            if (_gSelection > 1)
+            if (_gSelection >= 1)
             {
                 ExecuteEffect(supportsStreaming, platform);
             }
