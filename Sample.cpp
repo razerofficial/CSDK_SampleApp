@@ -4100,7 +4100,6 @@ void ShowEffect43()
     int color = ChromaAnimationAPI::GetRGB(0, 255, 0);
     ChromaAnimationAPI::SetKeysColorAllFramesName(baseLayer, keys, (int)size(keys), color);
     ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
-    ChromaAnimationAPI::SetChromaCustomColorAllFramesName(baseLayer);
     ChromaAnimationAPI::OverrideFrameDurationName(baseLayer, 0.033f);
     ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
 }
@@ -4191,7 +4190,6 @@ void ShowEffect44()
     };
     ChromaAnimationAPI::CopyKeysColorAllFramesName(layer2, baseLayer, keys, (int)size(keys));
     ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
-    ChromaAnimationAPI::SetChromaCustomColorAllFramesName(baseLayer);
     ChromaAnimationAPI::OverrideFrameDurationName(baseLayer, 0.033f);
     ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
 }
@@ -4305,7 +4303,6 @@ void ShowEffect45()
         }
     }
     ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
-    ChromaAnimationAPI::SetChromaCustomColorAllFramesName(baseLayer);
     ChromaAnimationAPI::OverrideFrameDurationName(baseLayer, 0.033f);
     ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
 }
@@ -4429,7 +4426,6 @@ void ShowEffect46()
         }
     }
     ChromaAnimationAPI::SetChromaCustomFlagName(baseLayer, true);
-    ChromaAnimationAPI::SetChromaCustomColorAllFramesName(baseLayer);
     ChromaAnimationAPI::OverrideFrameDurationName(baseLayer, 0.033f);
     ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
 }
