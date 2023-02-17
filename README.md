@@ -49,7 +49,13 @@ The `CSDK Sample App` is a C++ console app that shows the animations from the [C
 
 **Screenshot:**
 
+**Console App**
+
 ![image_1](/images/image_1.png)
+
+**Chroma RGB**
+
+![image_3](images/image_3.png)
 
 ---
 
@@ -66,6 +72,10 @@ The sample apps use the `CHECK_CHROMA_LIBRARY_SIGNATURE` preprocessor definition
  _sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library, false);
 #endif
 ```
+
+The project has `NoSignatureCheck` configurations to debug with unsigned builds for testing feature updates. The `NoSignatureCheck` configurations do not set the `CHECK_CHROMA_LIBRARY_SIGNATURE` preprocessor definition.
+
+![image_4](images/image_4.png)
 
 <a name="chroma-editor-library"></a>
 
