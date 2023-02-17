@@ -4894,17 +4894,17 @@ int main()
             PrintLegend(supportsStreaming, platform);
         }
 
-        if (inputEscape.WasReleased())
+        if (inputEscape.WasReleased(true))
         {
             break;
         }
-		else if (inputPlatform.WasReleased())
+		else if (inputPlatform.WasReleased(true))
 		{
 			ClearManualInput();
 			platform = (platform + 1) % 4; //PC, AMAZON LUNA, MS GAME PASS, NVIDIA GFN
 			PrintLegend(supportsStreaming, platform);
 		}
-        else if (inputUp.WasReleased())
+        else if (inputUp.WasReleased(true))
         {
             ClearManualInput();
             if (supportsStreaming && _gSelection > -9)
@@ -4923,7 +4923,7 @@ int main()
 		}
 		
 
-		else if (inputDown.WasReleased())
+		else if (inputDown.WasReleased(true))
 		{
 			ClearManualInput();
 			if (_gSelection < MAX_SELECTION)
@@ -4938,7 +4938,7 @@ int main()
 		}
 
 		bool hasManualInput = false;
-		if (inputBackspace.WasReleased())
+		if (inputBackspace.WasReleased(true))
 		{
 			if (_gManualInput[1] != ' ')
 			{
@@ -4954,8 +4954,8 @@ int main()
 		}
 		for (int i = 0; i < (int)size(numKeys); ++i)
 		{
-			if (numKeys[i].WasReleased() ||
-				numpadKeys[i].WasReleased())
+			if (numKeys[i].WasReleased(true) ||
+				numpadKeys[i].WasReleased(true))
 			{
 				if (_gManualInput[0] != ' ')
 				{
@@ -4994,7 +4994,7 @@ int main()
 			PrintLegend(supportsStreaming, platform);
 		}
 
-		if (inputEnter.WasReleased())
+		if (inputEnter.WasReleased(true))
 		{
 			PrintLegend(supportsStreaming, platform);
 			ClearManualInput();

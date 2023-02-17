@@ -1,7 +1,6 @@
 #include "HandleInput.h"
 
-#define WIN32_LEAN_AND_MEAN
-#include "Windows.h"
+#include "windows.h"
 
 HandleInput::HandleInput(int key)
 {
@@ -12,11 +11,21 @@ int HandleInput::GetKey()
 {
 	return _mKey;
 }
-bool HandleInput::WasReleased()
+bool HandleInput::WasReleased(const bool requireFocus)
 {
-	if (GetConsoleWindow() != GetForegroundWindow())
+	if (requireFocus)
 	{
-		return false;
+		HWND wndConsole = GetConsoleWindow();
+		if (wndConsole)
+		{
+			HWND wndForeground = GetForegroundWindow();
+			HWND wndConsoleParent = GetParent(wndConsole);
+			if (wndConsole != wndForeground &&
+				wndConsoleParent != wndForeground)
+			{
+				return false;
+			}
+		}
 	}
 	if (GetAsyncKeyState(_mKey) != 0)
 	{

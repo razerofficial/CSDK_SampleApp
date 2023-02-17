@@ -16,6 +16,7 @@
 #pragma comment (lib, "Psapi")
 #pragma comment(lib, "crypt32")
 #pragma comment(lib, "ShLwApi")
+#pragma comment(lib, "version")
 
 using namespace std;
 

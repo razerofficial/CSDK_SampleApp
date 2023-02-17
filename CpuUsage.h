@@ -1,8 +1,7 @@
 // Ref: http://www.philosophicalgeek.com/2009/01/03/determine-cpu-usage-of-current-process-c-and-c/
 
 #pragma once
-#define WIN32_LEAN_AND_MEAN
-#include "Windows.h"
+#include <windows.h>
 
 class CpuUsage
 {
