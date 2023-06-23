@@ -308,7 +308,7 @@ namespace ChromaSDK
 	struct FChromaSDKSceneEffect
 	{
 	public:
-		std::string _mAnimation = "";
+		std::wstring _mAnimation = L"";
 		bool _mState = false;
 		int _mPrimaryColor = 0;
 		int _mSecondaryColor = 0;
