@@ -587,8 +587,12 @@ int ChromaAnimationAPI::InitAPI()
 		return 0;
 	}
 
-	char filename[MAX_PATH]; //this is a char buffer
-	GetModuleFileNameA(NULL, (char*)filename, sizeof(filename));
+	wchar_t wFileName[MAX_PATH]; //this is a char buffer
+	GetModuleFileNameW(NULL, wFileName, sizeof(wFileName));
+
+	// Convert the wide character path to a narrow character (ANSI) string
+	char filename[MAX_PATH];
+	WideCharToMultiByte(CP_UTF8, 0, wFileName, -1, filename, MAX_PATH, NULL, NULL);
 
 	std::string path;
 	const size_t last_slash_idx = std::string(filename).rfind('\\');
@@ -617,7 +621,12 @@ int ChromaAnimationAPI::InitAPI()
 		return RZRESULT_DLL_INVALID_SIGNATURE;
 	}
 
-	HMODULE library = LoadLibraryA(path.c_str());
+	const char* fullPath = path.c_str();
+	wchar_t wFullPath[MAX_PATH];
+	int wideStrLength = MultiByteToWideChar(CP_UTF8, 0, fullPath, -1, NULL, 0);
+	MultiByteToWideChar(CP_UTF8, 0, fullPath, -1, wFullPath, wideStrLength);
+
+	HMODULE library = LoadLibraryW(wFullPath);
 	if (library == NULL)
 	{ 
 		ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library!\r\n");
