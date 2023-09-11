@@ -6,9 +6,9 @@
 
 
 # ifdef _WIN64
-#define CHROMA_EDITOR_DLL	L"CChromaEditorLibrary64.dll"
+#define CHROMA_EDITOR_DLL	"CChromaEditorLibrary64.dll"
 #else
-#define CHROMA_EDITOR_DLL	L"CChromaEditorLibrary.dll"
+#define CHROMA_EDITOR_DLL	"CChromaEditorLibrary.dll"
 #endif
 
 
@@ -587,21 +587,21 @@ int ChromaAnimationAPI::InitAPI()
 		return 0;
 	}
 
-	wchar_t filename[MAX_PATH]; //this is a char buffer
-	GetModuleFileNameW(NULL, filename, sizeof(filename));
+	char filename[MAX_PATH]; //this is a char buffer
+	GetModuleFileNameA(NULL, (char*)filename, sizeof(filename));
 
-	std::wstring path;
-	const size_t last_slash_idx = std::wstring(filename).rfind('\\');
+	std::string path;
+	const size_t last_slash_idx = std::string(filename).rfind('\\');
 	if (std::string::npos != last_slash_idx)
 	{
-		path = std::wstring(filename).substr(0, last_slash_idx);
+		path = std::string(filename).substr(0, last_slash_idx);
 	}
 
-	path += L"\\";
+	path += "\\";
 	path += CHROMA_EDITOR_DLL;
 
 	// check the library file version
-	if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path.c_str(), 1, 0, 0, 7))
+	if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path.c_str(), 1, 0, 0, 8))
 	{
 		ChromaLogger::fprintf(stderr, "Detected old version of Chroma Editor Library!\r\n");
 		return RZRESULT_DLL_NOT_FOUND;
@@ -617,7 +617,7 @@ int ChromaAnimationAPI::InitAPI()
 		return RZRESULT_DLL_INVALID_SIGNATURE;
 	}
 
-	HMODULE library = LoadLibrary(path.c_str());
+	HMODULE library = LoadLibraryA(path.c_str());
 	if (library == NULL)
 	{ 
 		ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library!\r\n");

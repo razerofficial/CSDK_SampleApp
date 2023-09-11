@@ -9,10 +9,10 @@ namespace ChromaSDK
 	class VerifyLibrarySignature
 	{
 	public:
-		static BOOL VerifyModule(const std::wstring& filename);
-		static BOOL IsFileVersionSameOrNewer(const std::wstring& filename, const int minMajor, const int minMinor, const int minRevision, const int minBuild);
+		static BOOL VerifyModule(const std::string& filename);
+		static BOOL IsFileVersionSameOrNewer(const std::string& filename, const int minMajor, const int minMinor, const int minRevision, const int minBuild);
 	private:
-		static BOOL IsFileSignedByRazer(const wchar_t* szFileName);
-		static BOOL IsFileSigned(const wchar_t* szFileName);
+		static BOOL IsFileSignedByRazer(const char* szFileName);
+		static BOOL IsFileSigned(const char* szFileName);
 	};
 }
