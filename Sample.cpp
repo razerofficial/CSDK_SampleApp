@@ -4586,11 +4586,108 @@ void ShowEffect47Keypad()
     // play the animation on the dynamic canvas
     ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
 }
+
+void ShowEffect48()
+{
+    const char* baseLayer = "Animations/Idle_Keyboard.chroma"; // 8x24
+    ChromaAnimationAPI::CloseAnimationName(baseLayer);
+    ChromaAnimationAPI::GetAnimation(baseLayer);
+    ChromaAnimationAPI::UseIdleAnimation((int)EChromaSDKDeviceEnum::DE_Keyboard, true);
+    ChromaAnimationAPI::SetIdleAnimationName(baseLayer);
+
+    const char* animLayer = "Animations/Effect48_Keyboard.chroma";
+    ChromaAnimationAPI::CloseAnimationName(animLayer);
+    ChromaAnimationAPI::GetAnimation(animLayer);
+    const int fadeFrames = 20;
+    ChromaAnimationAPI::FadeStartFramesName(animLayer, fadeFrames);
+    ChromaAnimationAPI::FadeEndFramesName(animLayer, fadeFrames);
+    ChromaAnimationAPI::PlayAnimationName(animLayer, false);
+}
+void ShowEffect48ChromaLink()
+{
+    const char* baseLayer = "Animations/Idle_ChromaLink.chroma";
+    ChromaAnimationAPI::CloseAnimationName(baseLayer);
+    ChromaAnimationAPI::GetAnimation(baseLayer);
+    ChromaAnimationAPI::UseIdleAnimation((int)EChromaSDKDeviceEnum::DE_ChromaLink, true);
+    ChromaAnimationAPI::SetIdleAnimationName(baseLayer);
+
+    const char* animLayer = "Animations/Effect48_ChromaLink.chroma";
+    ChromaAnimationAPI::CloseAnimationName(animLayer);
+    ChromaAnimationAPI::GetAnimation(animLayer);
+    const int fadeFrames = 20;
+    ChromaAnimationAPI::FadeStartFramesName(animLayer, fadeFrames);
+    ChromaAnimationAPI::FadeEndFramesName(animLayer, fadeFrames);
+    ChromaAnimationAPI::PlayAnimationName(animLayer, false);
+}
+void ShowEffect48Headset()
+{
+    const char* baseLayer = "Animations/Idle_Headset.chroma";
+    ChromaAnimationAPI::CloseAnimationName(baseLayer);
+    ChromaAnimationAPI::GetAnimation(baseLayer);
+    ChromaAnimationAPI::UseIdleAnimation((int)EChromaSDKDeviceEnum::DE_Headset, true);
+    ChromaAnimationAPI::SetIdleAnimationName(baseLayer);
+
+    const char* animLayer = "Animations/Effect48_Headset.chroma";
+    ChromaAnimationAPI::CloseAnimationName(animLayer);
+    ChromaAnimationAPI::GetAnimation(animLayer);
+    const int fadeFrames = 20;
+    ChromaAnimationAPI::FadeStartFramesName(animLayer, fadeFrames);
+    ChromaAnimationAPI::FadeEndFramesName(animLayer, fadeFrames);
+    ChromaAnimationAPI::PlayAnimationName(animLayer, false);
+}
+void ShowEffect48Mousepad()
+{
+    const char* baseLayer = "Animations/Idle_Mousepad.chroma";
+    ChromaAnimationAPI::CloseAnimationName(baseLayer);
+    ChromaAnimationAPI::GetAnimation(baseLayer);
+    ChromaAnimationAPI::UseIdleAnimation((int)EChromaSDKDeviceEnum::DE_Mousepad, true);
+    ChromaAnimationAPI::SetIdleAnimationName(baseLayer);
+
+    const char* animLayer = "Animations/Effect48_Mousepad.chroma";
+    ChromaAnimationAPI::CloseAnimationName(animLayer);
+    ChromaAnimationAPI::GetAnimation(animLayer);
+    const int fadeFrames = 20;
+    ChromaAnimationAPI::FadeStartFramesName(animLayer, fadeFrames);
+    ChromaAnimationAPI::FadeEndFramesName(animLayer, fadeFrames);
+    ChromaAnimationAPI::PlayAnimationName(animLayer, false);
+}
+void ShowEffect48Mouse()
+{
+    const char* baseLayer = "Animations/Idle_Mouse.chroma";
+    ChromaAnimationAPI::CloseAnimationName(baseLayer);
+    ChromaAnimationAPI::GetAnimation(baseLayer);
+    ChromaAnimationAPI::UseIdleAnimation((int)EChromaSDKDeviceEnum::DE_Mouse, true);
+    ChromaAnimationAPI::SetIdleAnimationName(baseLayer);
+
+    const char* animLayer = "Animations/Effect48_Mouse.chroma";
+    ChromaAnimationAPI::CloseAnimationName(animLayer);
+    ChromaAnimationAPI::GetAnimation(animLayer);
+    const int fadeFrames = 20;
+    ChromaAnimationAPI::FadeStartFramesName(animLayer, fadeFrames);
+    ChromaAnimationAPI::FadeEndFramesName(animLayer, fadeFrames);
+    ChromaAnimationAPI::PlayAnimationName(animLayer, false);
+}
+void ShowEffect48Keypad()
+{
+    const char* baseLayer = "Animations/Idle_Keypad.chroma";
+    ChromaAnimationAPI::CloseAnimationName(baseLayer);
+    ChromaAnimationAPI::GetAnimation(baseLayer);
+    ChromaAnimationAPI::UseIdleAnimation((int)EChromaSDKDeviceEnum::DE_Keypad, true);
+    ChromaAnimationAPI::SetIdleAnimationName(baseLayer);
+
+    const char* animLayer = "Animations/Effect48_Keypad.chroma";
+    ChromaAnimationAPI::CloseAnimationName(animLayer);
+    ChromaAnimationAPI::GetAnimation(animLayer);
+    const int fadeFrames = 20;
+    ChromaAnimationAPI::FadeStartFramesName(animLayer, fadeFrames);
+    ChromaAnimationAPI::FadeEndFramesName(animLayer, fadeFrames);
+    ChromaAnimationAPI::PlayAnimationName(animLayer, false);
+}
 #pragma endregion
 
 
 int _gSelection = 1;
-const int MAX_SELECTION = 47;
+const int MAX_SELECTION = 48;
 int _gIndex = 0;
 char _gTextBuffer[16];
 char _gManualInput[] = {
@@ -5484,6 +5581,14 @@ void ExecuteEffect(bool supportsStreaming, BYTE platform)
         ShowEffect47Keypad();
         ShowEffect47Mousepad();
         ShowEffect47Mouse();
+        break;
+    case 48:
+        ShowEffect48();
+        ShowEffect48ChromaLink();
+        ShowEffect48Headset();
+        ShowEffect48Keypad();
+        ShowEffect48Mousepad();
+        ShowEffect48Mouse();
         break;
 	}
 
