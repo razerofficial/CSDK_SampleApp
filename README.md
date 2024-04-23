@@ -9,6 +9,7 @@
 **Table of Contents**
 
 * [See Also](#see-also)
+* [User Privacy](#user-privacy)
 * [Quick Start](#quick-start)
 * [About](#about)
 * [Security](#security)
@@ -17,7 +18,7 @@
 * [Windows Cloud](#windows-cloud)
 * [API Class](#api-class)
 * [Initialization](#initialization)
-* [API](#api)
+* [Full API](#full-api)
 
 <a name="see-also"></a>
 
@@ -29,7 +30,13 @@
 
 **Plugins:**
 
-* [CChromaEditor](https://github.com/RazerOfficial/CChromaEditor) - C++ native MFC library for playing and editing Chroma animations
+* [CChromaEditor](https://github.com/RazerOfficial/CChromaEditor) - C++ library for playing and editing Chroma animations
+
+<a name="user-privacy"></a>
+
+## User Privacy
+
+Note: The Chroma SDK requires only the minimum amount of information necessary to operate during initialization, including the title of the application or game, description of the application or game, application or game author, and application or game support contact information. This information is displayed in the Chroma app. The Chroma SDK does not monitor or collect any personal data related to users. 
 
 <a name="quick-start"></a>
 
@@ -113,23 +120,7 @@ Win64BuildFolder\CChromaEditorLibrary64.dll
 
 ## Windows Cloud
 
-`Windows Cloud` builds run on cloud platforms using `Windows` such as `Amazon Luna`, `Microsoft Game Pass`, and `NVidia GeForce Now`. Game instances run in the cloud without direct access to Chroma hardware. By running the `Windows Cloud` version of the library `Chroma` effects can reach your local machine and connected hardware. Cloud instances won't have Synapse installed which requires special cloud versions of the libraries. The `Chroma Editor Library` uses the core `RzChromaSDK` low-level library to send Chroma effects to the cloud with the `RzChromaStreamPlugin` streaming library. Viewers can watch the cloud stream via the [Razer Stream Portal](https://stream.razer.com/).
-
-**32-bit libraries**
-
-```
-Win32BuildFolder\CChromaEditorLibrary.dll
-Win32BuildFolder\RzChromaSDK.dll
-Win32BuildFolder\RzChromaStreamPlugin.dll
-```
-
-**64-bit libraries**
-
-```
-Win64BuildFolder\CChromaEditorLibrary64.dll
-Win64BuildFolder\RzChromaSDK64.dll
-Win64BuildFolder\RzChromaStreamPlugin64.dll
-```
+`Windows Cloud` builds run on cloud platforms using `Windows` such as `Amazon Luna`, `Microsoft Game Pass`, and `NVidia GeForce Now`. Game instances run in the cloud without direct access to Chroma hardware. Chroma effects stream across the Internet to reach your local machine and connected hardware. No extra code is required to add Cloud support. In the case with `NVidia GeForce Now`, the cloud runs the same Epic Games and Steam builds as the desktop version and support Chroma streaming. Viewers can watch the cloud stream via the [Razer Stream Portal](https://stream.razer.com/).
 
 <a name="api-class"></a>
 
@@ -175,18 +166,28 @@ The `ChromaAnimationAPI::InitSDK()` method returns `RZRESULT_SUCCESS` when initi
  }
 ```
 
-<a name="api"></a>
+<a name="full-api"></a>
 
-## API
+## Full API
+
+* Note: See the [Chroma Animation Guide](http://chroma.razer.com/ChromaGuide/) for visual examples of the API methods.
+
+The API has various methods with the `D` suffix where `double` return-type/parameters were used. This is to support engines like `GameMaker` which have a limited number of data-types.
+
+*(Start of automation)*
+
+Methods:
 
 * [PluginAddColor](#PluginAddColor)
 * [PluginAddFrame](#PluginAddFrame)
+* [PluginAddNonZeroAllKeys](#PluginAddNonZeroAllKeys)
 * [PluginAddNonZeroAllKeysAllFrames](#PluginAddNonZeroAllKeysAllFrames)
 * [PluginAddNonZeroAllKeysAllFramesName](#PluginAddNonZeroAllKeysAllFramesName)
 * [PluginAddNonZeroAllKeysAllFramesNameD](#PluginAddNonZeroAllKeysAllFramesNameD)
 * [PluginAddNonZeroAllKeysAllFramesOffset](#PluginAddNonZeroAllKeysAllFramesOffset)
 * [PluginAddNonZeroAllKeysAllFramesOffsetName](#PluginAddNonZeroAllKeysAllFramesOffsetName)
 * [PluginAddNonZeroAllKeysAllFramesOffsetNameD](#PluginAddNonZeroAllKeysAllFramesOffsetNameD)
+* [PluginAddNonZeroAllKeysName](#PluginAddNonZeroAllKeysName)
 * [PluginAddNonZeroAllKeysOffset](#PluginAddNonZeroAllKeysOffset)
 * [PluginAddNonZeroAllKeysOffsetName](#PluginAddNonZeroAllKeysOffsetName)
 * [PluginAddNonZeroAllKeysOffsetNameD](#PluginAddNonZeroAllKeysOffsetNameD)
@@ -270,18 +271,24 @@ The `ChromaAnimationAPI::InitSDK()` method returns `RZRESULT_SUCCESS` when initi
 * [PluginCopyRedChannelAllFrames](#PluginCopyRedChannelAllFrames)
 * [PluginCopyRedChannelAllFramesName](#PluginCopyRedChannelAllFramesName)
 * [PluginCopyRedChannelAllFramesNameD](#PluginCopyRedChannelAllFramesNameD)
+* [PluginCopyZeroAllKeys](#PluginCopyZeroAllKeys)
 * [PluginCopyZeroAllKeysAllFrames](#PluginCopyZeroAllKeysAllFrames)
 * [PluginCopyZeroAllKeysAllFramesName](#PluginCopyZeroAllKeysAllFramesName)
 * [PluginCopyZeroAllKeysAllFramesNameD](#PluginCopyZeroAllKeysAllFramesNameD)
 * [PluginCopyZeroAllKeysAllFramesOffset](#PluginCopyZeroAllKeysAllFramesOffset)
 * [PluginCopyZeroAllKeysAllFramesOffsetName](#PluginCopyZeroAllKeysAllFramesOffsetName)
 * [PluginCopyZeroAllKeysAllFramesOffsetNameD](#PluginCopyZeroAllKeysAllFramesOffsetNameD)
+* [PluginCopyZeroAllKeysName](#PluginCopyZeroAllKeysName)
+* [PluginCopyZeroAllKeysOffset](#PluginCopyZeroAllKeysOffset)
+* [PluginCopyZeroAllKeysOffsetName](#PluginCopyZeroAllKeysOffsetName)
 * [PluginCopyZeroKeyColor](#PluginCopyZeroKeyColor)
 * [PluginCopyZeroKeyColorName](#PluginCopyZeroKeyColorName)
 * [PluginCopyZeroKeyColorNameD](#PluginCopyZeroKeyColorNameD)
+* [PluginCopyZeroTargetAllKeys](#PluginCopyZeroTargetAllKeys)
 * [PluginCopyZeroTargetAllKeysAllFrames](#PluginCopyZeroTargetAllKeysAllFrames)
 * [PluginCopyZeroTargetAllKeysAllFramesName](#PluginCopyZeroTargetAllKeysAllFramesName)
 * [PluginCopyZeroTargetAllKeysAllFramesNameD](#PluginCopyZeroTargetAllKeysAllFramesNameD)
+* [PluginCopyZeroTargetAllKeysName](#PluginCopyZeroTargetAllKeysName)
 * [PluginCoreCreateChromaLinkEffect](#PluginCoreCreateChromaLinkEffect)
 * [PluginCoreCreateEffect](#PluginCoreCreateEffect)
 * [PluginCoreCreateHeadsetEffect](#PluginCoreCreateHeadsetEffect)
@@ -292,8 +299,11 @@ The `ChromaAnimationAPI::InitSDK()` method returns `RZRESULT_SUCCESS` when initi
 * [PluginCoreDeleteEffect](#PluginCoreDeleteEffect)
 * [PluginCoreInit](#PluginCoreInit)
 * [PluginCoreInitSDK](#PluginCoreInitSDK)
+* [PluginCoreIsActive](#PluginCoreIsActive)
+* [PluginCoreIsConnected](#PluginCoreIsConnected)
 * [PluginCoreQueryDevice](#PluginCoreQueryDevice)
 * [PluginCoreSetEffect](#PluginCoreSetEffect)
+* [PluginCoreSetEventName](#PluginCoreSetEventName)
 * [PluginCoreStreamBroadcast](#PluginCoreStreamBroadcast)
 * [PluginCoreStreamBroadcastEnd](#PluginCoreStreamBroadcastEnd)
 * [PluginCoreStreamGetAuthShortcode](#PluginCoreStreamGetAuthShortcode)
@@ -423,6 +433,7 @@ The `ChromaAnimationAPI::InitSDK()` method returns `RZRESULT_SUCCESS` when initi
 * [PluginGetFrameCount](#PluginGetFrameCount)
 * [PluginGetFrameCountName](#PluginGetFrameCountName)
 * [PluginGetFrameCountNameD](#PluginGetFrameCountNameD)
+* [PluginGetFrameName](#PluginGetFrameName)
 * [PluginGetKeyColor](#PluginGetKeyColor)
 * [PluginGetKeyColorD](#PluginGetKeyColorD)
 * [PluginGetKeyColorName](#PluginGetKeyColorName)
@@ -664,12 +675,14 @@ The `ChromaAnimationAPI::InitSDK()` method returns `RZRESULT_SUCCESS` when initi
 * [PluginStopComposite](#PluginStopComposite)
 * [PluginStopCompositeD](#PluginStopCompositeD)
 * [PluginSubtractColor](#PluginSubtractColor)
+* [PluginSubtractNonZeroAllKeys](#PluginSubtractNonZeroAllKeys)
 * [PluginSubtractNonZeroAllKeysAllFrames](#PluginSubtractNonZeroAllKeysAllFrames)
 * [PluginSubtractNonZeroAllKeysAllFramesName](#PluginSubtractNonZeroAllKeysAllFramesName)
 * [PluginSubtractNonZeroAllKeysAllFramesNameD](#PluginSubtractNonZeroAllKeysAllFramesNameD)
 * [PluginSubtractNonZeroAllKeysAllFramesOffset](#PluginSubtractNonZeroAllKeysAllFramesOffset)
 * [PluginSubtractNonZeroAllKeysAllFramesOffsetName](#PluginSubtractNonZeroAllKeysAllFramesOffsetName)
 * [PluginSubtractNonZeroAllKeysAllFramesOffsetNameD](#PluginSubtractNonZeroAllKeysAllFramesOffsetNameD)
+* [PluginSubtractNonZeroAllKeysName](#PluginSubtractNonZeroAllKeysName)
 * [PluginSubtractNonZeroAllKeysOffset](#PluginSubtractNonZeroAllKeysOffset)
 * [PluginSubtractNonZeroAllKeysOffsetName](#PluginSubtractNonZeroAllKeysOffsetName)
 * [PluginSubtractNonZeroAllKeysOffsetNameD](#PluginSubtractNonZeroAllKeysOffsetNameD)
@@ -707,6 +720,7 @@ The `ChromaAnimationAPI::InitSDK()` method returns `RZRESULT_SUCCESS` when initi
 * [PluginUnloadLibraryStreamingPlugin](#PluginUnloadLibraryStreamingPlugin)
 * [PluginUpdateFrame](#PluginUpdateFrame)
 * [PluginUpdateFrameName](#PluginUpdateFrameName)
+* [PluginUseForwardChromaEvents](#PluginUseForwardChromaEvents)
 * [PluginUseIdleAnimation](#PluginUseIdleAnimation)
 * [PluginUseIdleAnimations](#PluginUseIdleAnimations)
 * [PluginUsePreloading](#PluginUsePreloading)
@@ -736,8 +750,8 @@ Adds a frame to the `Chroma` animation and sets the `duration` (in seconds).
 The `color` is expected to be an array of the dimensions for the `deviceType/device`.
 The `length` parameter is the size of the `color` array. For `EChromaSDKDevice1DEnum`
 the array size should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array
-size should be `MAX ROW` * `MAX COLUMN`. Returns the animation id upon
-success. Returns -1 upon failure.
+size should be `MAX ROW` times `MAX COLUMN`. Returns the animation id upon
+success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -747,6 +761,23 @@ EXPORT_API int PluginAddFrame(
 // Class Plugin
 int result = ChromaAnimationAPI::AddFrame(
  int animationId, float duration, int* colors, int length);
+```
+
+---
+<a name="PluginAddNonZeroAllKeys"></a>
+**PluginAddNonZeroAllKeys**
+
+Add source color to target where color is not black for frame id, reference
+source and target by id.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginAddNonZeroAllKeys(
+ int sourceAnimationId, int targetAnimationId, int frameId);
+
+// Class Plugin
+ChromaAnimationAPI::AddNonZeroAllKeys(
+ int sourceAnimationId, int targetAnimationId, int frameId);
 ```
 
 ---
@@ -849,6 +880,23 @@ EXPORT_API double PluginAddNonZeroAllKeysAllFramesOffsetNameD(
 // Class Plugin
 double result = ChromaAnimationAPI::AddNonZeroAllKeysAllFramesOffsetNameD(
  const char* sourceAnimation, const char* targetAnimation, double offset);
+```
+
+---
+<a name="PluginAddNonZeroAllKeysName"></a>
+**PluginAddNonZeroAllKeysName**
+
+Add source color to target where color is not black for frame id, reference
+source and target by name.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginAddNonZeroAllKeysName(
+ const char* sourceAnimation, const char* targetAnimation, int frameId);
+
+// Class Plugin
+ChromaAnimationAPI::AddNonZeroAllKeysName(
+ const char* sourceAnimation, const char* targetAnimation, int frameId);
 ```
 
 ---
@@ -1157,9 +1205,9 @@ ChromaAnimationAPI::CloseAll();
 **PluginCloseAnimation**
 
 Closes the `Chroma` animation to free up resources referenced by id. Returns
-the animation id upon success. Returns -1 upon failure. This might be used
-while authoring effects if there was a change necessitating re-opening
-the animation. The animation id can no longer be used once closed.
+the animation id upon success. Returns negative one upon failure. This
+might be used while authoring effects if there was a change necessitating
+re-opening the animation. The animation id can no longer be used once closed.
 
 ```C++
 // DLL Interface
@@ -2267,6 +2315,23 @@ double result = ChromaAnimationAPI::CopyRedChannelAllFramesNameD(
 ```
 
 ---
+<a name="PluginCopyZeroAllKeys"></a>
+**PluginCopyZeroAllKeys**
+
+Copy zero colors from source animation to target animation for the frame.
+Source and target are referenced by id.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginCopyZeroAllKeys(
+ int sourceAnimationId, int targetAnimationId, int frameId);
+
+// Class Plugin
+ChromaAnimationAPI::CopyZeroAllKeys(
+ int sourceAnimationId, int targetAnimationId, int frameId);
+```
+
+---
 <a name="PluginCopyZeroAllKeysAllFrames"></a>
 **PluginCopyZeroAllKeysAllFrames**
 
@@ -2369,6 +2434,59 @@ double result = ChromaAnimationAPI::CopyZeroAllKeysAllFramesOffsetNameD(
 ```
 
 ---
+<a name="PluginCopyZeroAllKeysName"></a>
+**PluginCopyZeroAllKeysName**
+
+Copy zero colors from source animation to target animation for the frame.
+Source and target are referenced by name.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginCopyZeroAllKeysName(
+ const char* sourceAnimation, const char* targetAnimation, int frameId);
+
+// Class Plugin
+ChromaAnimationAPI::CopyZeroAllKeysName(
+ const char* sourceAnimation, const char* targetAnimation, int frameId);
+```
+
+---
+<a name="PluginCopyZeroAllKeysOffset"></a>
+**PluginCopyZeroAllKeysOffset**
+
+Copy zero colors from source animation to target animation for the frame
+id starting at the target offset for the length of the source animation.
+Source and target are referenced by id.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginCopyZeroAllKeysOffset(
+ int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+
+// Class Plugin
+ChromaAnimationAPI::CopyZeroAllKeysOffset(
+ int sourceAnimationId, int targetAnimationId, int frameId, int offset);
+```
+
+---
+<a name="PluginCopyZeroAllKeysOffsetName"></a>
+**PluginCopyZeroAllKeysOffsetName**
+
+Copy zero colors from source animation to target animation for the frame
+id starting at the target offset for the length of the source animation.
+Source and target are referenced by name.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginCopyZeroAllKeysOffsetName(
+ const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+
+// Class Plugin
+ChromaAnimationAPI::CopyZeroAllKeysOffsetName(
+ const char* sourceAnimation, const char* targetAnimation, int frameId, int offset);
+```
+
+---
 <a name="PluginCopyZeroKeyColor"></a>
 **PluginCopyZeroKeyColor**
 
@@ -2421,6 +2539,23 @@ double result = ChromaAnimationAPI::CopyZeroKeyColorNameD(
 ```
 
 ---
+<a name="PluginCopyZeroTargetAllKeys"></a>
+**PluginCopyZeroTargetAllKeys**
+
+Copy nonzero color from source animation to target animation where target
+is zero for the frame. Source and target are referenced by id.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginCopyZeroTargetAllKeys(
+ int sourceAnimationId, int targetAnimationId, int frameId);
+
+// Class Plugin
+ChromaAnimationAPI::CopyZeroTargetAllKeys(
+ int sourceAnimationId, int targetAnimationId, int frameId);
+```
+
+---
 <a name="PluginCopyZeroTargetAllKeysAllFrames"></a>
 **PluginCopyZeroTargetAllKeysAllFrames**
 
@@ -2468,6 +2603,23 @@ EXPORT_API double PluginCopyZeroTargetAllKeysAllFramesNameD(
 // Class Plugin
 double result = ChromaAnimationAPI::CopyZeroTargetAllKeysAllFramesNameD(
  const char* sourceAnimation, const char* targetAnimation);
+```
+
+---
+<a name="PluginCopyZeroTargetAllKeysName"></a>
+**PluginCopyZeroTargetAllKeysName**
+
+Copy nonzero color from source animation to target animation where target
+is zero for the frame. Source and target are referenced by name.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginCopyZeroTargetAllKeysName(
+ const char* sourceAnimation, const char* targetAnimation, int frameId);
+
+// Class Plugin
+ChromaAnimationAPI::CopyZeroTargetAllKeysName(
+ const char* sourceAnimation, const char* targetAnimation, int frameId);
 ```
 
 ---
@@ -2627,6 +2779,36 @@ RZRESULT result = ChromaAnimationAPI::CoreInitSDK(
 ```
 
 ---
+<a name="PluginCoreIsActive"></a>
+**PluginCoreIsActive**
+
+Direct access to low level API.
+
+```C++
+// DLL Interface
+EXPORT_API RZRESULT PluginCoreIsActive(BOOL& Active);
+
+// Class Plugin
+RZRESULT result = ChromaAnimationAPI::CoreIsActive(BOOL& Active);
+```
+
+---
+<a name="PluginCoreIsConnected"></a>
+**PluginCoreIsConnected**
+
+Direct access to low level API.
+
+```C++
+// DLL Interface
+EXPORT_API RZRESULT PluginCoreIsConnected(
+	ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
+
+// Class Plugin
+RZRESULT result = ChromaAnimationAPI::CoreIsConnected(
+	ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
+```
+
+---
 <a name="PluginCoreQueryDevice"></a>
 **PluginCoreQueryDevice**
 
@@ -2657,14 +2839,28 @@ RZRESULT result = ChromaAnimationAPI::CoreSetEffect(RZEFFECTID EffectId);
 ```
 
 ---
+<a name="PluginCoreSetEventName"></a>
+**PluginCoreSetEventName**
+
+Direct access to low level API.
+
+```C++
+// DLL Interface
+EXPORT_API RZRESULT PluginCoreSetEventName(LPCTSTR Name);
+
+// Class Plugin
+RZRESULT result = ChromaAnimationAPI::CoreSetEventName(LPCTSTR Name);
+```
+
+---
 <a name="PluginCoreStreamBroadcast"></a>
 **PluginCoreStreamBroadcast**
 
 Begin broadcasting Chroma RGB data using the stored stream key as the endpoint.
 Intended for Cloud Gaming Platforms,  restore the streaming key when the
 game instance is launched to continue streaming.  streamId is a null terminated
-string  streamKey is a null terminated string  StreamGetStatus() should
-return the READY status to use this method.
+string streamKey is a null terminated string StreamGetStatus() should return 
+the READY status to use this method.
 
 ```C++
 // DLL Interface
@@ -2701,7 +2897,10 @@ Length will return as zero if the streaming auth code could not be obtained.
 If length is greater than zero, it will be the length of the returned streaming
 auth code.  Once you have the shortcode, it should be shown to the user
 so they can associate the stream with their Razer ID  StreamGetStatus()
-should return the READY status before invoking this method.
+should return the READY status before invoking this method. platform: is
+the null terminated string that identifies the source of the stream: {
+GEFORCE_NOW, LUNA, STADIA, GAME_PASS } title: is the null terminated string
+that identifies the application or game.
 
 ```C++
 // DLL Interface
@@ -2739,15 +2938,13 @@ bool result = ChromaAnimationAPI::CoreStreamGetFocus(
 Intended for Cloud Gaming Platforms, store the stream id to persist in user
 preferences to continue streaming if the game is suspended or closed. shortcode:
 The shortcode is a null terminated string. Use the shortcode that authorized
-the stream to obtain the stream id.  streamId should be a preallocated
-buffer to get the stream key. The buffer should have a length of 48.  length:
-Length will return zero if the key could not be obtained. If the length
-is greater than zero, it will be the length of the returned streaming id.
-Retrieve the stream id after authorizing the shortcode. The authorization
-window will expire in 5 minutes. Be sure to save the stream key before
-the window expires.  platform: is the null terminated string that identifies
-the source of the stream: { GEFORCE_NOW, LUNA, STADIA, GAME_PASS }
-StreamGetStatus() should return the READY status to use this method.
+the stream to obtain the stream id. streamId should be a preallocated buffer 
+to get the stream key. The buffer should have a length of 48. length: Length 
+will return zero if the key could not be obtained. If the length is greater 
+than zero, it will be the length of the returned streaming id. Retrieve 
+the stream id after authorizing the shortcode. The authorization window 
+will expire in 5 minutes. Be sure to save the stream key before the window 
+expires. StreamGetStatus() should return the READY status to use this method.
 
 ```C++
 // DLL Interface
@@ -2766,16 +2963,15 @@ ChromaAnimationAPI::CoreStreamGetId(
 Intended for Cloud Gaming Platforms, store the streaming key to persist
 in user preferences to continue streaming if the game is suspended or closed.
 shortcode: The shortcode is a null terminated string. Use the shortcode
-that authorized the stream to obtain the stream key.  If the status is
-in the BROADCASTING or WATCHING state, passing a NULL shortcode will return
-the active streamId.  streamKey should be a preallocated buffer to get
-the stream key. The buffer should have a length of 48.  length: Length
-will return zero if the key could not be obtained. If the length is greater
+that authorized the stream to obtain the stream key. If the status is in 
+the BROADCASTING or WATCHING state, passing a NULL shortcode will return 
+the active streamId. streamKey should be a preallocated buffer to get the 
+stream key. The buffer should have a length of 48. length: Length will 
+return zero if the key could not be obtained. If the length is greater 
 than zero, it will be the length of the returned streaming key.  Retrieve
 the stream key after authorizing the shortcode. The authorization window
 will expire in 5 minutes. Be sure to save the stream key before the window
-expires.  StreamGetStatus() should return the READY status to use this
-method.
+expires. StreamGetStatus() should return the READY status to use this method.
 
 ```C++
 // DLL Interface
@@ -2921,10 +3117,10 @@ RZRESULT result = ChromaAnimationAPI::CoreUnInit();
 Creates a `Chroma` animation at the given path. The `deviceType` parameter
 uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter uses
 `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer, respective
-to the `deviceType`. Returns the animation id upon success. Returns -1
-upon failure. Saves a `Chroma` animation file with the `.chroma` extension
-at the given path. Returns the animation id upon success. Returns -1 upon
-failure.
+to the `deviceType`. Returns the animation id upon success. Returns negative
+one upon failure. Saves a `Chroma` animation file with the `.chroma` extension
+at the given path. Returns the animation id upon success. Returns negative
+one upon failure.
 
 ```C++
 // DLL Interface
@@ -2944,8 +3140,8 @@ Creates a `Chroma` animation in memory without creating a file. The `deviceType`
 parameter uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter
 uses `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer,
 respective to the `deviceType`. Returns the animation id upon success.
-Returns -1 upon failure. Returns the animation id upon success. Returns
--1 upon failure.
+Returns negative one upon failure. Returns the animation id upon success.
+Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -4690,7 +4886,7 @@ double result = ChromaAnimationAPI::GetCurrentFrameNameD(const char* path);
 
 Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma`
 animation respective to the `deviceType`, as an integer upon success. Returns
--1 upon failure.
+negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -4706,7 +4902,7 @@ int result = ChromaAnimationAPI::GetDevice(int animationId);
 
 Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma`
 animation respective to the `deviceType`, as an integer upon success. Returns
--1 upon failure.
+negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -4735,7 +4931,7 @@ double result = ChromaAnimationAPI::GetDeviceNameD(const char* path);
 **PluginGetDeviceType**
 
 Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer
-upon success. Returns -1 upon failure.
+upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -4750,7 +4946,7 @@ int result = ChromaAnimationAPI::GetDeviceType(int animationId);
 **PluginGetDeviceTypeName**
 
 Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer
-upon success. Returns -1 upon failure.
+upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -4778,29 +4974,34 @@ double result = ChromaAnimationAPI::GetDeviceTypeNameD(const char* path);
 <a name="PluginGetFrame"></a>
 **PluginGetFrame**
 
-Gets the frame colors and duration (in seconds) for a `Chroma` animation.
-The `color` is expected to be an array of the expected dimensions for the
-`deviceType/device`. The `length` parameter is the size of the `color`
-array. For `EChromaSDKDevice1DEnum` the array size should be `MAX LEDS`.
-For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW` * `MAX
-COLUMN`. Returns the animation id upon success. Returns -1 upon failure.
+Get the frame colors and duration (in seconds) for a `Chroma` animation
+referenced by id. The `color` is expected to be an array of the expected
+dimensions for the `deviceType/device`. The `length` parameter is the size
+of the `color` array. For `EChromaSDKDevice1DEnum` the array size should
+be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX
+ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard
+and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the
+EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
+Returns the animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
 EXPORT_API int PluginGetFrame(
- int animationId, int frameIndex, float* duration, int* colors, int length);
+ int animationId, int frameIndex, float* duration, int* colors, int length,
+ int* keys, int keysLength);
 
 // Class Plugin
 int result = ChromaAnimationAPI::GetFrame(
- int animationId, int frameIndex, float* duration, int* colors, int length);
+ int animationId, int frameIndex, float* duration, int* colors, int length,
+ int* keys, int keysLength);
 ```
 
 ---
 <a name="PluginGetFrameCount"></a>
 **PluginGetFrameCount**
 
-Returns the frame count of a `Chroma` animation upon success. Returns -1
-upon failure.
+Returns the frame count of a `Chroma` animation upon success. Returns negative
+one upon failure.
 
 ```C++
 // DLL Interface
@@ -4814,8 +5015,8 @@ int result = ChromaAnimationAPI::GetFrameCount(int animationId);
 <a name="PluginGetFrameCountName"></a>
 **PluginGetFrameCountName**
 
-Returns the frame count of a `Chroma` animation upon success. Returns -1
-upon failure.
+Returns the frame count of a `Chroma` animation upon success. Returns negative
+one upon failure.
 
 ```C++
 // DLL Interface
@@ -4837,6 +5038,32 @@ EXPORT_API double PluginGetFrameCountNameD(const char* path);
 
 // Class Plugin
 double result = ChromaAnimationAPI::GetFrameCountNameD(const char* path);
+```
+
+---
+<a name="PluginGetFrameName"></a>
+**PluginGetFrameName**
+
+Get the frame colors and duration (in seconds) for a `Chroma` animation
+referenced by name. The `color` is expected to be an array of the expected
+dimensions for the `deviceType/device`. The `length` parameter is the size
+of the `color` array. For `EChromaSDKDevice1DEnum` the array size should
+be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX
+ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard
+and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the
+EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
+Returns the animation id upon success. Returns negative one upon failure.
+
+```C++
+// DLL Interface
+EXPORT_API int PluginGetFrameName(
+ const char* path, int frameIndex, float* duration, int* colors, int length,
+ int* keys, int keysLength);
+
+// Class Plugin
+int result = ChromaAnimationAPI::GetFrameName(
+ const char* path, int frameIndex, float* duration, int* colors, int length,
+ int* keys, int keysLength);
 ```
 
 ---
@@ -4923,7 +5150,7 @@ double result = ChromaAnimationAPI::GetLibraryLoadedStateD();
 **PluginGetMaxColumn**
 
 Returns the `MAX COLUMN` given the `EChromaSDKDevice2DEnum` device as an
-integer upon success. Returns -1 upon failure.
+integer upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -4952,7 +5179,7 @@ double result = ChromaAnimationAPI::GetMaxColumnD(double device);
 **PluginGetMaxLeds**
 
 Returns the MAX LEDS given the `EChromaSDKDevice1DEnum` device as an integer
-upon success. Returns -1 upon failure.
+upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -4981,7 +5208,7 @@ double result = ChromaAnimationAPI::GetMaxLedsD(double device);
 **PluginGetMaxRow**
 
 Returns the `MAX ROW` given the `EChromaSDKDevice2DEnum` device as an integer
-upon success. Returns -1 upon failure.
+upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -5610,7 +5837,7 @@ int result = ChromaAnimationAPI::LerpColor(
 **PluginLoadAnimation**
 
 Loads `Chroma` effects so that the animation can be played immediately.
-Returns the animation id upon success. Returns -1 upon failure.
+Returns the animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -5877,7 +6104,7 @@ double result = ChromaAnimationAPI::MakeBlankFramesRGBNameD(
 **PluginMirrorHorizontally**
 
 Flips the color grid horizontally for all `Chroma` animation frames. Returns
-the animation id upon success. Returns -1 upon failure.
+the animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -5893,7 +6120,7 @@ int result = ChromaAnimationAPI::MirrorHorizontally(int animationId);
 
 Flips the color grid vertically for all `Chroma` animation frames. This
 method has no effect for `EChromaSDKDevice1DEnum` devices. Returns the
-animation id upon success. Returns -1 upon failure.
+animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -6744,8 +6971,8 @@ double result = ChromaAnimationAPI::OffsetNonZeroColorsNameD(
 **PluginOpenAnimation**
 
 Opens a `Chroma` animation file so that it can be played. Returns an animation
-id >= 0 upon success. Returns -1 if there was a failure. The animation
-id is used in most of the API methods.
+id >= 0 upon success. Returns negative one if there was a failure. The
+animation id is used in most of the API methods.
 
 ```C++
 // DLL Interface
@@ -6776,8 +7003,8 @@ double result = ChromaAnimationAPI::OpenAnimationD(const char* path);
 Opens a `Chroma` animation data from memory so that it can be played. `Data`
 is a pointer to BYTE array of the loaded animation in memory. `Name` will
 be assigned to the animation when loaded. Returns an animation id >= 0
-upon success. Returns -1 if there was a failure. The animation id is used
-in most of the API methods.
+upon success. Returns negative one if there was a failure. The animation
+id is used in most of the API methods.
 
 ```C++
 // DLL Interface
@@ -6794,7 +7021,7 @@ int result = ChromaAnimationAPI::OpenAnimationFromMemory(
 **PluginOpenEditorDialog**
 
 Opens a `Chroma` animation file with the `.chroma` extension. Returns zero
-upon success. Returns -1 if there was a failure.
+upon success. Returns negative one if there was a failure.
 
 ```C++
 // DLL Interface
@@ -6852,7 +7079,8 @@ double result = ChromaAnimationAPI::OpenEditorDialogD(const char* path);
 **PluginOverrideFrameDuration**
 
 Sets the `duration` for all grames in the `Chroma` animation to the `duration`
-parameter. Returns the animation id upon success. Returns -1 upon failure.
+parameter. Returns the animation id upon success. Returns negative one
+upon failure.
 
 ```C++
 // DLL Interface
@@ -6944,7 +7172,8 @@ double result = ChromaAnimationAPI::PauseAnimationNameD(const char* path);
 **PluginPlayAnimation**
 
 Plays the `Chroma` animation. This will load the animation, if not loaded
-previously. Returns the animation id upon success. Returns -1 upon failure.
+previously. Returns the animation id upon success. Returns negative one
+upon failure.
 
 ```C++
 // DLL Interface
@@ -7111,7 +7340,7 @@ double result = ChromaAnimationAPI::PlayCompositeD(
 **PluginPreviewFrame**
 
 Displays the `Chroma` animation frame on `Chroma` hardware given the `frameIndex`.
-Returns the animation id upon success. Returns -1 upon failure.
+Returns the animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -7211,7 +7440,7 @@ double result = ChromaAnimationAPI::ReduceFramesNameD(
 **PluginResetAnimation**
 
 Resets the `Chroma` animation to 1 blank frame. Returns the animation id
-upon success. Returns -1 upon failure.
+upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -7274,8 +7503,8 @@ double result = ChromaAnimationAPI::ResumeAnimationNameD(
 **PluginReverse**
 
 Reverse the animation frame order of the `Chroma` animation. Returns the
-animation id upon success. Returns -1 upon failure. Animation is referenced
-by id.
+animation id upon success. Returns negative one upon failure. Animation
+is referenced by id.
 
 ```C++
 // DLL Interface
@@ -7633,7 +7862,7 @@ RZRESULT result = ChromaAnimationAPI::SetCustomColorFlag2D(
 
 Changes the `deviceType` and `device` of a `Chroma` animation. If the device
 is changed, the `Chroma` animation will be reset with 1 blank frame. Returns
-the animation id upon success. Returns -1 upon failure.
+the animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -7681,7 +7910,7 @@ RZRESULT result = ChromaAnimationAPI::SetEffectCustom1D(
 <a name="PluginSetEffectCustom2D"></a>
 **PluginSetEffectCustom2D**
 
-SetEffectCustom2D will display the referenced colors immediately
+SetEffectCustom2D will display the referenced colors immediately.
 
 ```C++
 // DLL Interface
@@ -7698,16 +7927,17 @@ RZRESULT result = ChromaAnimationAPI::SetEffectCustom2D(
 **PluginSetEffectKeyboardCustom2D**
 
 SetEffectKeyboardCustom2D will display the referenced custom keyboard colors
-immediately
+immediately. Colors represent a visual grid layout. Keys represent the
+hotkeys for any layout.
 
 ```C++
 // DLL Interface
 EXPORT_API RZRESULT PluginSetEffectKeyboardCustom2D(
- const int device, const int* colors);
+ const int device, const int* colors, const int* keys);
 
 // Class Plugin
 RZRESULT result = ChromaAnimationAPI::SetEffectKeyboardCustom2D(
- const int device, const int* colors);
+ const int device, const int* colors, const int* keys);
 ```
 
 ---
@@ -8656,7 +8886,7 @@ ChromaAnimationAPI::StopAll();
 **PluginStopAnimation**
 
 Stops animation playback if in progress. Returns the animation id upon success.
-Returns -1 upon failure.
+Returns negative one upon failure.
 
 ```C++
 // DLL Interface
@@ -8791,6 +9021,23 @@ int result = ChromaAnimationAPI::SubtractColor(
 ```
 
 ---
+<a name="PluginSubtractNonZeroAllKeys"></a>
+**PluginSubtractNonZeroAllKeys**
+
+Subtract the source color from the target color for the frame where the
+target color is not black. Source and target are referenced by id.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginSubtractNonZeroAllKeys(
+ int sourceAnimationId, int targetAnimationId, int frameId);
+
+// Class Plugin
+ChromaAnimationAPI::SubtractNonZeroAllKeys(
+ int sourceAnimationId, int targetAnimationId, int frameId);
+```
+
+---
 <a name="PluginSubtractNonZeroAllKeysAllFrames"></a>
 **PluginSubtractNonZeroAllKeysAllFrames**
 
@@ -8890,6 +9137,23 @@ EXPORT_API double PluginSubtractNonZeroAllKeysAllFramesOffsetNameD(
 // Class Plugin
 double result = ChromaAnimationAPI::SubtractNonZeroAllKeysAllFramesOffsetNameD(
  const char* sourceAnimation, const char* targetAnimation, double offset);
+```
+
+---
+<a name="PluginSubtractNonZeroAllKeysName"></a>
+**PluginSubtractNonZeroAllKeysName**
+
+Subtract the source color from the target color for the frame where the
+target color is not black. Source and target are referenced by name.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginSubtractNonZeroAllKeysName(
+ const char* sourceAnimation, const char* targetAnimation, int frameId);
+
+// Class Plugin
+ChromaAnimationAPI::SubtractNonZeroAllKeysName(
+ const char* sourceAnimation, const char* targetAnimation, int frameId);
 ```
 
 ---
@@ -9231,8 +9495,7 @@ double result = ChromaAnimationAPI::SubtractThresholdColorsMinMaxRGBNameD(
 **PluginTrimEndFrames**
 
 Trim the end of the animation. The length of the animation will be the lastFrameId
-
-* 1. Reference the animation by id.
+plus one. Reference the animation by id.
 
 ```C++
 // DLL Interface
@@ -9249,8 +9512,7 @@ ChromaAnimationAPI::TrimEndFrames(
 **PluginTrimEndFramesName**
 
 Trim the end of the animation. The length of the animation will be the lastFrameId
-
-* 1. Reference the animation by name.
+plus one. Reference the animation by name.
 
 ```C++
 // DLL Interface
@@ -9380,7 +9642,8 @@ double result = ChromaAnimationAPI::TrimStartFramesNameD(
 <a name="PluginUninit"></a>
 **PluginUninit**
 
-Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns -1 upon failure.
+Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns negative
+one upon failure.
 
 ```C++
 // DLL Interface
@@ -9409,7 +9672,8 @@ double result = ChromaAnimationAPI::UninitD();
 **PluginUnloadAnimation**
 
 Unloads `Chroma` effects to free up resources. Returns the animation id
-upon success. Returns -1 upon failure. Reference the animation by id.
+upon success. Returns negative one upon failure. Reference the animation
+by id.
 
 ```C++
 // DLL Interface
@@ -9494,46 +9758,66 @@ ChromaAnimationAPI::UnloadLibraryStreamingPlugin();
 <a name="PluginUpdateFrame"></a>
 **PluginUpdateFrame**
 
-Updates the `frameIndex` of the `Chroma` animation and sets the `duration`
-(in seconds). The `color` is expected to be an array of the dimensions
-for the `deviceType/device`. The `length` parameter is the size of the
-`color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX
-LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW`
-
-* `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon
-failure.
+Updates the `frameIndex` of the `Chroma` animation referenced by id and
+sets the `duration` (in seconds). The `color` is expected to be an array
+of the dimensions for the `deviceType/device`. The `length` parameter is
+the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size
+should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should
+be `MAX ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard
+and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the
+EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
 
 ```C++
 // DLL Interface
 EXPORT_API int PluginUpdateFrame(
- int animationId, int frameIndex, float duration, int* colors, int length);
+ int animationId, int frameIndex, float duration, int* colors, int length,
+ int* keys, int keysLength);
 
 // Class Plugin
 int result = ChromaAnimationAPI::UpdateFrame(
- int animationId, int frameIndex, float duration, int* colors, int length);
+ int animationId, int frameIndex, float duration, int* colors, int length,
+ int* keys, int keysLength);
 ```
 
 ---
 <a name="PluginUpdateFrameName"></a>
 **PluginUpdateFrameName**
 
-Updates the `frameIndex` of the `Chroma` animation and sets the `duration`
-(in seconds). The `color` is expected to be an array of the dimensions
-for the `deviceType/device`. The `length` parameter is the size of the
-`color` array. For `EChromaSDKDevice1DEnum` the array size should be `MAX
-LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX ROW`
-
-* `MAX COLUMN`. Returns the animation id upon success. Returns -1 upon
-failure.
+Update the `frameIndex` of the `Chroma` animation referenced by name and
+sets the `duration` (in seconds). The `color` is expected to be an array
+of the dimensions for the `deviceType/device`. The `length` parameter is
+the size of the `color` array. For `EChromaSDKDevice1DEnum` the array size
+should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should
+be `MAX ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard
+and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the
+EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
+Returns the animation id upon success. Returns negative one upon failure.
 
 ```C++
 // DLL Interface
 EXPORT_API int PluginUpdateFrameName(
- const char* path, int frameIndex, float duration, int* colors, int length);
+ const char* path, int frameIndex, float duration, int* colors, int length,
+ int* keys, int keysLength);
 
 // Class Plugin
 int result = ChromaAnimationAPI::UpdateFrameName(
- const char* path, int frameIndex, float duration, int* colors, int length);
+ const char* path, int frameIndex, float duration, int* colors, int length,
+ int* keys, int keysLength);
+```
+
+---
+<a name="PluginUseForwardChromaEvents"></a>
+**PluginUseForwardChromaEvents**
+
+On by default, `UseForwardChromaEvents` sends the animation name to `CoreSetEventName` 
+automatically when `PlayAnimationName` is called.
+
+```C++
+// DLL Interface
+EXPORT_API void PluginUseForwardChromaEvents(bool flag);
+
+// Class Plugin
+ChromaAnimationAPI::UseForwardChromaEvents(bool flag);
 ```
 
 ---
@@ -9603,3 +9887,11 @@ EXPORT_API void PluginUsePreloadingName(
 ChromaAnimationAPI::UsePreloadingName(
  const char* path, bool flag);
 ```
+
+<br/><br/>
+
+<hr/>
+
+*(End of automation)*
+
+<br/><br/>
