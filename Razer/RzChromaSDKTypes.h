@@ -54,13 +54,16 @@ namespace ChromaSDK
         //! Device types.
         enum DeviceType
         {
-            DEVICE_KEYBOARD    = 1, //!< Keyboard device.
-            DEVICE_MOUSE       = 2, //!< Mouse device.
-            DEVICE_HEADSET     = 3, //!< Headset device.
-            DEVICE_MOUSEPAD    = 4, //!< Mousepad device.
-            DEVICE_KEYPAD      = 5, //!< Keypad device.
-            DEVICE_SYSTEM      = 6, //!< System device.
-            DEVICE_INVALID          //!< Invalid device.
+            DEVICE_KEYBOARD    = 1,   //!< Keyboard device.
+            DEVICE_MOUSE       = 2,   //!< Mouse device.
+            DEVICE_HEADSET     = 3,   //!< Headset device.
+            DEVICE_MOUSEPAD    = 4,   //!< Mousepad device.
+            DEVICE_KEYPAD      = 5,   //!< Keypad device.
+            DEVICE_SYSTEM      = 6,   //!< System device.
+            DEVICE_SPEAKERS    = 7,   //!< Speakers.
+            DEVICE_CHROMALINK  = 8,   //!< Chroma Link device.
+            DEVICE_ALL         = 255, //!< All devices.
+            DEVICE_INVALID            //!< Invalid device.
         } DeviceType;
 
         DWORD Connected;            //!< Number of devices connected.
