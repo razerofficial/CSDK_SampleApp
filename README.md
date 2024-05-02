@@ -135,17 +135,17 @@ Win64BuildFolder\CChromaEditorLibrary64.dll
 
 This document provides a guide to integrating Chroma RGB using the Chroma C++ SDK. Chroma can be included through premade Chroma Animations or APIs. Here is the list of available methods:
 
-* [Initialize SDK](?#markdown-header-initialize-sdk): Initialize the Chroma SDK to use the library.
+* [Initialize SDK](#initialize-sdk): Initialize the Chroma SDK to use the library.
 
-* [Is Active](?#markdown-header-is-active): Check if the app/game has Chroma focus.
+* [Is Active](#is-active): Check if the app/game has Chroma focus.
 
-* [Is Connected](?#markdown-header-is-connected): Check if Chroma hardware is connected.
+* [Is Connected](#is-connected): Check if Chroma hardware is connected.
 
-* [Play Chroma Animation](?#markdown-header-play-chroma-animation): Playback a Chroma Animation asset.
+* [Play Chroma Animation](#play-chroma-animation): Playback a Chroma Animation asset.
 
-* [Set Event Name](?#markdown-header-set-event-name): Name a game event or game trigger in order to also add Haptics to the Chroma event.
+* [Set Event Name](#set-event-name): Name a game event or game trigger in order to also add Haptics to the Chroma event.
 
-* [Use Forward Chroma Events](?#markdown-header-use-forward-chroma-events): Toggle automatic invocation of SetEventName when invoking PlayAnimation using the animation name.
+* [Use Forward Chroma Events](#use-forward-chroma-events): Toggle automatic invocation of SetEventName when invoking PlayAnimation using the animation name.
 
 ## Namespace
 
