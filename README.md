@@ -24,7 +24,6 @@
 * [Use Forward Chroma Events](#use-forward-chroma-events)
 * [Microsoft Dynamic Lighting](#microsoft-dynamic-lighting)
 * [API Class](#api-class)
-* [Initialization](#initialization)
 * [Full API](#full-api)
 
 <a name="see-also"></a>
@@ -160,7 +159,7 @@ using namespace ChromaSDK;
 
 ## Initialize SDK
 
-Initialize the Chroma SDK in order to utilize the API. The `InitSDK` method takes an `AppInfo` parameter which defines the application or game details that will appear in the `Chroma App` within the `Chroma Apps` tab. The expected return result should be `RazerErrors.RZRESULT_SUCCESS` which indicates the API is ready for use. If a non-success result is returned, the Chroma implementation should be disabled until the next time the application or game is launched. Reasons for failure are likely to be the user does not have the `Synapse` or the `Chroma App` installed. After successfully initializing the Chroma SDK, wait approximately 100 ms before playing Chroma Animations.
+Initialize the Chroma SDK in order to utilize the API. The `InitSDK` method takes an `AppInfo` parameter which defines the application or game details that will appear in the `Chroma App` within the `Chroma Apps` tab. The expected return result should be `RZRESULT_SUCCESS` which indicates the API is ready for use. If a non-success result is returned, the Chroma implementation should be disabled until the next time the application or game is launched. Reasons for failure are likely to be the user does not have the `Synapse` or the `Chroma App` installed. After successfully initializing the Chroma SDK, wait approximately 100 ms before playing Chroma Animations.
 
 ![image_5](images/image_5.png)
 
@@ -328,44 +327,6 @@ For HID compatible devices, with `Dynamic Lighting` set to `ON` and `Chroma App`
 ## API Class
 
 The `ChromaAnimationAPI` class provides a wrapper for the Chroma Editor Library. The wrapper for the API can be found at [Razer/ChromaAnimationAPI.h](Razer/ChromaAnimationAPI.h) and [Razer/ChromaAnimationAPI.cpp](Razer/ChromaAnimationAPI.cpp).
-
-<a name="initialization"></a>
-
-## Initialization
-
----
-
-The `ChromaAnimationAPI::InitSDK()` method returns `RZRESULT_SUCCESS` when initialization has succeeded. Avoid making calls to the Chroma API when anything other than success is returned. A unsuccessful result indicates `Chroma` is not present on the machine.
-
-```
- APPINFOTYPE appInfo = {};
-
- _tcscpy_s(appInfo.Title, 256, _T("Sample Game Title"));
- _tcscpy_s(appInfo.Description, 1024, _T("Sample Game Description"));
- _tcscpy_s(appInfo.Author.Name, 256, _T("Company Name"));
- _tcscpy_s(appInfo.Author.Contact, 256, _T("Company Website or Email"));
-
- //appInfo.SupportedDevice = 
- //    0x01 | // Keyboards
- //    0x02 | // Mice
- //    0x04 | // Headset
- //    0x08 | // Mousepads
- //    0x10 | // Keypads
- //    0x20   // ChromaLink devices
- appInfo.SupportedDevice = (0x01 | 0x02 | 0x04 | 0x08 | 0x10 | 0x20);
- //    0x01 | // Utility. (To specifiy this is an utility application)
- //    0x02   // Game. (To specifiy this is a game);
- appInfo.Category = 0x02;
-
- RZRESULT result = ChromaAnimationAPI::InitSDK(&appInfo);
- if (result != RZRESULT_SUCCESS)
- {
-  ChromaLogger::printf("Failed to initialize Chroma SDK with error=%ld\r\n", result);
- 
-  // avoid making Chroma API calls after a non-zero init result
-  return;
- }
-```
 
 <a name="full-api"></a>
 
