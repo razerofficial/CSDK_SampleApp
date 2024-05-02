@@ -8,12 +8,21 @@
 
 * [See Also](#see-also)
 * [User Privacy](#user-privacy)
-* [Quick Start](#quick-start)
+* [Dependencies](#dependencies)
 * [About](#about)
 * [Security](#security)
 * [Chroma Editor Library](#chroma-editor-library)
 * [Windows PC](#windows-pc)
 * [Windows Cloud](#windows-cloud)
+* [General](#general)
+* [Namespace](#namespace)
+* [Initialize SDK](#initialize-sdk)
+* [Is Active](#is-active)
+* [Is Connected](#is-connected)
+* [Play Chroma Animation](#play-chroma-animation)
+* [Set Event Name](#set-event-name)
+* [Use Forward Chroma Events](#use-forward-chroma-events)
+* [Microsoft Dynamic Lighting](#microsoft-dynamic-lighting)
 * [API Class](#api-class)
 * [Initialization](#initialization)
 * [Full API](#full-api)
@@ -34,15 +43,13 @@
 
 ## User Privacy
 
-Note: The Chroma SDK requires only the minimum amount of information necessary to operate during initialization, including the title of the application or game, description of the application or game, application or game author, and application or game support contact information. This information is displayed in the Chroma app. The Chroma SDK does not monitor or collect any personal data related to users. 
+Note: The Chroma SDK requires only the minimum amount of information necessary to operate during initialization, including the title of the application or game, description of the application or game, application or game author, and application or game support contact information. This information is displayed in the Chroma app. The Chroma SDK does not monitor or collect any personal data related to users.
 
-<a name="quick-start"></a>
+<a name="dependencies"></a>
 
-## Quick Start ##
+## Dependencies
 
-* Install [Synapse](https://www.razer.com/synapse-3)
-
-* Make sure the Chroma Connect module is installed.
+To use the Chroma SDK first install the new [Razer Synapse and Chroma App](https://www.razer.com/synapse-new).
 
 ![image_2](images/image_2.png)
 
@@ -76,7 +83,8 @@ The sample apps use the `CHECK_CHROMA_LIBRARY_SIGNATURE` preprocessor definition
 
 ```
 #ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
- _sInvalidSignature = !VerifyLibrarySignature::VerifyModule(library, false);
+	// verify the library has a valid signature
+	_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(path);
 #endif
 ```
 
@@ -119,6 +127,201 @@ Win64BuildFolder\CChromaEditorLibrary64.dll
 ## Windows Cloud
 
 `Windows Cloud` builds run on cloud platforms using `Windows` such as `Amazon Luna`, `Microsoft Game Pass`, and `NVidia GeForce Now`. Game instances run in the cloud without direct access to Chroma hardware. Chroma effects stream across the Internet to reach your local machine and connected hardware. No extra code is required to add Cloud support. In the case with `NVidia GeForce Now`, the cloud runs the same Epic Games and Steam builds as the desktop version and support Chroma streaming. Viewers can watch the cloud stream via the [Razer Stream Portal](https://stream.razer.com/).
+
+<a name="general"></a>
+
+## General
+
+* The Chroma SDK allows an application or game to set the details in the Chroma Apps list within the `Chroma App`.
+
+This document provides a guide to integrating Chroma RGB using the Chroma C++ SDK. Chroma can be included through premade Chroma Animations or APIs. Here is the list of available methods:
+
+* [Initialize SDK](?#markdown-header-initialize-sdk): Initialize the Chroma SDK to use the library.
+
+* [Is Active](?#markdown-header-is-active): Check if the app/game has Chroma focus.
+
+* [Is Connected](?#markdown-header-is-connected): Check if Chroma hardware is connected.
+
+* [Play Chroma Animation](?#markdown-header-play-chroma-animation): Playback a Chroma Animation asset.
+
+* [Set Event Name](?#markdown-header-set-event-name): Name a game event or game trigger in order to also add Haptics to the Chroma event.
+
+* [Use Forward Chroma Events](?#markdown-header-use-forward-chroma-events): Toggle automatic invocation of SetEventName when invoking PlayAnimation using the animation name.
+
+## Namespace
+
+Add the Chroma SDK namespace to use the API.
+
+```
+#include "Razer\ChromaAnimationAPI.h"
+
+using namespace ChromaSDK;
+```
+
+## Initialize SDK
+
+Initialize the Chroma SDK in order to utilize the API. The `InitSDK` method takes an `AppInfo` parameter which defines the application or game details that will appear in the `Chroma App` within the `Chroma Apps` tab. The expected return result should be `RazerErrors.RZRESULT_SUCCESS` which indicates the API is ready for use. If a non-success result is returned, the Chroma implementation should be disabled until the next time the application or game is launched. Reasons for failure are likely to be the user does not have the `Synapse` or the `Chroma App` installed. After successfully initializing the Chroma SDK, wait approximately 100 ms before playing Chroma Animations.
+
+![image_5](images/image_5.png)
+
+```c++
+ APPINFOTYPE appInfo = {};
+
+ _tcscpy_s(appInfo.Title, 256, _T("Sample Game Title"));
+ _tcscpy_s(appInfo.Description, 1024, _T("Sample Game Description"));
+ _tcscpy_s(appInfo.Author.Name, 256, _T("Company Name"));
+ _tcscpy_s(appInfo.Author.Contact, 256, _T("Company Website or Email"));
+
+ //appInfo.SupportedDevice = 
+ //    0x01 | // Keyboards
+ //    0x02 | // Mice
+ //    0x04 | // Headset
+ //    0x08 | // Mousepads
+ //    0x10 | // Keypads
+ //    0x20   // ChromaLink devices
+ appInfo.SupportedDevice = (0x01 | 0x02 | 0x04 | 0x08 | 0x10 | 0x20);
+ //    0x01 | // Utility. (To specifiy this is an utility application)
+ //    0x02   // Game. (To specifiy this is a game);
+ appInfo.Category = 0x02;
+
+ RZRESULT result = ChromaAnimationAPI::InitSDK(&appInfo);
+if (result == RZRESULT_SUCCESS)
+{
+    // Init Success! Ready to use the Chroma SDK!
+}
+else
+{
+    // Init Failed! Stop using the Chroma SDK until the next game launch!";
+}
+```
+
+Applications should uninitialize the Chroma SDK with Uninit() for a clean exit. Uninitialization is only needed if the Chroma SDK was successfully initialized.
+
+```c++
+int result = ChromaAnimationAPI::Uninit();
+if (result == RZRESULT_SUCCESS)
+{
+    // Chroma has been uninitialized!
+}
+else
+{
+    // Uninitialization was unsuccessful!
+}
+```
+
+## Is Active
+
+Many applications and games can use the Chroma SDK at the same time, yet only one can have the Chroma focus. The `APP PRIORITY LIST` defines the priority order and the highest on the list receives the Chroma focus when more than one are actively using the Chroma SDK. Users can adjust the priority order by dragging and dropping or toggling the app completely off. The IsActive() method allows an application or game to check if it has Chroma focus. This allows the title to free up overhead when Chroma is not in use. If a title uses this to check for focus, the state should be periodically checked to turn Chroma back on when focus is returned. When active returns false, the title can stop playing Chroma Animations, disable idle animations, and inactivate dynamic Chroma to free up some overhead. Keep in mind that some apps use Chroma notifications so they will only briefly take Chroma focus and then return it typically over a 5 second period.
+
+```c++
+bool isActive;
+int result = ChromaAnimationAPI::IsActive(isActive);
+if (result == RZRESULT_SUCCESS)
+{
+    if (isActive)
+    {
+        // The game currently has the Chroma focus!
+    }
+    else
+    {
+        // The game does not currently have the Chroma focus!"
+    }
+}
+else
+{
+    // Unable to check for Chroma focus. Unexpected result!
+}
+```
+
+## Is Connected
+
+To further reduce overhead, a title can check if supported devices are connected before showing Chroma effects. The IsConnected() method can indicate if supported devices are in use to help determine if Chroma should be active. Games often will include a menu settings option to toggle Chroma RGB support, with being on by default as an additional way that users can minimize overhead.
+
+```c++
+DEVICE_INFO_TYPE deviceInfo = { DEVICE_INFO_TYPE::DEVICE_ALL };
+int result = ChromaAnimationAPI::CoreIsConnected(deviceInfo);
+if (result == RZRESULT_SUCCESS)
+{
+    if (deviceInfo.Connected > 0)
+    {
+        // Chroma devices are connected!
+    }
+    else
+    {
+        // "No Chroma devices are connected!";
+    }
+}
+else
+{
+    // "Unable to check for Chroma devices. Unexpected result!";
+}
+```
+
+## Play Chroma Animation
+
+The Chroma SDK supports playing premade Chroma animations which are placed in the `StreamingAssets` folder or subfolders within. Chroma animations can be created in the web authoring tools, or dynamically created and modified using the API. Call PlayAnimation() to play Chroma animations with or without looping. Animations have a device category, and playing an animation will stop an existing animation from playing before playing the new animation for the given device category. The animation name is file path of the Chroma animation relative to the `StreamingAssets` folder.
+
+```c++
+bool loop = false;
+vector<string> devices =
+{
+	"ChromaLink",
+	"Headset",
+	"Keyboard",
+	"Keypad",
+	"Mouse",
+	"Mousepad"
+};
+for(int i = 0; i < devices.size(); ++i)
+{
+	string animationName = "Animations/Spiral_" + devices[i] + ".chroma";
+	ChromaAnimationAPI::PlayAnimationName(animationName.c_str(), loop);
+}
+```
+
+## Set Event Name
+
+Chroma events can be named to add supplemental technology to your lighting experience. By naming game events and game triggers, the event name can be used as a lookup to play things like haptics effects. `Jump_2s` could be used when playing a Chroma animation of a jump effect that lasts for 2 seconds. Using "Jump_2s" a corresponding haptic effect with similar duration can be added with the Chroma effect to enhance emersion for the title. No other APIs are required to add haptics effects other than to invoke SetEffectName()[].
+
+```c++
+int result = ChromaAnimationAPI::CoreSetEventName(L"Jump_2s");
+if (result == RZRESULT_SUCCESS)
+{
+    // Chroma event named successfully!"
+}
+else
+{
+    // Unable to set event name. Unexpected result!"
+}
+```
+
+## Use Forward Chroma Events
+
+By default when PlayAnimation is called, the animation name is automatically sent to SetEffectName(). In order to disable the default behaviour set the toggle to false. PlayAnimation() as shown above is called for each device category. It will be more efficent to use SetEventName() once for the Chroma Animation set. Manual mode gives the title explicit control over when SetEventName() is called.
+
+```c++
+bool toggle = false; // manual mode
+ChromaAnimationAPI::UseForwardChromaEvents(toggle);
+if (toggle)
+{
+    // When PlayAnimation is used, the name is sent to SetEventName().
+}
+else
+{
+    // The PlayAnimation name is not forwarded.
+}
+
+```
+
+## Microsoft Dynamic Lighting
+
+Windows 11 launched Microsoft Dynamic Lighting which is built-in to the Windows Settings Personalization on Windows. Microsoft DL became generally available in `Windows 11 22H2`. See the [list of supported devices](https://learn.microsoft.com/en-us/windows-hardware/design/component-guidelines/dynamic-lighting-devices).
+
+![image_6](images/image_6.png)
+
+For HID compatible devices, with `Dynamic Lighting` set to `ON` and `Chroma App` set as the ambient controller, Chroma effects will display on DL compatible hardware. No extra coding is required to add this compatibility. `Chroma App` handles Chroma compatibility with DL and it is completely automatic.
+
+![image_7](images/image_7.png)
 
 <a name="api-class"></a>
 
@@ -8778,8 +8981,8 @@ double result = ChromaAnimationAPI::SetKeyZeroColorRGBNameD(
 **PluginSetLogDelegate**
 
 Invokes the setup for a debug logging callback so that `stdout` is redirected 
-to the callback. This is used by `Unity` so that debug messages can appear 
-in the console window.
+to the callback. This is used by engines like `Unity` so that debug messages
+can appear in the console window.
 
 ```C++
 // DLL Interface

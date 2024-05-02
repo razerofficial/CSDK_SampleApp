@@ -60,7 +60,10 @@ namespace ChromaSDK
             DEVICE_MOUSEPAD    = 4, //!< Mousepad device.
             DEVICE_KEYPAD      = 5, //!< Keypad device.
             DEVICE_SYSTEM      = 6, //!< System device.
-            DEVICE_INVALID          //!< Invalid device.
+            DEVICE_SPEAKERS    = 7, //!< Speakers.
+            DEVICE_CHROMALINK  = 8,  //!< Chroma Link device.
+            DEVICE_ALL         = 255,
+            DEVICE_INVALID
         } DeviceType;
 
         DWORD Connected;            //!< Number of devices connected.

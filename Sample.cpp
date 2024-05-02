@@ -29,6 +29,22 @@ void ShowEffect1()
     ChromaAnimationAPI::GetAnimation(baseLayer);
     // play the animation on the dynamic canvas
     ChromaAnimationAPI::PlayAnimationName(baseLayer, true);
+
+    bool loop = false;
+    vector<string> devices =
+    {
+        "ChromaLink",
+        "Headset",
+        "Keyboard",
+        "Keypad",
+        "Mouse",
+        "Mousepad"
+    };
+    for (int i = 0; i < devices.size(); ++i)
+    {
+        string animationName = "Animations/Spiral_" + devices[i] + ".chroma";
+        ChromaAnimationAPI::PlayAnimationName(animationName.c_str(), loop);
+    }
 }
 void ShowEffect1ChromaLink()
 {
