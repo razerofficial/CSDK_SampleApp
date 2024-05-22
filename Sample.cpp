@@ -5128,6 +5128,7 @@ int main()
     HandleInput inputBackspace = HandleInput(VK_BACK);
     HandleInput inputEnter = HandleInput(VK_RETURN);
 	HandleInput inputPlatform = HandleInput('P');
+    HandleInput inputStop = HandleInput('S');
     HandleInput inputEscape = HandleInput(VK_ESCAPE);
 
     int autoPrint = 0;
@@ -5150,6 +5151,11 @@ int main()
 			platform = (platform + 1) % 4; //PC, AMAZON LUNA, MS GAME PASS, NVIDIA GFN
 			PrintLegend(supportsStreaming, platform);
 		}
+        else if (inputStop.WasReleased(true))
+        {
+            // Stop haptic playback
+            ChromaAnimationAPI::CoreSetEventName(L"");
+        }
         else if (inputUp.WasReleased(true))
         {
             ClearManualInput();
