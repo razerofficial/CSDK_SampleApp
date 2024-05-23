@@ -156,6 +156,29 @@ Chroma Sensa is the combination of Chroma and Razer Sensa HD Haptics in a single
 
 ![image_8](images/image_8.png)
 
+Event names follow a naming convention to control haptic playback.
+
+* "Jump" - (without a suffix) Existing haptics stop, the named haptic plays to completion and then ends
+
+* "Attack_ON" - Existing haptics continue to play, the named haptic plays as a continuous looping haptic
+
+* "Attack_OFF" - Existing haptics continue to play, the named looping haptic stops
+
+* "Punch_MERGE" - Existing haptics continue to play, the named haptic plays to completion and ends
+
+* "Block_MERGE" - Existing haptics continue to play, the named haptic plays to completion and ends
+
+Upon completion of Chroma and haptic implementation, the list of Chroma events and game triggers should be shared with the team to be add to the game's [Chroma Workshop](https://www.razer.com/chroma-workshop#--games) entry.
+ 
+Targeting features can be **optionally** described for each haptics effect.
+
+* "Target" does not have a default. GroupID options can be found at https://www.interhaptics.com/doc/interhaptics-engine/#groupid
+
+* "Spatialization" defaults to "Global". Other LateralFlag options can be found at https://www.interhaptics.com/doc/interhaptics-engine/#lateralflag
+
+* "Gain" defaults to 1.0.
+
+
 ## Namespace
 
 Add the Chroma SDK namespace to use the API.
