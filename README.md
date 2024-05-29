@@ -162,9 +162,9 @@ Upon completion of Chroma and haptic implementation, the list of Chroma events a
  
 Targeting features can be **optionally** described for each haptics effect.
 
-* "Target" does not have a default. GroupID options can be found at https://www.interhaptics.com/doc/interhaptics-engine/#groupid
+* "Target" defaults to `"All"`. GroupID options can be found at https://www.interhaptics.com/doc/interhaptics-engine/#groupid
 
-* "Spatialization" defaults to "Global". Other LateralFlag options can be found at https://www.interhaptics.com/doc/interhaptics-engine/#lateralflag
+* "Spatialization" defaults to `"Global"`. Other LateralFlag options can be found at https://www.interhaptics.com/doc/interhaptics-engine/#lateralflag
 
 * "Gain" defaults to 1.0.
 
