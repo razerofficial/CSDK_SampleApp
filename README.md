@@ -156,18 +156,6 @@ Chroma Sensa is the combination of Chroma and Razer Sensa HD Haptics in a single
 
 ![image_8](images/image_8.png)
 
-Event names follow a naming convention to control haptic playback.
-
-* "Jump" - (without a suffix) Existing haptics stop, the named haptic plays to completion and then ends
-
-* "Attack_ON" - Existing haptics continue to play, the named haptic plays as a continuous looping haptic
-
-* "Attack_OFF" - Existing haptics continue to play, the named looping haptic stops
-
-* "Punch_MERGE" - Existing haptics continue to play, the named haptic plays to completion and ends
-
-* "Block_MERGE" - Existing haptics continue to play, the named haptic plays to completion and ends
-
 Upon completion of Chroma and haptic implementation, the list of Chroma events and game triggers should be shared with the team to be add to the game's [Chroma Workshop](https://www.razer.com/chroma-workshop#--games) entry.
  
 Targeting features can be **optionally** described for each haptics effect.
@@ -312,10 +300,11 @@ for(int i = 0; i < devices.size(); ++i)
 
 ## Set Event Name
 
-Chroma events can be named to add supplemental technology to your lighting experience. By naming game events and game triggers, the event name can be used as a lookup to play things like haptics effects. `Jump_2s` could be used when playing a Chroma animation of a jump effect that lasts for 2 seconds. Using "Jump_2s" a corresponding haptic effect with similar duration can be added with the Chroma effect to enhance emersion for the title. No other APIs are required to add haptics effects other than to invoke SetEventtName(). To stop haptics playback use SetEventName() with an empty string. A Chroma animation does not need to be playing in order to trigger haptics manually with SetEventName().
+Chroma events can be named to add supplemental technology to your lighting experience. By naming game events and game triggers, the event name can be used as a lookup to play things like haptics effects. `SetEventName(L"Jump")` could be used when playing a Chroma animation of a jump effect. Using `L"Jump"` a corresponding haptic effect can be added with the Chroma effect to enhance emersion for the title. No other APIs are required to add haptics effects other than to invoke SetEventtName(). To stop haptics playback use `SetEventName(L"")` with an empty string. A Chroma animation does not need to be playing in order to trigger haptics manually with SetEventName().
 
 ```c++
-int result = ChromaAnimationAPI::CoreSetEventName(L"Jump_2s");
+// Trigger haptic effect
+int result = ChromaAnimationAPI::CoreSetEventName(L"Jump");
 if (result == RZRESULT_SUCCESS)
 {
     // Chroma event named successfully!"
