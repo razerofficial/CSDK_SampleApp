@@ -5,10 +5,10 @@
 #include <tchar.h>
 
 
-# ifdef _WIN64
-#define CHROMA_EDITOR_DLL	"CChromaEditorLibrary64.dll"
+#ifdef _WIN64
+#define CHROMA_EDITOR_DLL	L"CChromaEditorLibrary64.dll"
 #else
-#define CHROMA_EDITOR_DLL	"CChromaEditorLibrary.dll"
+#define CHROMA_EDITOR_DLL	L"CChromaEditorLibrary.dll"
 #endif
 
 
@@ -277,6 +277,8 @@ CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_GET_FRAME, GetFrame);
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_GET_FRAME_COUNT, GetFrameCount);
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_GET_FRAME_COUNT_NAME, GetFrameCountName);
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_GET_FRAME_COUNT_NAME_D, GetFrameCountNameD);
+CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_GET_FRAME_DURATION, GetFrameDuration);
+CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_GET_FRAME_DURATION_NAME, GetFrameDurationName);
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_GET_FRAME_NAME, GetFrameName);
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_GET_KEY_COLOR, GetKeyColor);
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_GET_KEY_COLOR_D, GetKeyColorD);
@@ -293,6 +295,8 @@ CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_GET_PLAYING_ANIMATION_COUNT, GetPlayingAnim
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_GET_PLAYING_ANIMATION_ID, GetPlayingAnimationId);
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_GET_RGB, GetRGB);
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_GET_RGBD, GetRGBD);
+CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_GET_TOTAL_DURATION, GetTotalDuration);
+CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_GET_TOTAL_DURATION_NAME, GetTotalDurationName);
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_HAS_ANIMATION_LOOP, HasAnimationLoop);
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_HAS_ANIMATION_LOOP_NAME, HasAnimationLoopName);
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_HAS_ANIMATION_LOOP_NAME_D, HasAnimationLoopNameD);
@@ -591,25 +595,21 @@ int ChromaAnimationAPI::InitAPI()
 		return 0;
 	}
 
-	wchar_t wFileName[MAX_PATH]; //this is a char buffer
-	GetModuleFileNameW(NULL, wFileName, sizeof(wFileName));
+	wchar_t filename[MAX_PATH]; //this is a char buffer
+	GetModuleFileNameW(NULL, filename, sizeof(filename));
 
-	// Convert the wide character path to a narrow character (ANSI) string
-	char filename[MAX_PATH];
-	WideCharToMultiByte(CP_UTF8, 0, wFileName, -1, filename, MAX_PATH, NULL, NULL);
-
-	std::string path;
-	const size_t last_slash_idx = std::string(filename).rfind('\\');
+	std::wstring path;
+	const size_t last_slash_idx = std::wstring(filename).rfind('\\');
 	if (std::string::npos != last_slash_idx)
 	{
-		path = std::string(filename).substr(0, last_slash_idx);
+		path = std::wstring(filename).substr(0, last_slash_idx);
 	}
 
-	path += "\\";
+	path += L"\\";
 	path += CHROMA_EDITOR_DLL;
 
 	// check the library file version
-	if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path.c_str(), 1, 0, 1, 1))
+	if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path.c_str(), 1, 0, 1, 2))
 	{
 		ChromaLogger::fprintf(stderr, "Detected old version of Chroma Editor Library!\r\n");
 		return RZRESULT_DLL_NOT_FOUND;
@@ -626,12 +626,7 @@ int ChromaAnimationAPI::InitAPI()
 		return RZRESULT_DLL_INVALID_SIGNATURE;
 	}
 
-	const char* fullPath = path.c_str();
-	wchar_t wFullPath[MAX_PATH];
-	int wideStrLength = MultiByteToWideChar(CP_UTF8, 0, fullPath, -1, NULL, 0);
-	MultiByteToWideChar(CP_UTF8, 0, fullPath, -1, wFullPath, wideStrLength);
-
-	HMODULE library = LoadLibraryW(wFullPath);
+	HMODULE library = LoadLibrary(path.c_str());
 	if (library == NULL)
 	{ 
 		ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library!\r\n");
@@ -898,6 +893,8 @@ CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_FRAME, GetFrame);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_FRAME_COUNT, GetFrameCount);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_FRAME_COUNT_NAME, GetFrameCountName);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_FRAME_COUNT_NAME_D, GetFrameCountNameD);
+CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_FRAME_DURATION, GetFrameDuration);
+CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_FRAME_DURATION_NAME, GetFrameDurationName);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_FRAME_NAME, GetFrameName);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_KEY_COLOR, GetKeyColor);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_KEY_COLOR_D, GetKeyColorD);
@@ -914,6 +911,8 @@ CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_PLAYING_ANIMATION_COUNT, GetPlayingAnimatio
 CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_PLAYING_ANIMATION_ID, GetPlayingAnimationId);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_RGB, GetRGB);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_RGBD, GetRGBD);
+CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_TOTAL_DURATION, GetTotalDuration);
+CHROMASDK_VALIDATE_METHOD(PLUGIN_GET_TOTAL_DURATION_NAME, GetTotalDurationName);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_HAS_ANIMATION_LOOP, HasAnimationLoop);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_HAS_ANIMATION_LOOP_NAME, HasAnimationLoopName);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_HAS_ANIMATION_LOOP_NAME_D, HasAnimationLoopNameD);
@@ -1480,6 +1479,8 @@ int ChromaAnimationAPI::UninitAPI()
 	CHROMASDK_DECLARE_METHOD_CLEAR(GetFrameCount);
 	CHROMASDK_DECLARE_METHOD_CLEAR(GetFrameCountName);
 	CHROMASDK_DECLARE_METHOD_CLEAR(GetFrameCountNameD);
+	CHROMASDK_DECLARE_METHOD_CLEAR(GetFrameDuration);
+	CHROMASDK_DECLARE_METHOD_CLEAR(GetFrameDurationName);
 	CHROMASDK_DECLARE_METHOD_CLEAR(GetFrameName);
 	CHROMASDK_DECLARE_METHOD_CLEAR(GetKeyColor);
 	CHROMASDK_DECLARE_METHOD_CLEAR(GetKeyColorD);
@@ -1496,6 +1497,8 @@ int ChromaAnimationAPI::UninitAPI()
 	CHROMASDK_DECLARE_METHOD_CLEAR(GetPlayingAnimationId);
 	CHROMASDK_DECLARE_METHOD_CLEAR(GetRGB);
 	CHROMASDK_DECLARE_METHOD_CLEAR(GetRGBD);
+	CHROMASDK_DECLARE_METHOD_CLEAR(GetTotalDuration);
+	CHROMASDK_DECLARE_METHOD_CLEAR(GetTotalDurationName);
 	CHROMASDK_DECLARE_METHOD_CLEAR(HasAnimationLoop);
 	CHROMASDK_DECLARE_METHOD_CLEAR(HasAnimationLoopName);
 	CHROMASDK_DECLARE_METHOD_CLEAR(HasAnimationLoopNameD);
