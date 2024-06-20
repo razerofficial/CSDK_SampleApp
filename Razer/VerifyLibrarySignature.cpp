@@ -14,8 +14,9 @@
 
 #pragma comment (lib, "wintrust")
 #pragma comment (lib, "Psapi")
-#pragma comment(lib, "crypt32")
-#pragma comment(lib, "ShLwApi")
+#pragma comment (lib, "crypt32")
+#pragma comment (lib, "ShLwApi")
+#pragma comment (lib, "version")
 
 using namespace std;
 
@@ -23,12 +24,12 @@ namespace ChromaSDK
 {
 
 	// Source: https://docs.microsoft.com/en-us/windows/desktop/seccrypto/example-c-program--verifying-the-signature-of-a-pe-file
-	BOOL VerifyLibrarySignature::VerifyModule(const std::wstring& filename)
+	BOOL VerifyLibrarySignature::VerifyModule(const std::string& filename)
 	{
 		return IsFileSigned(filename.c_str());
 	}
 
-	BOOL VerifyLibrarySignature::IsFileSignedByRazer(const wchar_t* szFileName)
+	BOOL VerifyLibrarySignature::IsFileSignedByRazer(const char* filename)
 	{
 		BOOL bResult = FALSE;
 
@@ -42,8 +43,12 @@ namespace ChromaSDK
 		PCMSG_SIGNER_INFO pSignerInfo = NULL;
 		PCCERT_CONTEXT pCertContext = NULL;
 
+		wchar_t wFileName[MAX_PATH];
+		int wideStrLength = MultiByteToWideChar(CP_UTF8, 0, filename, -1, NULL, 0);
+		MultiByteToWideChar(CP_UTF8, 0, filename, -1, wFileName, wideStrLength);
+
 		if (TRUE == CryptQueryObject(CERT_QUERY_OBJECT_FILE,
-			szFileName,
+			wFileName,
 			CERT_QUERY_CONTENT_FLAG_PKCS7_SIGNED_EMBED,
 			CERT_QUERY_FORMAT_FLAG_BINARY,
 			0,
@@ -128,15 +133,19 @@ namespace ChromaSDK
 		return bResult;
 	}
 
-	BOOL VerifyLibrarySignature::IsFileSigned(const wchar_t* szFileName)
+	BOOL VerifyLibrarySignature::IsFileSigned(const char* filename)
 	{
 		BOOL bResult = FALSE;
 		DWORD dwLastError = 0;
 
 		WINTRUST_FILE_INFO FileData = {};
 
+		wchar_t wFileName[MAX_PATH];
+		int wideStrLength = MultiByteToWideChar(CP_UTF8, 0, filename, -1, NULL, 0);
+		MultiByteToWideChar(CP_UTF8, 0, filename, -1, wFileName, wideStrLength);
+
 		FileData.cbStruct = sizeof(WINTRUST_FILE_INFO);
-		FileData.pcwszFilePath = szFileName;
+		FileData.pcwszFilePath = wFileName;
 		FileData.hFile = NULL;
 		FileData.pgKnownSubject = NULL;
 
@@ -198,7 +207,7 @@ namespace ChromaSDK
 					"Yes" when asked to install and run the signed
 					subject.
 			*/
-			bResult = IsFileSignedByRazer(szFileName);
+			bResult = IsFileSignedByRazer(filename);
 			break;
 		case TRUST_E_NOSIGNATURE:
 			// The file was not signed or had a signature 
@@ -258,13 +267,17 @@ namespace ChromaSDK
 		return bResult;
 	}
 
-	BOOL VerifyLibrarySignature::IsFileVersionSameOrNewer(const std::wstring& filename, const int minMajor, const int minMinor, const int minRevision, const int minBuild)
+	BOOL VerifyLibrarySignature::IsFileVersionSameOrNewer(const std::string& filename, const int minMajor, const int minMinor, const int minRevision, const int minBuild)
 	{
-		std::filesystem::path p = filename.c_str();
+		wchar_t wFileName[MAX_PATH];
+		int wideStrLength = MultiByteToWideChar(CP_UTF8, 0, filename.c_str(), -1, NULL, 0);
+		MultiByteToWideChar(CP_UTF8, 0, filename.c_str(), -1, wFileName, wideStrLength);
+
+		std::filesystem::path p = wFileName;
 		std::error_code pathError;
 		if (!std::filesystem::exists(p, pathError))
 		{
-			ChromaLogger::fwprintf(stderr, L"Library not found! %s\r\n", filename.c_str());
+			ChromaLogger::fprintf(stderr, "Library not found! %s\r\n", filename.c_str());
 			return false;
 		}
 
@@ -273,13 +286,13 @@ namespace ChromaSDK
 		DWORD  verHandle = 0;
 		UINT   size = 0;
 		LPBYTE lpBuffer = NULL;
-		DWORD  verSize = GetFileVersionInfoSize(filename.c_str(), &verHandle);
+		DWORD  verSize = GetFileVersionInfoSizeW(wFileName, &verHandle);
 
 		if (verSize)
 		{
 			LPSTR verData = (LPSTR)malloc(verSize);
 
-			if (GetFileVersionInfo(filename.c_str(), verHandle, verSize, verData))
+			if (GetFileVersionInfoW(wFileName, verHandle, verSize, verData))
 			{
 				if (VerQueryValue(verData, L"\\", (VOID FAR * FAR*) & lpBuffer, &size))
 				{
@@ -293,7 +306,7 @@ namespace ChromaSDK
 							const int revision = (verInfo->dwFileVersionLS >> 16) & 0xffff;
 							const int build = (verInfo->dwFileVersionLS >> 0) & 0xffff;
 
-							ChromaLogger::wprintf(L"File Version: %d.%d.%d.%d %s\r\n", major, minor, revision, build, filename.c_str());
+							ChromaLogger::fwprintf(stdout, L"File Version: %d.%d.%d.%d %s\r\n", major, minor, revision, build, wFileName);
 
 							// Anything less than the min version returns false
 

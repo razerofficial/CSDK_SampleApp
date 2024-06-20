@@ -5,10 +5,10 @@
 #include <tchar.h>
 
 
-#ifdef _WIN64
-#define CHROMA_EDITOR_DLL	L"CChromaEditorLibrary64.dll"
+# ifdef _WIN64
+#define CHROMA_EDITOR_DLL	"CChromaEditorLibrary64.dll"
 #else
-#define CHROMA_EDITOR_DLL	L"CChromaEditorLibrary.dll"
+#define CHROMA_EDITOR_DLL	"CChromaEditorLibrary.dll"
 #endif
 
 
@@ -595,17 +595,21 @@ int ChromaAnimationAPI::InitAPI()
 		return 0;
 	}
 
-	wchar_t filename[MAX_PATH]; //this is a char buffer
-	GetModuleFileNameW(NULL, filename, sizeof(filename));
+	wchar_t wFileName[MAX_PATH]; //this is a char buffer
+	GetModuleFileNameW(NULL, wFileName, sizeof(wFileName));
 
-	std::wstring path;
-	const size_t last_slash_idx = std::wstring(filename).rfind('\\');
+	// Convert the wide character path to a narrow character (ANSI) string
+	char filename[MAX_PATH];
+	WideCharToMultiByte(CP_UTF8, 0, wFileName, -1, filename, MAX_PATH, NULL, NULL);
+
+	std::string path;
+	const size_t last_slash_idx = std::string(filename).rfind('\\');
 	if (std::string::npos != last_slash_idx)
 	{
-		path = std::wstring(filename).substr(0, last_slash_idx);
+		path = std::string(filename).substr(0, last_slash_idx);
 	}
 
-	path += L"\\";
+	path += "\\";
 	path += CHROMA_EDITOR_DLL;
 
 	// check the library file version
@@ -626,7 +630,12 @@ int ChromaAnimationAPI::InitAPI()
 		return RZRESULT_DLL_INVALID_SIGNATURE;
 	}
 
-	HMODULE library = LoadLibrary(path.c_str());
+	const char* fullPath = path.c_str();
+	wchar_t wFullPath[MAX_PATH];
+	int wideStrLength = MultiByteToWideChar(CP_UTF8, 0, fullPath, -1, NULL, 0);
+	MultiByteToWideChar(CP_UTF8, 0, fullPath, -1, wFullPath, wideStrLength);
+
+	HMODULE library = LoadLibraryW(wFullPath);
 	if (library == NULL)
 	{ 
 		ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library!\r\n");
