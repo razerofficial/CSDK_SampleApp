@@ -11,6 +11,7 @@
 * [Dependencies](#dependencies)
 * [About](#about)
 * [Security](#security)
+* [Chroma Editor Library](#chroma-editor-library)
 * [Windows PC](#windows-pc)
 * [Windows Cloud](#windows-cloud)
 * [SDK Integration](#sdk-integration)
