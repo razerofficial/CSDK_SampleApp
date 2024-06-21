@@ -16,8 +16,18 @@
 * [Chroma Editor Library](#chroma-editor-library)
 * [Windows PC](#windows-pc)
 * [Windows Cloud](#windows-cloud)
+* [SDK Integration](#sdk-integration)
+* [Chroma Design](#chroma-design)
+* [Revisions](#revisions)
+* [Sample Project](#sample-project)
+* [Tools](#tools)
+* [Integration](#integration)
+* [Testing](#testing)
+* [Haptic Design](#haptic-design)
+* [Modding](#modding)
 * [General](#general)
 * [Chroma Sensa](#chroma-sensa)
+* [Synesthesia](#synesthesia)
 * [Namespace](#namespace)
 * [Initialize SDK](#initialize-sdk)
 * [Is Active](#is-active)
@@ -130,6 +140,84 @@ Win64BuildFolder\CChromaEditorLibrary64.dll
 
 `Windows Cloud` builds run on cloud platforms using `Windows` such as `Amazon Luna`, `Microsoft Game Pass`, and `NVidia GeForce Now`. Game instances run in the cloud without direct access to Chroma hardware. Chroma effects stream across the Internet to reach your local machine and connected hardware. No extra code is required to add Cloud support. In the case with `NVidia GeForce Now`, the cloud runs the same Epic Games and Steam builds as the desktop version and support Chroma streaming. Viewers can watch the cloud stream via the [Razer Stream Portal](https://stream.razer.com/).
 
+<a name="sdk-integration"></a>
+
+## SDK Integration
+
+The SDK integration process involves the following:
+
+1. [Chroma Design](#chroma-design)
+
+2. [Revisions](#revisions)
+
+3. [Sample Project](#sample-project)
+
+4. [Tools](#tools)
+
+5. [Integration](#integration)
+
+6. [Testing](#testing)
+
+7. [Haptic Design](#haptic-design)
+
+8. [Modding](#modding)
+
+<a name="chroma-design"></a>
+
+### Chroma Design
+
+The Chroma Design is the starting point. The team provides 15 sample effects that play on an animated web page. The sample effects correspond to short gameplay video clips and give an idea to the type of animation that could play for a set of game events. The samples are available to use for the specified effect or can be used for any other effect which is completely up to the developer. The developer may ask for effect revisions or additional sample effects. If gameplay video is not available, the developer can provide a description or reference art to conceptualize the desired effect.
+
+![image_9](images/image_9.png)
+
+<a name="revisions"></a>
+
+### Revisions
+
+Some Chroma Designs require revisions to add more requested effects or to make changes through the feedback of reviewing the Chroma Design. Revisions can be requested which result in a subset of alterations from the previous design or add completely new game events. **Fill out the [Chroma_Sensa_Template_Developers.xlsx Template](https://github.com/razerofficial/CChromaEditor/releases/tag/Templates) which provides all the necessary fields for making design requests and revisions.**
+
+<a name="sample-project"></a>
+
+### Sample Project
+
+The developer specifies which game engine is used by the game so that a sample project can be shared with sample code for the specified engine. The sample project will have the same effects that were defined in the Chroma Design and ported to the target language/game engine. The sample project will include a plugin to add the Chroma SDK to the specified game engine, and the ported sample code and sample animations from the `Chroma Design`.
+
+<a name="tools"></a>
+
+### Tools
+
+* The [Web Chroma Editor](https://chroma.razer.com/ChromaEditor/gradient/) creates Chroma animations and code snippets from several input sources. Designers can create Chroma animations without writing any code. The toolset can use input sources as video, text, camera, web cam, desktop capture, gradients, patterns, images, and blended animations.
+
+![image_10](images/image_10.png)
+
+* The [Chroma Design Converter](https://chroma.razer.com/ChromaDesignConverter/) can automatically port a web based Chroma Design to several languages and game engines.
+
+* The [Synesthesia Console](https://www.interhaptics.com/doc/chroma-sensa/#synesthesia) can generate haptic configurations automatically for your Chroma integration.
+
+<a name="integration"></a>
+
+### Integration
+
+The integration process can be as easy as copy and paste from the sample project into the game code. Most likely, it's a matter of finding game triggers in the game code to find the optimal place to add a call to `PlayAnimation()`. The typical Chroma integration process lasts 3 - 5 days for a single developer. Haptics integration can take 0 days by using automatic mode. Manually adding haptics can take about the same amount of work as Chroma to add the calls to `SetEventName()` in the right places. Chroma and haptics are independent meaning sometimes they play together and sometimes they play separately, which is completely up to the designer. **In most cases for game engines after the game build completes, the Chroma animations need to be copied to the animation folder within the game's content folder.**
+
+<a name="testing"></a>
+
+### Testing
+
+The team can provide QA on the game build when integration has completed. Steam beta keys and Epic Store beta keys make testing possible before a game launches. This can be a good way to provide design revisions by testing and giving feedback on the build. To support the QA process, it will be important to include a level selector and potentially console commands that make it easy to navigate the build to test the game triggers at the right moments to validate the visuals work as expected. Beta key access is limited to the engineering and QA review team.
+
+<a name="haptic-design"></a>
+
+### Haptic Design
+
+Just like Chroma Designs, the Haptic Design can be provided by the team. Adding haptic support does not require adding assets to the game. Haptics can be added to a game without code changes and after the game has released. Haptics can be added through creation of a haptic configuration file. Developers can use the [Synesthesia Console](https://www.interhaptics.com/doc/chroma-sensa/#synesthesia) which automates creation of the haptic configuration file within `HapticFolders` and will add some mockup haptic files (simple haptic effect which can be edited with [Haptic Composer](https://www.interhaptics.com/download/)) when event names follow a naming convention. Haptic configuration files are automatically distributed by the team through `Chroma App` updates.
+
+<a name="modding"></a>
+
+### Modding
+
+The decision to add Chroma mod support for a title is completely up to the developer. If the developer decides to block modding, Chroma animations can be loaded from a byte array which sandboxes and protects against any modifications to the Chroma animation assets. If the developer wants to use modding, Chroma animation assets are placed within the installation directory. Modders can modify the Chroma animations assets that are loaded by the title. The API provides `CloseAnimation` which reloads the Chroma animation from disk. This allows Chroma animations to be modified externally without needing to relaunch the title. Chroma animation playback also supports relative paths from the content folder. Relative paths can be used to organize several mods within the content folder. The title can have a configuration menu that switches between mod subfolder names which changes the relative path for loading the Chroma animations. The [C++ Chroma Mod Sample](https://github.com/razerofficial/CSDK_ChromaModSample) shows how relative paths can be used to detect and use mods, which is applicable for any game or custom engine.
+
 <a name="general"></a>
 
 ## General
@@ -148,15 +236,27 @@ This document provides a guide to integrating Chroma RGB using the Chroma C++ SD
 
 * [Set Event Name](#set-event-name): Name a game event or game trigger in order to also add Haptics to the Chroma event.
 
-* [Use Forward Chroma Events](#use-forward-chroma-events): Toggle automatic invocation of SetEventName when invoking PlayAnimation using the animation name.
+* [Use Forward Chroma Events](#use-forward-chroma-events): Enable or disable automatic invocation of `SetEventName()` when invoking `PlayAnimation()` using the animation name.
 
 <a name="chroma-sensa"></a>
 
 ## Chroma Sensa
 
-Chroma Sensa is the combination of Chroma and Razer Sensa HD Haptics in a single SDK. The `Chroma SDK` is capable of playing Chroma animations and haptics on the Razer Sensa HD Haptics devices. The default mode allows automatic triggering of haptics effects when a Chroma animation is played with PlayAnimation(). Manual mode is set by UseForwardChromaEvents(false) and haptics can be triggered independently of Chroma animations with SetEventName().
+Chroma Sensa is the combination of Chroma and Razer Sensa HD Haptics in a single SDK. By integrating RGB lighting and haptics into game environments and events, players can enjoy a truly immersive gaming experience. The `Chroma SDK` is capable of playing Chroma animations and haptics on the Razer Sensa HD Haptics devices. The default mode allows automatic triggering of haptics effects when Chroma animations are played with `PlayAnimation()`. Manual mode is set by `UseForwardChromaEvents(false)` and haptics can be triggered independently of Chroma animations with SetEventName().
 
 ![image_8](images/image_8.png)
+
+Event names can follow a naming convention which assists with the generation of the haptics configuration for your title. Event names are specified with the `SetEventName()` method. The event name suffix can be left off or used to prepopulate common settings for `_ON`, `_OFF`, and `_MERGE`.
+
+* "Jump" - (without a suffix) Existing haptics stop, the named haptic plays to completion and then ends
+
+* "Attack_ON" - Existing haptics continue to play, the named haptic plays as a continuous looping haptic
+
+* "Attack_OFF" - Existing haptics continue to play, the named looping haptic stops
+
+* "Punch_MERGE" - Existing haptics continue to play, the named haptic plays to completion and ends
+
+* "Block_MERGE" - Existing haptics continue to play, the named haptic plays to completion and ends
 
 Upon completion of Chroma and haptic implementation, the list of Chroma events and game triggers should be shared with the team to be add to the game's [Chroma Workshop](https://www.razer.com/chroma-workshop#--games) entry.
  
@@ -168,6 +268,80 @@ Targeting features can be **optionally** described for each haptics effect.
 
 * "Gain" defaults to 1.0.
 
+
+## Synesthesia
+
+The [Synesthesia Console](https://www.interhaptics.com/doc/chroma-sensa/#synesthesia) makes creating the haptics configuration for game integration super easy. Download and run the installer to get started creating a haptics config.
+
+1. Run `SynesthesiaStop.exe` to stop any existing background or haptic consoles
+
+![image_33](images/image_33.png)
+
+2. Run the `Synesthesia Console` for the interactive prompt
+
+![image_34](images/image_34.png)
+
+3. Enter option `1` and press `Enter` to listen for incoming commands
+
+![image_35](images/image_35.png)
+
+4. Launch your game that uses `PlayAnimation` or `SetEvent` directly to trigger haptic commands.
+
+When the application launches and initializes Chroma, the command to `load` the haptic configuration file is sent. When the application receives Chroma focus, the `active` command is sent. When `PlayAnimation` or `SetEvent` is called, the `play` command is sent.
+```
+Command Received : "load;C++ Game Sample Application"
+Command Received : "active;C++ Game Sample Application"
+Command Received : "play;Effect1"
+```
+
+![image_36](images/image_36.png)
+
+5. Play through all the game triggers to send any possible commands the game might use. This will be useful for generating the haptic configuration next.
+
+![image_37](images/image_37.png)
+
+6. Enter option `2` and press `Enter` to generate the haptics configuration
+
+![image_38](images/image_38.png)
+
+7. Enter option `0` and press `Enter` to use the detected application name used by the Chroma initialization
+
+![image_39](images/image_39.png)
+
+8. Enter option `0` and press `Enter` to use activate the new haptic configuration file. Now when the game triggers haptic events, the configured haptic events will play.
+
+![image_40](images/image_40.png)
+
+The `haptic.config` and `haps` default haptics effects were generated in the `HapticFolders` by the console. 
+
+![image_41](images/image_41.png)
+
+The `haptic.config` contains default targeting for the generated entries for each detected command.
+
+```json
+{
+    "ExternalCommands": [
+        {
+            "External_Command_ID": "Effect1",
+            "Haptic_Events": [
+                {
+                    "Haptic_Effect": "Effect1",
+                    "Loop": 1,
+                    "Mixing": "Override",
+                    "Targeting": [
+                        {
+                            "Gain": 1.0,
+                            "Spatialization": "Global",
+                            "Target": "All"
+                        }
+                    ]
+                }
+            ]
+        },
+		...
+	]
+}
+```
 
 ## Namespace
 
