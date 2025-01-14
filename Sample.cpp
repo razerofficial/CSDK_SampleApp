@@ -5009,7 +5009,7 @@ void Cleanup()
 			ChromaAnimationAPI::UninitAPI();
 			if (result != RZRESULT_SUCCESS)
 			{
-				cerr << "Failed to uninitialize Chroma!" << endl;
+				cerr << "Failed to uninitialize Chroma! Result=" << result << endl;
 				exit(1);
 			}
 		}
