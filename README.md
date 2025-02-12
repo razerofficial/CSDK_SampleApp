@@ -23,6 +23,7 @@
 * [Tools](#tools)
 * [Integration](#integration)
 * [Testing](#testing)
+* [Performance](#performance)
 * [Haptic Design](#haptic-design)
 * [Modding](#modding)
 * [General](#general)
@@ -158,9 +159,11 @@ The SDK integration process involves the following:
 
 6. [Testing](#testing)
 
-7. [Haptic Design](#haptic-design)
+7. [Performance](#performance)
 
-8. [Modding](#modding)
+8. [Haptic Design](#haptic-design)
+
+9. [Modding](#modding)
 
 <a name="chroma-design"></a>
 
@@ -205,6 +208,115 @@ The integration process can be as easy as copy and paste from the sample project
 ### Testing
 
 The team can provide QA on the game build when integration has completed. Steam beta keys and Epic Store beta keys make testing possible before a game launches. This can be a good way to provide design revisions by testing and giving feedback on the build. To support the QA process, it will be important to include a level selector and potentially console commands that make it easy to navigate the build to test the game triggers at the right moments to validate the visuals work as expected. Beta key access is limited to the engineering and QA review team.
+
+<a name="performance"></a>
+
+### Performance
+
+**Performance Considerations**
+
+`Avoid Blocking the Update/Rendering Thread:`
+
+Calling the Chroma API in the middle of an update or rendering thread can cause noticeable lag if not handled properly.
+ 
+`Two Approaches for Animation References:`
+
+* By ID (Synchronous):
+	* Methods that reference animations by ID are synchronous. These calls can block the thread they run on.
+	* Recommendation: Use a dedicated thread outside the main update/render thread if you plan to call by ID.
+* By Name (Asynchronous):
+	* Methods that reference animations by name have been modified to run in the background and return immediately.
+	* This design avoids any performance impact on the main thread.
+	* Recommendation: It is safe to call these methods directly from the main thread since they won’t block it.
+ 
+`SetEventName Details:`
+
+* `SetEventName` is asynchronous and rate-limited to 30 FPS.
+* Using `SetEventName` to add external Chroma or haptics is generally the best way to maximize performance.
+
+The following chart measures `SetEventName` calls per second with a unique number of events. The high framerate shows the method will have little performance impact with a large number of simultaneous events.
+
+![image_42](images/image_42.png)
+ 
+ `GetAnimation Behavior:`
+
+ * GetAnimation returns the ID of a loaded animation immediately or sends the operation to open the animation in the background if it’s not already loaded.
+ 
+`Preloading Animations:`
+ 
+ * If yor design calls for using PlayChromaAnimationName during update or rendering, preload animations during level loading to avoid runtime lag.
+
+Performance is a key concern when adding Chroma and haptics to event triggers. Calling the API in the middle of an update or rendering thread could cause noticable lag if designed incorrectly. Methods that reference animations by id are synchronous and may block the calling thread. Methods that reference animations by name have been modified to pass the operation to the background and return immediately to avoid any performance impact. `SetEventName` is asynchronous and is rate limited to 30 FPS. `GetAnimation` will return the id of a loaded animation immediately or send the open animation operation to the background. To maximize performance use `SetEventName` to add external Chroma and haptics to the game. Preload animations during the level loading stage when using `PlayChromaAnimationName` if the design calls from the update or rendering thread. Use a dedicated thread outside the update and rendering thread If you plan to reference animations by id.
+
+`Asynchronous Methods:`
+
+The following methods have been adapted to work in the background (asynchronously) and can be safely called from the main thread without causing performance bottlenecks.
+
+```
+AddNonZeroAllKeysAllFramesName
+AddNonZeroAllKeysName
+CloseAnimationName
+CopyKeyColorName
+CopyKeysColorAllFramesName
+CopyNonZeroAllKeysAllFramesName
+CopyNonZeroAllKeysName
+CopyNonZeroTargetAllKeysAllFramesName
+CoreStreamBroadcast
+CoreStreamBroadcastEnd
+CoreStreamGetAuthShortcode
+CoreStreamGetFocus
+CoreStreamGetId
+CoreStreamGetKey
+CoreStreamGetStatus
+CoreStreamReleaseShortcode
+CoreStreamSetFocus
+CoreStreamWatch
+CoreStreamWatchEnd
+DuplicateFirstFrameName
+DuplicateFramesName
+DuplicateMirrorFramesName
+FadeEndFramesName
+FadeStartFramesName
+FillRandomColorsBlackAndWhiteAllFramesName
+FillThresholdColorsAllFramesName
+FillThresholdColorsMinMaxAllFramesRGBName
+FillThresholdColorsRGBName
+FillZeroColorAllFramesRGBName
+GetAnimation
+InsertDelayName
+InvertColorsAllFramesName
+MakeBlankFramesName
+MakeBlankFramesRGBName
+MultiplyColorLerpAllFramesName
+MultiplyIntensityAllFramesName
+MultiplyIntensityAllFramesRGBName
+MultiplyIntensityColorName
+MultiplyIntensityName
+MultiplyIntensityRGBName
+MultiplyTargetColorLerpAllFramesName
+OverrideFrameDurationName
+PlayChromaAnimationName
+PreviewFrameName
+ReduceFramesName
+ReverseAllFramesName
+SetChromaCustomFlagName
+SetEventName
+SetIdleAnimationName
+SetKeyColorAllFramesName
+SetKeyColorName
+SetKeysColorAllFramesName
+SetKeysColorAllFramesRGBName
+StopAll
+StopAnimationName
+StopAnimationType
+SubtractNonZeroAllKeysAllFramesName
+SubtractNonZeroAllKeysName
+TrimEndFramesName
+TrimStartFramesName
+UseForwardChromaEvents
+UseIdleAnimation
+UseIdleAnimations
+```
 
 <a name="haptic-design"></a>
 
