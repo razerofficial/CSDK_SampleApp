@@ -624,7 +624,7 @@ typedef RZRESULT	(*PLUGIN_CORE_SET_EFFECT)(RZEFFECTID EffectId);
 /*
 	Direct access to low level API.
 */
-typedef RZRESULT	(*PLUGIN_CORE_SET_EVENT_NAME)(LPCTSTR Name);
+typedef RZRESULT	(*PLUGIN_CORE_SET_EVENT_NAME)(const wchar_t* Name);
 /*
 	Begin broadcasting Chroma RGB data using the stored stream key as the endpoint. 
 	Intended for Cloud Gaming Platforms, restore the streaming key when the 

@@ -39,7 +39,7 @@ namespace ChromaSDK
 		DWORD dwEncoding = 0;
 		DWORD dwContentType = 0;
 		DWORD dwFormatType = 0;
-		LPTSTR szName = NULL;
+		wchar_t* szName = NULL;
 		PCMSG_SIGNER_INFO pSignerInfo = NULL;
 		PCCERT_CONTEXT pCertContext = NULL;
 
@@ -102,10 +102,10 @@ namespace ChromaSDK
 						if (dwData > 1)
 						{
 							// Allocate memory for subject name.
-							szName = (LPTSTR)LocalAlloc(LPTR, dwData * sizeof(TCHAR));
+							szName = (wchar_t*)LocalAlloc(LPTR, dwData * sizeof(wchar_t));
 
 							// Get subject name.
-							if (CertGetNameString(pCertContext,
+							if (CertGetNameStringW(pCertContext,
 								CERT_NAME_SIMPLE_DISPLAY_TYPE,
 								0,
 								NULL,
@@ -113,7 +113,7 @@ namespace ChromaSDK
 								dwData) > 1)
 							{
 								// Compare the issuer
-								if (_tcsicmp(szName, L"Razer USA Ltd.") == 0)
+								if (_wcsicmp(szName, L"Razer USA Ltd.") == 0)
 								{
 									bResult = TRUE;
 								}
@@ -294,7 +294,7 @@ namespace ChromaSDK
 
 			if (GetFileVersionInfoW(wFileName, verHandle, verSize, verData))
 			{
-				if (VerQueryValue(verData, L"\\", (VOID FAR * FAR*) & lpBuffer, &size))
+				if (VerQueryValueW(verData, L"\\", (VOID FAR * FAR*) & lpBuffer, &size))
 				{
 					if (size)
 					{
