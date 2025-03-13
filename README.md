@@ -1,8 +1,10 @@
-# Latest
+# Chroma SDK
 
-* Note: Visit the [Chroma Animation Guide](https://chroma.razer.com/ChromaGuide/) to find the latest supported plugin for Chroma RGB.
+See [https://wyvrn.com](https://wyvrn.com) for the latest documentation about the Chroma SDK.
 
-* Note: This version includes Unicode support for paths with special characters.
+* Note: This version includes Unicode support for paths with special characters. (RECOMMENDED)
+
+---
 
 # C++ SDK - Chroma Animation Sample App
 
