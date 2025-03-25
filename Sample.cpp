@@ -5022,7 +5022,7 @@ int main()
 
     ChromaSDK::APPINFOTYPE appInfo = {};
 
-    _tcscpy_s(appInfo.Title, 256, _T("CSDK Sample Application"));
+    _tcscpy_s(appInfo.Title, 256, _T("C++ Chroma Sample Application"));
     _tcscpy_s(appInfo.Description, 1024, _T("A sample application using Razer Chroma SDK"));
     _tcscpy_s(appInfo.Author.Name, 256, _T("Razer"));
     _tcscpy_s(appInfo.Author.Contact, 256, _T("https://developer.razer.com/chroma"));
