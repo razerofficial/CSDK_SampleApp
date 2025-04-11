@@ -352,6 +352,7 @@
     <ClInclude Include="CpuUsage.h" />
     <ClInclude Include="RazerKeyboardMapping.h" />
     <ClInclude Include="Razer\ChromaAnimationAPI.h" />
+    <ClInclude Include="Razer\UnicodeChromaAnimationAPI.h" />
     <ClInclude Include="HandleInput.h" />
     <ClInclude Include="Razer\ChromaLogger.h" />
     <ClInclude Include="Razer\ChromaSDKPluginTypes.h" />
@@ -366,6 +367,7 @@
     <ClCompile Include="HandleInput.cpp" />
     <ClCompile Include="RazerKeyboardMapping.cpp" />
     <ClCompile Include="Razer\ChromaAnimationAPI.cpp" />
+    <ClCompile Include="Razer\UnicodeChromaAnimationAPI.cpp" />
     <ClCompile Include="Razer\ChromaLogger.cpp" />
     <ClCompile Include="Razer\VerifyLibrarySignature.cpp" />
     <ClCompile Include="Sample.cpp" />

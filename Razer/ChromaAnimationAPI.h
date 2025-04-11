@@ -2,2794 +2,24 @@
 
 #include "ChromaSDKPluginTypes.h"
 
-/* Setup log mechanism */
-typedef void(*DebugLogPtr)(const wchar_t*);
-void LogDebug(const wchar_t* text, ...);
-void LogError(const wchar_t* text, ...);
-/* End of setup log mechanism */
-                
-#pragma region API typedefs
-/*
-	Return the sum of colors
-*/
-typedef int			(*PLUGIN_ADD_COLOR)(const int color1, const int color2);
-/*
-	Adds a frame to the `Chroma` animation and sets the `duration` (in seconds). 
-	The `color` is expected to be an array of the dimensions for the `deviceType/device`. 
-	The `length` parameter is the size of the `color` array. For `EChromaSDKDevice1DEnum` 
-	the array size should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array 
-	size should be `MAX ROW` times `MAX COLUMN`. Returns the animation id upon 
-	success. Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_ADD_FRAME)(int animationId, float duration, int* colors, int length);
-/*
-	Add source color to target where color is not black for frame id, reference 
-	source and target by id.
-*/
-typedef void		(*PLUGIN_ADD_NON_ZERO_ALL_KEYS)(int sourceAnimationId, int targetAnimationId, int frameId);
-/*
-	Add source color to target where color is not black for all frames, reference 
-	source and target by id.
-*/
-typedef void		(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId);
-/*
-	Add source color to target where color is not black for all frames, reference 
-	source and target by name.
-*/
-typedef void		(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	Add source color to target where color is not black for all frames starting 
-	at offset for the length of the source, reference source and target by 
-	id.
-*/
-typedef void		(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int offset);
-/*
-	Add source color to target where color is not black for all frames starting 
-	at offset for the length of the source, reference source and target by 
-	name.
-*/
-typedef void		(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset);
-/*
-	Add source color to target where color is not black for frame id, reference 
-	source and target by name.
-*/
-typedef void		(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
-/*
-	Add source color to target where color is not black for the source frame 
-	and target offset frame, reference source and target by id.
-*/
-typedef void		(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
-/*
-	Add source color to target where color is not black for the source frame 
-	and target offset frame, reference source and target by name.
-*/
-typedef void		(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset);
-/*
-	Add source color to target where the target color is not black for all frames, 
-	reference source and target by id.
-*/
-typedef void		(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId);
-/*
-	Add source color to target where the target color is not black for all frames, 
-	reference source and target by name.
-*/
-typedef void		(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	Add source color to target where the target color is not black for all frames 
-	starting at offset for the length of the source, reference source and target 
-	by id.
-*/
-typedef void		(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int offset);
-/*
-	Add source color to target where the target color is not black for all frames 
-	starting at offset for the length of the source, reference source and target 
-	by name.
-*/
-typedef void		(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset);
-/*
-	Add source color to target where target color is not blank from the source 
-	frame to the target offset frame, reference source and target by id.
-*/
-typedef void		(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
-/*
-	Add source color to target where target color is not blank from the source 
-	frame to the target offset frame, reference source and target by name.
-*/
-typedef void		(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset);
-/*
-	Append all source frames to the target animation, reference source and target 
-	by id.
-*/
-typedef void		(*PLUGIN_APPEND_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId);
-/*
-	Append all source frames to the target animation, reference source and target 
-	by name.
-*/
-typedef void		(*PLUGIN_APPEND_ALL_FRAMES_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_APPEND_ALL_FRAMES_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	`PluginClearAll` will issue a `CLEAR` effect for all devices.
-*/
-typedef void		(*PLUGIN_CLEAR_ALL)();
-/*
-	`PluginClearAnimationType` will issue a `CLEAR` effect for the given device.
-*/
-typedef void		(*PLUGIN_CLEAR_ANIMATION_TYPE)(int deviceType, int device);
-/*
-	`PluginCloseAll` closes all open animations so they can be reloaded from 
-	disk. The set of animations will be stopped if playing.
-*/
-typedef void		(*PLUGIN_CLOSE_ALL)();
-/*
-	Closes the `Chroma` animation to free up resources referenced by id. Returns 
-	the animation id upon success. Returns negative one upon failure. This 
-	might be used while authoring effects if there was a change necessitating 
-	re-opening the animation. The animation id can no longer be used once closed.
-*/
-typedef int			(*PLUGIN_CLOSE_ANIMATION)(int animationId);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_CLOSE_ANIMATION_D)(double animationId);
-/*
-	Closes the `Chroma` animation referenced by name so that the animation can 
-	be reloaded from disk.
-*/
-typedef void		(*PLUGIN_CLOSE_ANIMATION_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_CLOSE_ANIMATION_NAME_D)(const wchar_t* path);
-/*
-	`PluginCloseComposite` closes a set of animations so they can be reloaded 
-	from disk. The set of animations will be stopped if playing.
-*/
-typedef void		(*PLUGIN_CLOSE_COMPOSITE)(const wchar_t* name);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_CLOSE_COMPOSITE_D)(const wchar_t* name);
-/*
-	Copy source animation to target animation for the given frame. Source and 
-	target are referenced by id.
-*/
-typedef void		(*PLUGIN_COPY_ALL_KEYS)(int sourceAnimationId, int targetAnimationId, int frameId);
-/*
-	Copy source animation to target animation for the given frame. Source and 
-	target are referenced by id.
-*/
-typedef void		(*PLUGIN_COPY_ALL_KEYS_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
-/*
-	Copy animation to named target animation in memory. If target animation 
-	exists, close first. Source is referenced by id.
-*/
-typedef int			(*PLUGIN_COPY_ANIMATION)(int sourceAnimationId, const wchar_t* targetAnimation);
-/*
-	Copy animation to named target animation in memory. If target animation 
-	exists, close first. Source is referenced by name.
-*/
-typedef void		(*PLUGIN_COPY_ANIMATION_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_ANIMATION_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	Copy blue channel to other channels for all frames. Intensity range is 0.0 
-	to 1.0. Reference the animation by id.
-*/
-typedef void		(*PLUGIN_COPY_BLUE_CHANNEL_ALL_FRAMES)(int animationId, float redIntensity, float greenIntensity);
-/*
-	Copy blue channel to other channels for all frames. Intensity range is 0.0 
-	to 1.0. Reference the animation by name.
-*/
-typedef void		(*PLUGIN_COPY_BLUE_CHANNEL_ALL_FRAMES_NAME)(const wchar_t* path, float redIntensity, float greenIntensity);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_BLUE_CHANNEL_ALL_FRAMES_NAME_D)(const wchar_t* path, double redIntensity, double greenIntensity);
-/*
-	Copy green channel to other channels for all frames. Intensity range is 
-	0.0 to 1.0. Reference the animation by id.
-*/
-typedef void		(*PLUGIN_COPY_GREEN_CHANNEL_ALL_FRAMES)(int animationId, float redIntensity, float blueIntensity);
-/*
-	Copy green channel to other channels for all frames. Intensity range is 
-	0.0 to 1.0. Reference the animation by name.
-*/
-typedef void		(*PLUGIN_COPY_GREEN_CHANNEL_ALL_FRAMES_NAME)(const wchar_t* path, float redIntensity, float blueIntensity);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_GREEN_CHANNEL_ALL_FRAMES_NAME_D)(const wchar_t* path, double redIntensity, double blueIntensity);
-/*
-	Copy animation key color from the source animation to the target animation 
-	for the given frame. Reference the source and target by id.
-*/
-typedef void		(*PLUGIN_COPY_KEY_COLOR)(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
-/*
-	Copy animation key color from the source animation to the target animation 
-	for all frames. Reference the source and target by id.
-*/
-typedef void		(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId, int rzkey);
-/*
-	Copy animation key color from the source animation to the target animation 
-	for all frames. Reference the source and target by name.
-*/
-typedef void		(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int rzkey);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double rzkey);
-/*
-	Copy animation key color from the source animation to the target animation 
-	for all frames, starting at the offset for the length of the source animation. 
-	Source and target are referenced by id.
-*/
-typedef void		(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int rzkey, int offset);
-/*
-	Copy animation key color from the source animation to the target animation 
-	for all frames, starting at the offset for the length of the source animation. 
-	Source and target are referenced by name.
-*/
-typedef void		(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int rzkey, int offset);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double rzkey, double offset);
-/*
-	Copy animation key color from the source animation to the target animation 
-	for the given frame.
-*/
-typedef void		(*PLUGIN_COPY_KEY_COLOR_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int rzkey);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_KEY_COLOR_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double rzkey);
-/*
-	Copy animation key color from the source animation to the target animation
-	for the given frame with an offseet
-*/
-typedef void		(*PLUGIN_COPY_KEY_COLOR_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey, int offset);
-/*
-	Copy animation color for a set of keys from the source animation to the 
-	target animation for the given frame. Reference the source and target by 
-	id.
-*/
-typedef void		(*PLUGIN_COPY_KEYS_COLOR)(int sourceAnimationId, int targetAnimationId, int frameId, const int* keys, int size);
-/*
-	Copy animation color for a set of keys from the source animation to the 
-	target animation for all frames. Reference the source and target by id.
-*/
-typedef void		(*PLUGIN_COPY_KEYS_COLOR_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId, const int* keys, int size);
-/*
-	Copy animation color for a set of keys from the source animation to the 
-	target animation for all frames. Reference the source and target by name.
-*/
-typedef void		(*PLUGIN_COPY_KEYS_COLOR_ALL_FRAMES_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, const int* keys, int size);
-/*
-	Copy animation color for a set of keys from the source animation to the 
-	target animation for the given frame. Reference the source and target by 
-	name.
-*/
-typedef void		(*PLUGIN_COPY_KEYS_COLOR_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, const int* keys, int size);
-/*
-	Copy animation color for a set of keys from the source animation to the 
-	target animation from the source frame to the target frame. Reference the 
-	source and target by id.
-*/
-typedef void		(*PLUGIN_COPY_KEYS_COLOR_OFFSET)(int sourceAnimationId, int targetAnimationId, int sourceFrameId, int targetFrameId, const int* keys, int size);
-/*
-	Copy animation color for a set of keys from the source animation to the 
-	target animation from the source frame to the target frame. Reference the 
-	source and target by name.
-*/
-typedef void		(*PLUGIN_COPY_KEYS_COLOR_OFFSET_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int sourceFrameId, int targetFrameId, const int* keys, int size);
-/*
-	Copy source animation to target animation for the given frame. Source and 
-	target are referenced by id.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_ALL_KEYS)(int sourceAnimationId, int targetAnimationId, int frameId);
-/*
-	Copy nonzero colors from a source animation to a target animation for all 
-	frames. Reference source and target by id.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId);
-/*
-	Copy nonzero colors from a source animation to a target animation for all 
-	frames. Reference source and target by name.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	Copy nonzero colors from a source animation to a target animation for all 
-	frames starting at the offset for the length of the source animation. The 
-	source and target are referenced by id.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int offset);
-/*
-	Copy nonzero colors from a source animation to a target animation for all 
-	frames starting at the offset for the length of the source animation. The 
-	source and target are referenced by name.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset);
-/*
-	Copy nonzero colors from source animation to target animation for the specified 
-	frame. Source and target are referenced by id.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId);
-/*
-	Copy nonzero colors from the source animation to the target animation from 
-	the source frame to the target offset frame. Source and target are referenced 
-	by id.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
-/*
-	Copy nonzero colors from the source animation to the target animation from 
-	the source frame to the target offset frame. Source and target are referenced 
-	by name.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_OFFSET_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_NON_ZERO_ALL_KEYS_OFFSET_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset);
-/*
-	Copy animation key color from the source animation to the target animation 
-	for the given frame where color is not zero.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_KEY_COLOR)(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
-/*
-	Copy animation key color from the source animation to the target animation 
-	for the given frame where color is not zero.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_KEY_COLOR_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int rzkey);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_NON_ZERO_KEY_COLOR_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double rzkey);
-/*
-	Copy nonzero colors from the source animation to the target animation where 
-	the target color is nonzero for the specified frame. Source and target 
-	are referenced by id.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS)(int sourceAnimationId, int targetAnimationId, int frameId);
-/*
-	Copy nonzero colors from the source animation to the target animation where 
-	the target color is nonzero for all frames. Source and target are referenced 
-	by id.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId);
-/*
-	Copy nonzero colors from the source animation to the target animation where 
-	the target color is nonzero for all frames. Source and target are referenced 
-	by name.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	Copy nonzero colors from the source animation to the target animation where 
-	the target color is nonzero for all frames. Source and target are referenced 
-	by name.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int offset);
-/*
-	Copy nonzero colors from the source animation to the target animation where 
-	the target color is nonzero for all frames starting at the target offset 
-	for the length of the source animation. Source and target animations are 
-	referenced by name.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset);
-/*
-	Copy nonzero colors from the source animation to the target animation where 
-	the target color is nonzero for the specified frame. The source and target 
-	are referenced by name.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId);
-/*
-	Copy nonzero colors from the source animation to the target animation where 
-	the target color is nonzero for the specified source frame and target offset 
-	frame. The source and target are referenced by id.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
-/*
-	Copy nonzero colors from the source animation to the target animation where 
-	the target color is nonzero for the specified source frame and target offset 
-	frame. The source and target are referenced by name.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset);
-/*
-	Copy nonzero colors from the source animation to the target animation where 
-	the target color is zero for all frames. Source and target are referenced 
-	by id.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_TARGET_ZERO_ALL_KEYS_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId);
-/*
-	Copy nonzero colors from the source animation to the target animation where 
-	the target color is zero for all frames. Source and target are referenced 
-	by name.
-*/
-typedef void		(*PLUGIN_COPY_NON_ZERO_TARGET_ZERO_ALL_KEYS_ALL_FRAMES_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_NON_ZERO_TARGET_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	Copy red channel to other channels for all frames. Intensity range is 0.0 
-	to 1.0. Reference the animation by id.
-*/
-typedef void		(*PLUGIN_COPY_RED_CHANNEL_ALL_FRAMES)(int animationId, float greenIntensity, float blueIntensity);
-/*
-	Copy green channel to other channels for all frames. Intensity range is 
-	0.0 to 1.0. Reference the animation by name.
-*/
-typedef void		(*PLUGIN_COPY_RED_CHANNEL_ALL_FRAMES_NAME)(const wchar_t* path, float greenIntensity, float blueIntensity);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_RED_CHANNEL_ALL_FRAMES_NAME_D)(const wchar_t* path, double greenIntensity, double blueIntensity);
-/*
-	Copy zero colors from source animation to target animation for the frame. 
-	Source and target are referenced by id.
-*/
-typedef void		(*PLUGIN_COPY_ZERO_ALL_KEYS)(int sourceAnimationId, int targetAnimationId, int frameId);
-/*
-	Copy zero colors from source animation to target animation for all frames. 
-	Source and target are referenced by id.
-*/
-typedef void		(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId);
-/*
-	Copy zero colors from source animation to target animation for all frames. 
-	Source and target are referenced by name.
-*/
-typedef void		(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	Copy zero colors from source animation to target animation for all frames 
-	starting at the target offset for the length of the source animation. Source 
-	and target are referenced by id.
-*/
-typedef void		(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int offset);
-/*
-	Copy zero colors from source animation to target animation for all frames 
-	starting at the target offset for the length of the source animation. Source 
-	and target are referenced by name.
-*/
-typedef void		(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset);
-/*
-	Copy zero colors from source animation to target animation for the frame. 
-	Source and target are referenced by name.
-*/
-typedef void		(*PLUGIN_COPY_ZERO_ALL_KEYS_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
-/*
-	Copy zero colors from source animation to target animation for the frame 
-	id starting at the target offset for the length of the source animation. 
-	Source and target are referenced by id.
-*/
-typedef void		(*PLUGIN_COPY_ZERO_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
-/*
-	Copy zero colors from source animation to target animation for the frame 
-	id starting at the target offset for the length of the source animation. 
-	Source and target are referenced by name.
-*/
-typedef void		(*PLUGIN_COPY_ZERO_ALL_KEYS_OFFSET_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset);
-/*
-	Copy zero key color from source animation to target animation for the specified 
-	frame. Source and target are referenced by id.
-*/
-typedef void		(*PLUGIN_COPY_ZERO_KEY_COLOR)(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
-/*
-	Copy zero key color from source animation to target animation for the specified 
-	frame. Source and target are referenced by name.
-*/
-typedef void		(*PLUGIN_COPY_ZERO_KEY_COLOR_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int rzkey);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_ZERO_KEY_COLOR_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double rzkey);
-/*
-	Copy nonzero color from source animation to target animation where target 
-	is zero for the frame. Source and target are referenced by id.
-*/
-typedef void		(*PLUGIN_COPY_ZERO_TARGET_ALL_KEYS)(int sourceAnimationId, int targetAnimationId, int frameId);
-/*
-	Copy nonzero color from source animation to target animation where target 
-	is zero for all frames. Source and target are referenced by id.
-*/
-typedef void		(*PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId);
-/*
-	Copy nonzero color from source animation to target animation where target 
-	is zero for all frames. Source and target are referenced by name.
-*/
-typedef void		(*PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	Copy nonzero color from source animation to target animation where target 
-	is zero for the frame. Source and target are referenced by name.
-*/
-typedef void		(*PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
-/*
-	Direct access to low level API.
-*/
-typedef RZRESULT	(*PLUGIN_CORE_CREATE_CHROMA_LINK_EFFECT)(ChromaSDK::ChromaLink::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
-/*
-	Direct access to low level API.
-*/
-typedef RZRESULT	(*PLUGIN_CORE_CREATE_EFFECT)(RZDEVICEID DeviceId, ChromaSDK::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
-/*
-	Direct access to low level API.
-*/
-typedef RZRESULT	(*PLUGIN_CORE_CREATE_HEADSET_EFFECT)(ChromaSDK::Headset::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
-/*
-	Direct access to low level API.
-*/
-typedef RZRESULT	(*PLUGIN_CORE_CREATE_KEYBOARD_EFFECT)(ChromaSDK::Keyboard::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
-/*
-	Direct access to low level API.
-*/
-typedef RZRESULT	(*PLUGIN_CORE_CREATE_KEYPAD_EFFECT)(ChromaSDK::Keypad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
-/*
-	Direct access to low level API.
-*/
-typedef RZRESULT	(*PLUGIN_CORE_CREATE_MOUSE_EFFECT)(ChromaSDK::Mouse::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
-/*
-	Direct access to low level API.
-*/
-typedef RZRESULT	(*PLUGIN_CORE_CREATE_MOUSEPAD_EFFECT)(ChromaSDK::Mousepad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
-/*
-	Direct access to low level API.
-*/
-typedef RZRESULT	(*PLUGIN_CORE_DELETE_EFFECT)(RZEFFECTID EffectId);
-/*
-	Direct access to low level API.
-*/
-typedef RZRESULT	(*PLUGIN_CORE_INIT)();
-/*
-	Direct access to low level API.
-*/
-typedef RZRESULT	(*PLUGIN_CORE_INIT_SDK)(ChromaSDK::APPINFOTYPE* AppInfo);
-/*
-	Direct access to low level API.
-*/
-typedef RZRESULT	(*PLUGIN_CORE_IS_ACTIVE)(BOOL& Active);
-/*
-	Direct access to low level API.
-*/
-typedef RZRESULT	(*PLUGIN_CORE_IS_CONNECTED)(ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
-/*
-	Direct access to low level API.
-*/
-typedef RZRESULT	(*PLUGIN_CORE_QUERY_DEVICE)(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
-/*
-	Direct access to low level API.
-*/
-typedef RZRESULT	(*PLUGIN_CORE_SET_EFFECT)(RZEFFECTID EffectId);
-/*
-	Direct access to low level API.
-*/
-typedef RZRESULT	(*PLUGIN_CORE_SET_EVENT_NAME)(LPCTSTR Name);
-/*
-	Begin broadcasting Chroma RGB data using the stored stream key as the endpoint. 
-	Intended for Cloud Gaming Platforms, restore the streaming key when the 
-	game instance is launched to continue streaming. streamId is a null terminated 
-	string streamKey is a null terminated string StreamGetStatus() should return 
-	the READY status to use this method.
-*/
-typedef bool		(*PLUGIN_CORE_STREAM_BROADCAST)(const char* streamId, const char* streamKey);
-/*
-	End broadcasting Chroma RGB data. StreamGetStatus() should return the BROADCASTING 
-	status to use this method.
-*/
-typedef bool		(*PLUGIN_CORE_STREAM_BROADCAST_END)();
-/*
-	shortcode: Pass the address of a preallocated character buffer to get the 
-	streaming auth code. The buffer should have a minimum length of 6. length: 
-	Length will return as zero if the streaming auth code could not be obtained. 
-	If length is greater than zero, it will be the length of the returned streaming 
-	auth code. Once you have the shortcode, it should be shown to the user 
-	so they can associate the stream with their Razer ID StreamGetStatus() 
-	should return the READY status before invoking this method. platform: is 
-	the null terminated string that identifies the source of the stream: { 
-	GEFORCE_NOW, LUNA, STADIA, GAME_PASS } title: is the null terminated string 
-	that identifies the application or game.
-*/
-typedef void		(*PLUGIN_CORE_STREAM_GET_AUTH_SHORTCODE)(char* shortcode, unsigned char* length, const wchar_t* platform, const wchar_t* title);
-/*
-	focus: Pass the address of a preallocated character buffer to get the stream 
-	focus. The buffer should have a length of 48 length: Length will return 
-	as zero if the stream focus could not be obtained. If length is greater 
-	than zero, it will be the length of the returned stream focus.
-*/
-typedef bool		(*PLUGIN_CORE_STREAM_GET_FOCUS)(char* focus, unsigned char* length);
-/*
-	Intended for Cloud Gaming Platforms, store the stream id to persist in user 
-	preferences to continue streaming if the game is suspended or closed. shortcode: 
-	The shortcode is a null terminated string. Use the shortcode that authorized 
-	the stream to obtain the stream id. streamId should be a preallocated buffer 
-	to get the stream key. The buffer should have a length of 48. length: Length 
-	will return zero if the key could not be obtained. If the length is greater 
-	than zero, it will be the length of the returned streaming id. Retrieve 
-	the stream id after authorizing the shortcode. The authorization window 
-	will expire in 5 minutes. Be sure to save the stream key before the window 
-	expires. StreamGetStatus() should return the READY status to use this method.
-*/
-typedef void		(*PLUGIN_CORE_STREAM_GET_ID)(const char* shortcode, char* streamId, unsigned char* length);
-/*
-	Intended for Cloud Gaming Platforms, store the streaming key to persist 
-	in user preferences to continue streaming if the game is suspended or closed. 
-	shortcode: The shortcode is a null terminated string. Use the shortcode 
-	that authorized the stream to obtain the stream key. If the status is in 
-	the BROADCASTING or WATCHING state, passing a NULL shortcode will return 
-	the active streamId. streamKey should be a preallocated buffer to get the 
-	stream key. The buffer should have a length of 48. length: Length will 
-	return zero if the key could not be obtained. If the length is greater 
-	than zero, it will be the length of the returned streaming key. Retrieve 
-	the stream key after authorizing the shortcode. The authorization window 
-	will expire in 5 minutes. Be sure to save the stream key before the window 
-	expires. StreamGetStatus() should return the READY status to use this method.
-*/
-typedef void		(*PLUGIN_CORE_STREAM_GET_KEY)(const char* shortcode, char* streamKey, unsigned char* length);
-/*
-	Returns StreamStatus, the current status of the service
-*/
-typedef ChromaSDK::Stream::StreamStatusType	(*PLUGIN_CORE_STREAM_GET_STATUS)();
-/*
-	Convert StreamStatusType to a printable string
-*/
-typedef const char*	(*PLUGIN_CORE_STREAM_GET_STATUS_STRING)(ChromaSDK::Stream::StreamStatusType status);
-/*
-	This prevents the stream id and stream key from being obtained through the 
-	shortcode. This closes the auth window. shortcode is a null terminated 
-	string. StreamGetStatus() should return the READY status to use this method. 
-	returns success when shortcode has been released
-*/
-typedef bool		(*PLUGIN_CORE_STREAM_RELEASE_SHORTCODE)(const char* shortcode);
-/*
-	The focus is a null terminated string. Set the focus identifer for the application 
-	designated to automatically change the streaming state. Returns true on 
-	success.
-*/
-typedef bool		(*PLUGIN_CORE_STREAM_SET_FOCUS)(const char* focus);
-/*
-	Returns true if the Chroma streaming is supported. If false is returned, 
-	avoid calling stream methods.
-*/
-typedef bool		(*PLUGIN_CORE_STREAM_SUPPORTS_STREAMING)();
-/*
-	Begin watching the Chroma RGB data using streamID parameter. streamId is 
-	a null terminated string. StreamGetStatus() should return the READY status 
-	to use this method.
-*/
-typedef bool		(*PLUGIN_CORE_STREAM_WATCH)(const char* streamId, unsigned long long timestamp);
-/*
-	End watching Chroma RGB data stream. StreamGetStatus() should return the 
-	WATCHING status to use this method.
-*/
-typedef bool		(*PLUGIN_CORE_STREAM_WATCH_END)();
-/*
-	Direct access to low level API.
-*/
-typedef RZRESULT	(*PLUGIN_CORE_UNINIT)();
-/*
-	Creates a `Chroma` animation at the given path. The `deviceType` parameter 
-	uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter uses 
-	`EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer, respective 
-	to the `deviceType`. Returns the animation id upon success. Returns negative 
-	one upon failure. Saves a `Chroma` animation file with the `.chroma` extension 
-	at the given path. Returns the animation id upon success. Returns negative 
-	one upon failure.
-*/
-typedef int			(*PLUGIN_CREATE_ANIMATION)(const wchar_t* path, int deviceType, int device);
-/*
-	Creates a `Chroma` animation in memory without creating a file. The `deviceType` 
-	parameter uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter 
-	uses `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` as an integer, 
-	respective to the `deviceType`. Returns the animation id upon success. 
-	Returns negative one upon failure. Returns the animation id upon success. 
-	Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_CREATE_ANIMATION_IN_MEMORY)(int deviceType, int device);
-/*
-	Create a device specific effect.
-*/
-typedef RZRESULT	(*PLUGIN_CREATE_EFFECT)(RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, int* colors, int size, ChromaSDK::FChromaSDKGuid* effectId);
-/*
-	Delete an effect given the effect id.
-*/
-typedef RZRESULT	(*PLUGIN_DELETE_EFFECT)(const ChromaSDK::FChromaSDKGuid& effectId);
-/*
-	Duplicate the first animation frame so that the animation length matches 
-	the frame count. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_DUPLICATE_FIRST_FRAME)(int animationId, int frameCount);
-/*
-	Duplicate the first animation frame so that the animation length matches 
-	the frame count. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_DUPLICATE_FIRST_FRAME_NAME)(const wchar_t* path, int frameCount);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_DUPLICATE_FIRST_FRAME_NAME_D)(const wchar_t* path, double frameCount);
-/*
-	Duplicate all the frames of the animation to double the animation length. 
-	Frame 1 becomes frame 1 and 2. Frame 2 becomes frame 3 and 4. And so on. 
-	The animation is referenced by id.
-*/
-typedef void		(*PLUGIN_DUPLICATE_FRAMES)(int animationId);
-/*
-	Duplicate all the frames of the animation to double the animation length. 
-	Frame 1 becomes frame 1 and 2. Frame 2 becomes frame 3 and 4. And so on. 
-	The animation is referenced by name.
-*/
-typedef void		(*PLUGIN_DUPLICATE_FRAMES_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_DUPLICATE_FRAMES_NAME_D)(const wchar_t* path);
-/*
-	Duplicate all the animation frames in reverse so that the animation plays 
-	forwards and backwards. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_DUPLICATE_MIRROR_FRAMES)(int animationId);
-/*
-	Duplicate all the animation frames in reverse so that the animation plays 
-	forwards and backwards. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_DUPLICATE_MIRROR_FRAMES_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_DUPLICATE_MIRROR_FRAMES_NAME_D)(const wchar_t* path);
-/*
-	Fade the animation to black starting at the fade frame index to the end 
-	of the animation. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_FADE_END_FRAMES)(int animationId, int fade);
-/*
-	Fade the animation to black starting at the fade frame index to the end 
-	of the animation. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_FADE_END_FRAMES_NAME)(const wchar_t* path, int fade);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FADE_END_FRAMES_NAME_D)(const wchar_t* path, double fade);
-/*
-	Fade the animation from black to full color starting at 0 to the fade frame 
-	index. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_FADE_START_FRAMES)(int animationId, int fade);
-/*
-	Fade the animation from black to full color starting at 0 to the fade frame 
-	index. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_FADE_START_FRAMES_NAME)(const wchar_t* path, int fade);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FADE_START_FRAMES_NAME_D)(const wchar_t* path, double fade);
-/*
-	Set the RGB value for all colors in the specified frame. Animation is referenced 
-	by id.
-*/
-typedef void		(*PLUGIN_FILL_COLOR)(int animationId, int frameId, int color);
-/*
-	Set the RGB value for all colors for all frames. Animation is referenced 
-	by id.
-*/
-typedef void		(*PLUGIN_FILL_COLOR_ALL_FRAMES)(int animationId, int color);
-/*
-	Set the RGB value for all colors for all frames. Animation is referenced 
-	by name.
-*/
-typedef void		(*PLUGIN_FILL_COLOR_ALL_FRAMES_NAME)(const wchar_t* path, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_COLOR_ALL_FRAMES_NAME_D)(const wchar_t* path, double color);
-/*
-	Set the RGB value for all colors for all frames. Use the range of 0 to 255 
-	for red, green, and blue parameters. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_COLOR_ALL_FRAMES_RGB)(int animationId, int red, int green, int blue);
-/*
-	Set the RGB value for all colors for all frames. Use the range of 0 to 255 
-	for red, green, and blue parameters. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_COLOR_ALL_FRAMES_RGB_NAME)(const wchar_t* path, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_COLOR_ALL_FRAMES_RGB_NAME_D)(const wchar_t* path, double red, double green, double blue);
-/*
-	Set the RGB value for all colors in the specified frame. Animation is referenced 
-	by name.
-*/
-typedef void		(*PLUGIN_FILL_COLOR_NAME)(const wchar_t* path, int frameId, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_COLOR_NAME_D)(const wchar_t* path, double frameId, double color);
-/*
-	Set the RGB value for all colors in the specified frame. Animation is referenced 
-	by id.
-*/
-typedef void		(*PLUGIN_FILL_COLOR_RGB)(int animationId, int frameId, int red, int green, int blue);
-/*
-	Set the RGB value for all colors in the specified frame. Animation is referenced 
-	by name.
-*/
-typedef void		(*PLUGIN_FILL_COLOR_RGB_NAME)(const wchar_t* path, int frameId, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_COLOR_RGB_NAME_D)(const wchar_t* path, double frameId, double red, double green, double blue);
-/*
-	This method will only update colors in the animation that are not already 
-	set to black. Set the RGB value for a subset of colors in the specified 
-	frame. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_NON_ZERO_COLOR)(int animationId, int frameId, int color);
-/*
-	This method will only update colors in the animation that are not already 
-	set to black. Set the RGB value for a subset of colors for all frames. 
-	Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES)(int animationId, int color);
-/*
-	This method will only update colors in the animation that are not already 
-	set to black. Set the RGB value for a subset of colors for all frames. 
-	Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_NAME)(const wchar_t* path, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_NAME_D)(const wchar_t* path, double color);
-/*
-	This method will only update colors in the animation that are not already 
-	set to black. Set the RGB value for a subset of colors for all frames. 
-	Use the range of 0 to 255 for red, green, and blue parameters. Animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_RGB)(int animationId, int red, int green, int blue);
-/*
-	This method will only update colors in the animation that are not already 
-	set to black. Set the RGB value for a subset of colors for all frames. 
-	Use the range of 0 to 255 for red, green, and blue parameters. Animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_RGB_NAME)(const wchar_t* path, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_RGB_NAME_D)(const wchar_t* path, double red, double green, double blue);
-/*
-	This method will only update colors in the animation that are not already 
-	set to black. Set the RGB value for a subset of colors in the specified 
-	frame. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_NON_ZERO_COLOR_NAME)(const wchar_t* path, int frameId, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_NON_ZERO_COLOR_NAME_D)(const wchar_t* path, double frameId, double color);
-/*
-	This method will only update colors in the animation that are not already 
-	set to black. Set the RGB value for a subset of colors in the specified 
-	frame. Use the range of 0 to 255 for red, green, and blue parameters. Animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_NON_ZERO_COLOR_RGB)(int animationId, int frameId, int red, int green, int blue);
-/*
-	This method will only update colors in the animation that are not already 
-	set to black. Set the RGB value for a subset of colors in the specified 
-	frame. Use the range of 0 to 255 for red, green, and blue parameters. Animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_NON_ZERO_COLOR_RGB_NAME)(const wchar_t* path, int frameId, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_NON_ZERO_COLOR_RGB_NAME_D)(const wchar_t* path, double frameId, double red, double green, double blue);
-/*
-	Fill the frame with random RGB values for the given frame. Animation is 
-	referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_RANDOM_COLORS)(int animationId, int frameId);
-/*
-	Fill the frame with random RGB values for all frames. Animation is referenced 
-	by id.
-*/
-typedef void		(*PLUGIN_FILL_RANDOM_COLORS_ALL_FRAMES)(int animationId);
-/*
-	Fill the frame with random RGB values for all frames. Animation is referenced 
-	by name.
-*/
-typedef void		(*PLUGIN_FILL_RANDOM_COLORS_ALL_FRAMES_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_RANDOM_COLORS_ALL_FRAMES_NAME_D)(const wchar_t* path);
-/*
-	Fill the frame with random black and white values for the specified frame. 
-	Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE)(int animationId, int frameId);
-/*
-	Fill the frame with random black and white values for all frames. Animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_ALL_FRAMES)(int animationId);
-/*
-	Fill the frame with random black and white values for all frames. Animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_ALL_FRAMES_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_ALL_FRAMES_NAME_D)(const wchar_t* path);
-/*
-	Fill the frame with random black and white values for the specified frame. 
-	Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_NAME)(const wchar_t* path, int frameId);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_NAME_D)(const wchar_t* path, double frameId);
-/*
-	Fill the frame with random RGB values for the given frame. Animation is 
-	referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_RANDOM_COLORS_NAME)(const wchar_t* path, int frameId);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_RANDOM_COLORS_NAME_D)(const wchar_t* path, double frameId);
-/*
-	Fill the specified frame with RGB color where the animation color is less 
-	than the RGB threshold. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_THRESHOLD_COLORS)(int animationId, int frameId, int threshold, int color);
-/*
-	Fill all frames with RGB color where the animation color is less than the 
-	RGB threshold. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES)(int animationId, int threshold, int color);
-/*
-	Fill all frames with RGB color where the animation color is less than the 
-	RGB threshold. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_NAME)(const wchar_t* path, int threshold, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_NAME_D)(const wchar_t* path, double threshold, double color);
-/*
-	Fill all frames with RGB color where the animation color is less than the 
-	threshold. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_RGB)(int animationId, int threshold, int red, int green, int blue);
-/*
-	Fill all frames with RGB color where the animation color is less than the 
-	threshold. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_RGB_NAME)(const wchar_t* path, int threshold, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_RGB_NAME_D)(const wchar_t* path, double threshold, double red, double green, double blue);
-/*
-	Fill all frames with the min RGB color where the animation color is less 
-	than the min threshold AND with the max RGB color where the animation is 
-	more than the max threshold. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB)(int animationId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
-/*
-	Fill all frames with the min RGB color where the animation color is less 
-	than the min threshold AND with the max RGB color where the animation is 
-	more than the max threshold. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB_NAME)(const wchar_t* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB_NAME_D)(const wchar_t* path, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
-/*
-	Fill the specified frame with the min RGB color where the animation color 
-	is less than the min threshold AND with the max RGB color where the animation 
-	is more than the max threshold. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_RGB)(int animationId, int frameId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
-/*
-	Fill the specified frame with the min RGB color where the animation color 
-	is less than the min threshold AND with the max RGB color where the animation 
-	is more than the max threshold. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_RGB_NAME)(const wchar_t* path, int frameId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_RGB_NAME_D)(const wchar_t* path, double frameId, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
-/*
-	Fill the specified frame with RGB color where the animation color is less 
-	than the RGB threshold. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_THRESHOLD_COLORS_NAME)(const wchar_t* path, int frameId, int threshold, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_THRESHOLD_COLORS_NAME_D)(const wchar_t* path, double frameId, double threshold, double color);
-/*
-	Fill the specified frame with RGB color where the animation color is less 
-	than the RGB threshold. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_THRESHOLD_COLORS_RGB)(int animationId, int frameId, int threshold, int red, int green, int blue);
-/*
-	Fill the specified frame with RGB color where the animation color is less 
-	than the RGB threshold. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_THRESHOLD_COLORS_RGB_NAME)(const wchar_t* path, int frameId, int threshold, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_THRESHOLD_COLORS_RGB_NAME_D)(const wchar_t* path, double frameId, double threshold, double red, double green, double blue);
-/*
-	Fill all frames with RGB color where the animation color is less than the 
-	RGB threshold. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_THRESHOLD_RGB_COLORS_ALL_FRAMES_RGB)(int animationId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue);
-/*
-	Fill all frames with RGB color where the animation color is less than the 
-	RGB threshold. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_THRESHOLD_RGB_COLORS_ALL_FRAMES_RGB_NAME)(const wchar_t* path, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_THRESHOLD_RGB_COLORS_ALL_FRAMES_RGB_NAME_D)(const wchar_t* path, double redThreshold, double greenThreshold, double blueThreshold, double red, double green, double blue);
-/*
-	Fill the specified frame with RGB color where the animation color is less 
-	than the RGB threshold. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_THRESHOLD_RGB_COLORS_RGB)(int animationId, int frameId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue);
-/*
-	Fill the specified frame with RGB color where the animation color is less 
-	than the RGB threshold. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_THRESHOLD_RGB_COLORS_RGB_NAME)(const wchar_t* path, int frameId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_THRESHOLD_RGB_COLORS_RGB_NAME_D)(const wchar_t* path, double frameId, double redThreshold, double greenThreshold, double blueThreshold, double red, double green, double blue);
-/*
-	Fill the specified frame with RGB color where the animation color is zero. 
-	Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_ZERO_COLOR)(int animationId, int frameId, int color);
-/*
-	Fill all frames with RGB color where the animation color is zero. Animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES)(int animationId, int color);
-/*
-	Fill all frames with RGB color where the animation color is zero. Animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_NAME)(const wchar_t* path, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_NAME_D)(const wchar_t* path, double color);
-/*
-	Fill all frames with RGB color where the animation color is zero. Animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_RGB)(int animationId, int red, int green, int blue);
-/*
-	Fill all frames with RGB color where the animation color is zero. Animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_RGB_NAME)(const wchar_t* path, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_RGB_NAME_D)(const wchar_t* path, double red, double green, double blue);
-/*
-	Fill the specified frame with RGB color where the animation color is zero. 
-	Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_ZERO_COLOR_NAME)(const wchar_t* path, int frameId, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_ZERO_COLOR_NAME_D)(const wchar_t* path, double frameId, double color);
-/*
-	Fill the specified frame with RGB color where the animation color is zero. 
-	Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_FILL_ZERO_COLOR_RGB)(int animationId, int frameId, int red, int green, int blue);
-/*
-	Fill the specified frame with RGB color where the animation color is zero. 
-	Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_FILL_ZERO_COLOR_RGB_NAME)(const wchar_t* path, int frameId, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_FILL_ZERO_COLOR_RGB_NAME_D)(const wchar_t* path, double frameId, double red, double green, double blue);
-/*
-	Get the animation color for a frame given the `1D` `led`. The `led` should 
-	be greater than or equal to 0 and less than the `MaxLeds`. Animation is 
-	referenced by id.
-*/
-typedef int			(*PLUGIN_GET_1D_COLOR)(int animationId, int frameId, int led);
-/*
-	Get the animation color for a frame given the `1D` `led`. The `led` should 
-	be greater than or equal to 0 and less than the `MaxLeds`. Animation is 
-	referenced by name.
-*/
-typedef int			(*PLUGIN_GET_1D_COLOR_NAME)(const wchar_t* path, int frameId, int led);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_GET_1D_COLOR_NAME_D)(const wchar_t* path, double frameId, double led);
-/*
-	Get the animation color for a frame given the `2D` `row` and `column`. The 
-	`row` should be greater than or equal to 0 and less than the `MaxRow`. 
-	The `column` should be greater than or equal to 0 and less than the `MaxColumn`. 
-	Animation is referenced by id.
-*/
-typedef int			(*PLUGIN_GET_2D_COLOR)(int animationId, int frameId, int row, int column);
-/*
-	Get the animation color for a frame given the `2D` `row` and `column`. The 
-	`row` should be greater than or equal to 0 and less than the `MaxRow`. 
-	The `column` should be greater than or equal to 0 and less than the `MaxColumn`. 
-	Animation is referenced by name.
-*/
-typedef int			(*PLUGIN_GET_2D_COLOR_NAME)(const wchar_t* path, int frameId, int row, int column);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_GET_2D_COLOR_NAME_D)(const wchar_t* path, double frameId, double row, double column);
-/*
-	Get the animation id for the named animation.
-*/
-typedef int			(*PLUGIN_GET_ANIMATION)(const wchar_t* name);
-/*
-	`PluginGetAnimationCount` will return the number of loaded animations.
-*/
-typedef int			(*PLUGIN_GET_ANIMATION_COUNT)();
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_GET_ANIMATION_D)(const wchar_t* name);
-/*
-	`PluginGetAnimationId` will return the `animationId` given the `index` of 
-	the loaded animation. The `index` is zero-based and less than the number 
-	returned by `PluginGetAnimationCount`. Use `PluginGetAnimationName` to 
-	get the name of the animation.
-*/
-typedef int			(*PLUGIN_GET_ANIMATION_ID)(int index);
-/*
-	`PluginGetAnimationName` takes an `animationId` and returns the name of 
-	the animation of the `.chroma` animation file. If a name is not available 
-	then an empty string will be returned.
-*/
-typedef const wchar_t*	(*PLUGIN_GET_ANIMATION_NAME)(int animationId);
-/*
-	Get the current frame of the animation referenced by id.
-*/
-typedef int			(*PLUGIN_GET_CURRENT_FRAME)(int animationId);
-/*
-	Get the current frame of the animation referenced by name.
-*/
-typedef int			(*PLUGIN_GET_CURRENT_FRAME_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_GET_CURRENT_FRAME_NAME_D)(const wchar_t* path);
-/*
-	Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma` 
-	animation respective to the `deviceType`, as an integer upon success. Returns 
-	negative one upon failure.
-*/
-typedef int			(*PLUGIN_GET_DEVICE)(int animationId);
-/*
-	Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma` 
-	animation respective to the `deviceType`, as an integer upon success. Returns 
-	negative one upon failure.
-*/
-typedef int			(*PLUGIN_GET_DEVICE_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_GET_DEVICE_NAME_D)(const wchar_t* path);
-/*
-	Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer 
-	upon success. Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_GET_DEVICE_TYPE)(int animationId);
-/*
-	Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer 
-	upon success. Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_GET_DEVICE_TYPE_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_GET_DEVICE_TYPE_NAME_D)(const wchar_t* path);
-/*
-	Get the frame colors and duration (in seconds) for a `Chroma` animation 
-	referenced by id. The `color` is expected to be an array of the expected 
-	dimensions for the `deviceType/device`. The `length` parameter is the size 
-	of the `color` array. For `EChromaSDKDevice1DEnum` the array size should 
-	be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX 
-	ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard 
-	and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the 
-	EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength. 
-	Returns the animation id upon success. Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_GET_FRAME)(int animationId, int frameId, float* duration, int* colors, int length, int* keys, int keysLength);
-/*
-	Returns the frame count of a `Chroma` animation upon success. Returns negative 
-	one upon failure.
-*/
-typedef int			(*PLUGIN_GET_FRAME_COUNT)(int animationId);
-/*
-	Returns the frame count of a `Chroma` animation upon success. Returns negative 
-	one upon failure.
-*/
-typedef int			(*PLUGIN_GET_FRAME_COUNT_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_GET_FRAME_COUNT_NAME_D)(const wchar_t* path);
-/*
-	Returns the duration of an animation frame in seconds upon success. Returns 
-	zero upon failure.
-*/
-typedef float		(*PLUGIN_GET_FRAME_DURATION)(int animationId, int frameId);
-/*
-	Returns the duration of an animation frame in seconds upon success. Returns 
-	zero upon failure.
-*/
-typedef float		(*PLUGIN_GET_FRAME_DURATION_NAME)(const wchar_t* path, int frameId);
-/*
-	Get the frame colors and duration (in seconds) for a `Chroma` animation 
-	referenced by name. The `color` is expected to be an array of the expected 
-	dimensions for the `deviceType/device`. The `length` parameter is the size 
-	of the `color` array. For `EChromaSDKDevice1DEnum` the array size should 
-	be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should be `MAX 
-	ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard 
-	and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the 
-	EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength. 
-	Returns the animation id upon success. Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_GET_FRAME_NAME)(const wchar_t* path, int frameId, float* duration, int* colors, int length, int* keys, int keysLength);
-/*
-	Get the color of an animation key for the given frame referenced by id.
-*/
-typedef int			(*PLUGIN_GET_KEY_COLOR)(int animationId, int frameId, int rzkey);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_GET_KEY_COLOR_D)(const wchar_t* path, double frameId, double rzkey);
-/*
-	Get the color of an animation key for the given frame referenced by name.
-*/
-typedef int			(*PLUGIN_GET_KEY_COLOR_NAME)(const wchar_t* path, int frameId, int rzkey);
-/*
-	Returns `RZRESULT_SUCCESS` if the plugin has been initialized successfully. 
-	Returns `RZRESULT_DLL_NOT_FOUND` if core Chroma library is not found. Returns 
-	`RZRESULT_DLL_INVALID_SIGNATURE` if core Chroma library has an invalid 
-	signature.
-*/
-typedef RZRESULT	(*PLUGIN_GET_LIBRARY_LOADED_STATE)();
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_GET_LIBRARY_LOADED_STATE_D)();
-/*
-	Returns the `MAX COLUMN` given the `EChromaSDKDevice2DEnum` device as an 
-	integer upon success. Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_GET_MAX_COLUMN)(int device);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_GET_MAX_COLUMN_D)(double device);
-/*
-	Returns the MAX LEDS given the `EChromaSDKDevice1DEnum` device as an integer 
-	upon success. Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_GET_MAX_LEDS)(int device);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_GET_MAX_LEDS_D)(double device);
-/*
-	Returns the `MAX ROW` given the `EChromaSDKDevice2DEnum` device as an integer 
-	upon success. Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_GET_MAX_ROW)(int device);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_GET_MAX_ROW_D)(double device);
-/*
-	`PluginGetPlayingAnimationCount` will return the number of playing animations.
-*/
-typedef int			(*PLUGIN_GET_PLAYING_ANIMATION_COUNT)();
-/*
-	`PluginGetPlayingAnimationId` will return the `animationId` given the `index` 
-	of the playing animation. The `index` is zero-based and less than the number 
-	returned by `PluginGetPlayingAnimationCount`. Use `PluginGetAnimationName` 
-	to get the name of the animation.
-*/
-typedef int			(*PLUGIN_GET_PLAYING_ANIMATION_ID)(int index);
-/*
-	Get the RGB color given red, green, and blue.
-*/
-typedef int			(*PLUGIN_GET_RGB)(int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_GET_RGBD)(double red, double green, double blue);
-/*
-	Returns the total duration of an animation in seconds upon success. Returns 
-	zero upon failure.
-*/
-typedef float		(*PLUGIN_GET_TOTAL_DURATION)(int animationId);
-/*
-	Returns the total duration of an animation in seconds upon success. Returns 
-	zero upon failure.
-*/
-typedef float		(*PLUGIN_GET_TOTAL_DURATION_NAME)(const wchar_t* path);
-/*
-	Check if the animation has loop enabled referenced by id.
-*/
-typedef bool		(*PLUGIN_HAS_ANIMATION_LOOP)(int animationId);
-/*
-	Check if the animation has loop enabled referenced by name.
-*/
-typedef bool		(*PLUGIN_HAS_ANIMATION_LOOP_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_HAS_ANIMATION_LOOP_NAME_D)(const wchar_t* path);
-/*
-	Initialize the ChromaSDK. Zero indicates success, otherwise failure. Many 
-	API methods auto initialize the ChromaSDK if not already initialized.
-*/
-typedef RZRESULT	(*PLUGIN_INIT)();
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_INIT_D)();
-/*
-	Initialize the ChromaSDK. AppInfo populates the details in Synapse. Zero 
-	indicates success, otherwise failure. Many API methods auto initialize 
-	the ChromaSDK if not already initialized.
-*/
-typedef RZRESULT	(*PLUGIN_INIT_SDK)(ChromaSDK::APPINFOTYPE* AppInfo);
-/*
-	Insert an animation delay by duplicating the frame by the delay number of 
-	times. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_INSERT_DELAY)(int animationId, int frameId, int delay);
-/*
-	Insert an animation delay by duplicating the frame by the delay number of 
-	times. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_INSERT_DELAY_NAME)(const wchar_t* path, int frameId, int delay);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_INSERT_DELAY_NAME_D)(const wchar_t* path, double frameId, double delay);
-/*
-	Duplicate the source frame index at the target frame index. Animation is 
-	referenced by id.
-*/
-typedef void		(*PLUGIN_INSERT_FRAME)(int animationId, int sourceFrame, int targetFrame);
-/*
-	Duplicate the source frame index at the target frame index. Animation is 
-	referenced by name.
-*/
-typedef void		(*PLUGIN_INSERT_FRAME_NAME)(const wchar_t* path, int sourceFrame, int targetFrame);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_INSERT_FRAME_NAME_D)(const wchar_t* path, double sourceFrame, double targetFrame);
-/*
-	Invert all the colors at the specified frame. Animation is referenced by 
-	id.
-*/
-typedef void		(*PLUGIN_INVERT_COLORS)(int animationId, int frameId);
-/*
-	Invert all the colors for all frames. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_INVERT_COLORS_ALL_FRAMES)(int animationId);
-/*
-	Invert all the colors for all frames. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_INVERT_COLORS_ALL_FRAMES_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_INVERT_COLORS_ALL_FRAMES_NAME_D)(const wchar_t* path);
-/*
-	Invert all the colors at the specified frame. Animation is referenced by 
-	name.
-*/
-typedef void		(*PLUGIN_INVERT_COLORS_NAME)(const wchar_t* path, int frameId);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_INVERT_COLORS_NAME_D)(const wchar_t* path, double frameId);
-/*
-	Check if the animation is paused referenced by id.
-*/
-typedef bool		(*PLUGIN_IS_ANIMATION_PAUSED)(int animationId);
-/*
-	Check if the animation is paused referenced by name.
-*/
-typedef bool		(*PLUGIN_IS_ANIMATION_PAUSED_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_IS_ANIMATION_PAUSED_NAME_D)(const wchar_t* path);
-/*
-	The editor dialog is a non-blocking modal window, this method returns true 
-	if the modal window is open, otherwise false.
-*/
-typedef bool		(*PLUGIN_IS_DIALOG_OPEN)();
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_IS_DIALOG_OPEN_D)();
-/*
-	Returns true if the plugin has been initialized. Returns false if the plugin 
-	is uninitialized.
-*/
-typedef bool		(*PLUGIN_IS_INITIALIZED)();
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_IS_INITIALIZED_D)();
-/*
-	If the method can be invoked the method returns true.
-*/
-typedef bool		(*PLUGIN_IS_PLATFORM_SUPPORTED)();
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_IS_PLATFORM_SUPPORTED_D)();
-/*
-	`PluginIsPlayingName` automatically handles initializing the `ChromaSDK`. 
-	The named `.chroma` animation file will be automatically opened. The method 
-	will return whether the animation is playing or not. Animation is referenced 
-	by id.
-*/
-typedef bool		(*PLUGIN_IS_PLAYING)(int animationId);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_IS_PLAYING_D)(double animationId);
-/*
-	`PluginIsPlayingName` automatically handles initializing the `ChromaSDK`. 
-	The named `.chroma` animation file will be automatically opened. The method 
-	will return whether the animation is playing or not. Animation is referenced 
-	by name.
-*/
-typedef bool		(*PLUGIN_IS_PLAYING_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_IS_PLAYING_NAME_D)(const wchar_t* path);
-/*
-	`PluginIsPlayingType` automatically handles initializing the `ChromaSDK`. 
-	If any animation is playing for the `deviceType` and `device` combination, 
-	the method will return true, otherwise false.
-*/
-typedef bool		(*PLUGIN_IS_PLAYING_TYPE)(int deviceType, int device);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_IS_PLAYING_TYPE_D)(double deviceType, double device);
-/*
-	Do a lerp math operation on a float.
-*/
-typedef float		(*PLUGIN_LERP)(float start, float end, float amt);
-/*
-	Lerp from one color to another given t in the range 0.0 to 1.0.
-*/
-typedef int			(*PLUGIN_LERP_COLOR)(int from, int to, float t);
-/*
-	Loads `Chroma` effects so that the animation can be played immediately. 
-	Returns the animation id upon success. Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_LOAD_ANIMATION)(int animationId);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_LOAD_ANIMATION_D)(double animationId);
-/*
-	Load the named animation.
-*/
-typedef void		(*PLUGIN_LOAD_ANIMATION_NAME)(const wchar_t* path);
-/*
-	Load a composite set of animations.
-*/
-typedef void		(*PLUGIN_LOAD_COMPOSITE)(const wchar_t* name);
-/*
-	Make a blank animation for the length of the frame count. Frame duration 
-	defaults to the duration. The frame color defaults to color. Animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_MAKE_BLANK_FRAMES)(int animationId, int frameCount, float duration, int color);
-/*
-	Make a blank animation for the length of the frame count. Frame duration 
-	defaults to the duration. The frame color defaults to color. Animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_MAKE_BLANK_FRAMES_NAME)(const wchar_t* path, int frameCount, float duration, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_MAKE_BLANK_FRAMES_NAME_D)(const wchar_t* path, double frameCount, double duration, double color);
-/*
-	Make a blank animation for the length of the frame count. Frame duration 
-	defaults to the duration. The frame color is random. Animation is referenced 
-	by id.
-*/
-typedef void		(*PLUGIN_MAKE_BLANK_FRAMES_RANDOM)(int animationId, int frameCount, float duration);
-/*
-	Make a blank animation for the length of the frame count. Frame duration 
-	defaults to the duration. The frame color is random black and white. Animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_MAKE_BLANK_FRAMES_RANDOM_BLACK_AND_WHITE)(int animationId, int frameCount, float duration);
-/*
-	Make a blank animation for the length of the frame count. Frame duration 
-	defaults to the duration. The frame color is random black and white. Animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_MAKE_BLANK_FRAMES_RANDOM_BLACK_AND_WHITE_NAME)(const wchar_t* path, int frameCount, float duration);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_MAKE_BLANK_FRAMES_RANDOM_BLACK_AND_WHITE_NAME_D)(const wchar_t* path, double frameCount, double duration);
-/*
-	Make a blank animation for the length of the frame count. Frame duration 
-	defaults to the duration. The frame color is random. Animation is referenced 
-	by name.
-*/
-typedef void		(*PLUGIN_MAKE_BLANK_FRAMES_RANDOM_NAME)(const wchar_t* path, int frameCount, float duration);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_MAKE_BLANK_FRAMES_RANDOM_NAME_D)(const wchar_t* path, double frameCount, double duration);
-/*
-	Make a blank animation for the length of the frame count. Frame duration 
-	defaults to the duration. The frame color defaults to color. Animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_MAKE_BLANK_FRAMES_RGB)(int animationId, int frameCount, float duration, int red, int green, int blue);
-/*
-	Make a blank animation for the length of the frame count. Frame duration 
-	defaults to the duration. The frame color defaults to color. Animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_MAKE_BLANK_FRAMES_RGB_NAME)(const wchar_t* path, int frameCount, float duration, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_MAKE_BLANK_FRAMES_RGB_NAME_D)(const wchar_t* path, double frameCount, double duration, double red, double green, double blue);
-/*
-	Flips the color grid horizontally for all `Chroma` animation frames. Returns 
-	the animation id upon success. Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_MIRROR_HORIZONTALLY)(int animationId);
-/*
-	Flips the color grid vertically for all `Chroma` animation frames. This 
-	method has no effect for `EChromaSDKDevice1DEnum` devices. Returns the 
-	animation id upon success. Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_MIRROR_VERTICALLY)(int animationId);
-/*
-	Multiply the color intensity with the lerp result from color 1 to color 
-	2 using the frame index divided by the frame count for the `t` parameter. 
-	Animation is referenced in id.
-*/
-typedef void		(*PLUGIN_MULTIPLY_COLOR_LERP_ALL_FRAMES)(int animationId, int color1, int color2);
-/*
-	Multiply the color intensity with the lerp result from color 1 to color 
-	2 using the frame index divided by the frame count for the `t` parameter. 
-	Animation is referenced in name.
-*/
-typedef void		(*PLUGIN_MULTIPLY_COLOR_LERP_ALL_FRAMES_NAME)(const wchar_t* path, int color1, int color2);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_MULTIPLY_COLOR_LERP_ALL_FRAMES_NAME_D)(const wchar_t* path, double color1, double color2);
-/*
-	Multiply all the colors in the frame by the intensity value. The valid the 
-	intensity range is from 0.0 to 255.0. RGB components are multiplied equally. 
-	An intensity of 0.5 would half the color value. Black colors in the frame 
-	will not be affected by this method.
-*/
-typedef void		(*PLUGIN_MULTIPLY_INTENSITY)(int animationId, int frameId, float intensity);
-/*
-	Multiply all the colors for all frames by the intensity value. The valid 
-	the intensity range is from 0.0 to 255.0. RGB components are multiplied 
-	equally. An intensity of 0.5 would half the color value. Black colors in 
-	the frame will not be affected by this method.
-*/
-typedef void		(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES)(int animationId, float intensity);
-/*
-	Multiply all the colors for all frames by the intensity value. The valid 
-	the intensity range is from 0.0 to 255.0. RGB components are multiplied 
-	equally. An intensity of 0.5 would half the color value. Black colors in 
-	the frame will not be affected by this method.
-*/
-typedef void		(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME)(const wchar_t* path, float intensity);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME_D)(const wchar_t* path, double intensity);
-/*
-	Multiply all frames by the RBG color intensity. Animation is referenced 
-	by id.
-*/
-typedef void		(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB)(int animationId, int red, int green, int blue);
-/*
-	Multiply all frames by the RBG color intensity. Animation is referenced 
-	by name.
-*/
-typedef void		(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB_NAME)(const wchar_t* path, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB_NAME_D)(const wchar_t* path, double red, double green, double blue);
-/*
-	Multiply the specific frame by the RBG color intensity. Animation is referenced 
-	by id.
-*/
-typedef void		(*PLUGIN_MULTIPLY_INTENSITY_COLOR)(int animationId, int frameId, int color);
-/*
-	Multiply all frames by the RBG color intensity. Animation is referenced 
-	by id.
-*/
-typedef void		(*PLUGIN_MULTIPLY_INTENSITY_COLOR_ALL_FRAMES)(int animationId, int color);
-/*
-	Multiply all frames by the RBG color intensity. Animation is referenced 
-	by name.
-*/
-typedef void		(*PLUGIN_MULTIPLY_INTENSITY_COLOR_ALL_FRAMES_NAME)(const wchar_t* path, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_MULTIPLY_INTENSITY_COLOR_ALL_FRAMES_NAME_D)(const wchar_t* path, double color);
-/*
-	Multiply the specific frame by the RBG color intensity. Animation is referenced 
-	by name.
-*/
-typedef void		(*PLUGIN_MULTIPLY_INTENSITY_COLOR_NAME)(const wchar_t* path, int frameId, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_MULTIPLY_INTENSITY_COLOR_NAME_D)(const wchar_t* path, double frameId, double color);
-/*
-	Multiply all the colors in the frame by the intensity value. The valid the 
-	intensity range is from 0.0 to 255.0. RGB components are multiplied equally. 
-	An intensity of 0.5 would half the color value. Black colors in the frame 
-	will not be affected by this method.
-*/
-typedef void		(*PLUGIN_MULTIPLY_INTENSITY_NAME)(const wchar_t* path, int frameId, float intensity);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_MULTIPLY_INTENSITY_NAME_D)(const wchar_t* path, double frameId, double intensity);
-/*
-	Multiply the specific frame by the RBG color intensity. Animation is referenced 
-	by id.
-*/
-typedef void		(*PLUGIN_MULTIPLY_INTENSITY_RGB)(int animationId, int frameId, int red, int green, int blue);
-/*
-	Multiply the specific frame by the RBG color intensity. Animation is referenced 
-	by name.
-*/
-typedef void		(*PLUGIN_MULTIPLY_INTENSITY_RGB_NAME)(const wchar_t* path, int frameId, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_MULTIPLY_INTENSITY_RGB_NAME_D)(const wchar_t* path, double frameId, double red, double green, double blue);
-/*
-	Multiply the specific frame by the color lerp result between color 1 and 
-	2 using the frame color value as the `t` value. Animation is referenced 
-	by id.
-*/
-typedef void		(*PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP)(int animationId, int frameId, int color1, int color2);
-/*
-	Multiply all frames by the color lerp result between color 1 and 2 using 
-	the frame color value as the `t` value. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES)(int animationId, int color1, int color2);
-/*
-	Multiply all frames by the color lerp result between color 1 and 2 using 
-	the frame color value as the `t` value. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_NAME)(const wchar_t* path, int color1, int color2);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_NAME_D)(const wchar_t* path, double color1, double color2);
-/*
-	Multiply the specific frame by the color lerp result between RGB 1 and 2 
-	using the frame color value as the `t` value. Animation is referenced by 
-	id.
-*/
-typedef void		(*PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_RGB)(int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
-/*
-	Multiply the specific frame by the color lerp result between RGB 1 and 2 
-	using the frame color value as the `t` value. Animation is referenced by 
-	name.
-*/
-typedef void		(*PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME)(const wchar_t* path, int red1, int green1, int blue1, int red2, int green2, int blue2);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME_D)(const wchar_t* path, double red1, double green1, double blue1, double red2, double green2, double blue2);
-/*
-	Multiply the specific frame by the color lerp result between color 1 and 
-	2 using the frame color value as the `t` value. Animation is referenced 
-	by id.
-*/
-typedef void		(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP)(int animationId, int frameId, int color1, int color2);
-/*
-	Multiply all frames by the color lerp result between color 1 and 2 using 
-	the frame color value as the `t` value. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES)(int animationId, int color1, int color2);
-/*
-	Multiply all frames by the color lerp result between color 1 and 2 using 
-	the frame color value as the `t` value. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_NAME)(const wchar_t* path, int color1, int color2);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_NAME_D)(const wchar_t* path, double color1, double color2);
-/*
-	Multiply all frames by the color lerp result between RGB 1 and 2 using the 
-	frame color value as the `t` value. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_RGB)(int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
-/*
-	Multiply all frames by the color lerp result between RGB 1 and 2 using the 
-	frame color value as the `t` value. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME)(const wchar_t* path, int red1, int green1, int blue1, int red2, int green2, int blue2);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME_D)(const wchar_t* path, double red1, double green1, double blue1, double red2, double green2, double blue2);
-/*
-	Multiply the specific frame by the color lerp result between color 1 and 
-	2 using the frame color value as the `t` value. Animation is referenced 
-	by name.
-*/
-typedef void		(*PLUGIN_MULTIPLY_TARGET_COLOR_LERP_NAME)(const wchar_t* path, int frameId, int color1, int color2);
-/*
-	Offset all colors in the frame using the RGB offset. Use the range of -255 
-	to 255 for red, green, and blue parameters. Negative values remove color. 
-	Positive values add color.
-*/
-typedef void		(*PLUGIN_OFFSET_COLORS)(int animationId, int frameId, int red, int green, int blue);
-/*
-	Offset all colors for all frames using the RGB offset. Use the range of 
-	-255 to 255 for red, green, and blue parameters. Negative values remove 
-	color. Positive values add color.
-*/
-typedef void		(*PLUGIN_OFFSET_COLORS_ALL_FRAMES)(int animationId, int red, int green, int blue);
-/*
-	Offset all colors for all frames using the RGB offset. Use the range of 
-	-255 to 255 for red, green, and blue parameters. Negative values remove 
-	color. Positive values add color.
-*/
-typedef void		(*PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME)(const wchar_t* path, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME_D)(const wchar_t* path, double red, double green, double blue);
-/*
-	Offset all colors in the frame using the RGB offset. Use the range of -255 
-	to 255 for red, green, and blue parameters. Negative values remove color. 
-	Positive values add color.
-*/
-typedef void		(*PLUGIN_OFFSET_COLORS_NAME)(const wchar_t* path, int frameId, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_OFFSET_COLORS_NAME_D)(const wchar_t* path, double frameId, double red, double green, double blue);
-/*
-	This method will only update colors in the animation that are not already 
-	set to black. Offset a subset of colors in the frame using the RGB offset. 
-	Use the range of -255 to 255 for red, green, and blue parameters. Negative 
-	values remove color. Positive values add color.
-*/
-typedef void		(*PLUGIN_OFFSET_NON_ZERO_COLORS)(int animationId, int frameId, int red, int green, int blue);
-/*
-	This method will only update colors in the animation that are not already 
-	set to black. Offset a subset of colors for all frames using the RGB offset. 
-	Use the range of -255 to 255 for red, green, and blue parameters. Negative 
-	values remove color. Positive values add color.
-*/
-typedef void		(*PLUGIN_OFFSET_NON_ZERO_COLORS_ALL_FRAMES)(int animationId, int red, int green, int blue);
-/*
-	This method will only update colors in the animation that are not already 
-	set to black. Offset a subset of colors for all frames using the RGB offset. 
-	Use the range of -255 to 255 for red, green, and blue parameters. Negative 
-	values remove color. Positive values add color.
-*/
-typedef void		(*PLUGIN_OFFSET_NON_ZERO_COLORS_ALL_FRAMES_NAME)(const wchar_t* path, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_OFFSET_NON_ZERO_COLORS_ALL_FRAMES_NAME_D)(const wchar_t* path, double red, double green, double blue);
-/*
-	This method will only update colors in the animation that are not already 
-	set to black. Offset a subset of colors in the frame using the RGB offset. 
-	Use the range of -255 to 255 for red, green, and blue parameters. Negative 
-	values remove color. Positive values add color.
-*/
-typedef void		(*PLUGIN_OFFSET_NON_ZERO_COLORS_NAME)(const wchar_t* path, int frameId, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_OFFSET_NON_ZERO_COLORS_NAME_D)(const wchar_t* path, double frameId, double red, double green, double blue);
-/*
-	Opens a `Chroma` animation file so that it can be played. Returns an animation 
-	id >= 0 upon success. Returns negative one if there was a failure. The 
-	animation id is used in most of the API methods.
-*/
-typedef int			(*PLUGIN_OPEN_ANIMATION)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_OPEN_ANIMATION_D)(const wchar_t* path);
-/*
-	Opens a `Chroma` animation data from memory so that it can be played. `Data` 
-	is a pointer to BYTE array of the loaded animation in memory. `Name` will 
-	be assigned to the animation when loaded. Returns an animation id >= 0 
-	upon success. Returns negative one if there was a failure. The animation 
-	id is used in most of the API methods.
-*/
-typedef int			(*PLUGIN_OPEN_ANIMATION_FROM_MEMORY)(const BYTE* data, const wchar_t* name);
-/*
-	Opens a `Chroma` animation file with the `.chroma` extension. Returns zero 
-	upon success. Returns negative one if there was a failure.
-*/
-typedef int			(*PLUGIN_OPEN_EDITOR_DIALOG)(const wchar_t* path);
-/*
-	Open the named animation in the editor dialog and play the animation at 
-	start.
-*/
-typedef int			(*PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY_D)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_OPEN_EDITOR_DIALOG_D)(const wchar_t* path);
-/*
-	Sets the `duration` for all grames in the `Chroma` animation to the `duration` 
-	parameter. Returns the animation id upon success. Returns negative one 
-	upon failure.
-*/
-typedef int			(*PLUGIN_OVERRIDE_FRAME_DURATION)(int animationId, float duration);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_OVERRIDE_FRAME_DURATION_D)(double animationId, double duration);
-/*
-	Override the duration of all frames with the `duration` value. Animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_OVERRIDE_FRAME_DURATION_NAME)(const wchar_t* path, float duration);
-/*
-	Pause the current animation referenced by id.
-*/
-typedef void		(*PLUGIN_PAUSE_ANIMATION)(int animationId);
-/*
-	Pause the current animation referenced by name.
-*/
-typedef void		(*PLUGIN_PAUSE_ANIMATION_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_PAUSE_ANIMATION_NAME_D)(const wchar_t* path);
-/*
-	Plays the `Chroma` animation. This will load the animation, if not loaded 
-	previously. Returns the animation id upon success. Returns negative one 
-	upon failure.
-*/
-typedef int			(*PLUGIN_PLAY_ANIMATION)(int animationId);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_PLAY_ANIMATION_D)(double animationId);
-/*
-	`PluginPlayAnimationFrame` automatically handles initializing the `ChromaSDK`. 
-	The method will play the animation given the `animationId` with looping 
-	`on` or `off` starting at the `frameId`.
-*/
-typedef void		(*PLUGIN_PLAY_ANIMATION_FRAME)(int animationId, int frameId, bool loop);
-/*
-	`PluginPlayAnimationFrameName` automatically handles initializing the `ChromaSDK`. 
-	The named `.chroma` animation file will be automatically opened. The animation 
-	will play with looping `on` or `off` starting at the `frameId`.
-*/
-typedef void		(*PLUGIN_PLAY_ANIMATION_FRAME_NAME)(const wchar_t* path, int frameId, bool loop);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_PLAY_ANIMATION_FRAME_NAME_D)(const wchar_t* path, double frameId, double loop);
-/*
-	`PluginPlayAnimationLoop` automatically handles initializing the `ChromaSDK`. 
-	The method will play the animation given the `animationId` with looping 
-	`on` or `off`.
-*/
-typedef void		(*PLUGIN_PLAY_ANIMATION_LOOP)(int animationId, bool loop);
-/*
-	`PluginPlayAnimationName` automatically handles initializing the `ChromaSDK`. 
-	The named `.chroma` animation file will be automatically opened. The animation 
-	will play with looping `on` or `off`.
-*/
-typedef void		(*PLUGIN_PLAY_ANIMATION_NAME)(const wchar_t* path, bool loop);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_PLAY_ANIMATION_NAME_D)(const wchar_t* path, double loop);
-/*
-	`PluginPlayComposite` automatically handles initializing the `ChromaSDK`. 
-	The named animation files for the `.chroma` set will be automatically opened. 
-	The set of animations will play with looping `on` or `off`.
-*/
-typedef void		(*PLUGIN_PLAY_COMPOSITE)(const wchar_t* name, bool loop);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_PLAY_COMPOSITE_D)(const wchar_t* name, double loop);
-/*
-	Displays the `Chroma` animation frame on `Chroma` hardware given the `frameId`. 
-	Returns the animation id upon success. Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_PREVIEW_FRAME)(int animationId, int frameId);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_PREVIEW_FRAME_D)(double animationId, double frameId);
-/*
-	Displays the `Chroma` animation frame on `Chroma` hardware given the `frameId`. 
-	Animaton is referenced by name.
-*/
-typedef void		(*PLUGIN_PREVIEW_FRAME_NAME)(const wchar_t* path, int frameId);
-/*
-	Reduce the frames of the animation by removing every nth element. Animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_REDUCE_FRAMES)(int animationId, int n);
-/*
-	Reduce the frames of the animation by removing every nth element. Animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_REDUCE_FRAMES_NAME)(const wchar_t* path, int n);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_REDUCE_FRAMES_NAME_D)(const wchar_t* path, double n);
-/*
-	Resets the `Chroma` animation to 1 blank frame. Returns the animation id 
-	upon success. Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_RESET_ANIMATION)(int animationId);
-/*
-	Resume the animation with loop `ON` or `OFF` referenced by id.
-*/
-typedef void		(*PLUGIN_RESUME_ANIMATION)(int animationId, bool loop);
-/*
-	Resume the animation with loop `ON` or `OFF` referenced by name.
-*/
-typedef void		(*PLUGIN_RESUME_ANIMATION_NAME)(const wchar_t* path, bool loop);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_RESUME_ANIMATION_NAME_D)(const wchar_t* path, double loop);
-/*
-	Reverse the animation frame order of the `Chroma` animation. Returns the 
-	animation id upon success. Returns negative one upon failure. Animation 
-	is referenced by id.
-*/
-typedef int			(*PLUGIN_REVERSE)(int animationId);
-/*
-	Reverse the animation frame order of the `Chroma` animation. Animation is 
-	referenced by id.
-*/
-typedef void		(*PLUGIN_REVERSE_ALL_FRAMES)(int animationId);
-/*
-	Reverse the animation frame order of the `Chroma` animation. Animation is 
-	referenced by name.
-*/
-typedef void		(*PLUGIN_REVERSE_ALL_FRAMES_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_REVERSE_ALL_FRAMES_NAME_D)(const wchar_t* path);
-/*
-	Save the animation referenced by id to the path specified.
-*/
-typedef int			(*PLUGIN_SAVE_ANIMATION)(int animationId, const wchar_t* path);
-/*
-	Save the named animation to the target path specified.
-*/
-typedef int			(*PLUGIN_SAVE_ANIMATION_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	Set the animation color for a frame given the `1D` `led`. The `led` should 
-	be greater than or equal to 0 and less than the `MaxLeds`. The animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_1D_COLOR)(int animationId, int frameId, int led, int color);
-/*
-	Set the animation color for a frame given the `1D` `led`. The `led` should 
-	be greater than or equal to 0 and less than the `MaxLeds`. The animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_SET_1D_COLOR_NAME)(const wchar_t* path, int frameId, int led, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SET_1D_COLOR_NAME_D)(const wchar_t* path, double frameId, double led, double color);
-/*
-	Set the animation color for a frame given the `2D` `row` and `column`. The 
-	`row` should be greater than or equal to 0 and less than the `MaxRow`. 
-	The `column` should be greater than or equal to 0 and less than the `MaxColumn`. 
-	The animation is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_2D_COLOR)(int animationId, int frameId, int row, int column, int color);
-/*
-	Set the animation color for a frame given the `2D` `row` and `column`. The 
-	`row` should be greater than or equal to 0 and less than the `MaxRow`. 
-	The `column` should be greater than or equal to 0 and less than the `MaxColumn`. 
-	The animation is referenced by name.
-*/
-typedef void		(*PLUGIN_SET_2D_COLOR_NAME)(const wchar_t* path, int frameId, int row, int column, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SET_2D_COLOR_NAME_D)(const wchar_t* path, double frameId, double rowColumnIndex, double color);
-/*
-	When custom color is set, the custom key mode will be used. The animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES)(int animationId);
-/*
-	When custom color is set, the custom key mode will be used. The animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES_NAME_D)(const wchar_t* path);
-/*
-	Set the Chroma custom key color flag on all frames. `True` changes the layout 
-	from grid to key. `True` changes the layout from key to grid. Animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_CHROMA_CUSTOM_FLAG)(int animationId, bool flag);
-/*
-	Set the Chroma custom key color flag on all frames. `True` changes the layout 
-	from grid to key. `True` changes the layout from key to grid. Animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_SET_CHROMA_CUSTOM_FLAG_NAME)(const wchar_t* path, bool flag);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SET_CHROMA_CUSTOM_FLAG_NAME_D)(const wchar_t* path, double flag);
-/*
-	Set the current frame of the animation referenced by id.
-*/
-typedef void		(*PLUGIN_SET_CURRENT_FRAME)(int animationId, int frameId);
-/*
-	Set the current frame of the animation referenced by name.
-*/
-typedef void		(*PLUGIN_SET_CURRENT_FRAME_NAME)(const wchar_t* path, int frameId);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SET_CURRENT_FRAME_NAME_D)(const wchar_t* path, double frameId);
-/*
-	Set the custom alpha flag on the color array
-*/
-typedef RZRESULT	(*PLUGIN_SET_CUSTOM_COLOR_FLAG_2D)(int device, int* colors);
-/*
-	Changes the `deviceType` and `device` of a `Chroma` animation. If the device 
-	is changed, the `Chroma` animation will be reset with 1 blank frame. Returns 
-	the animation id upon success. Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_SET_DEVICE)(int animationId, int deviceType, int device);
-/*
-	SetEffect will display the referenced effect id.
-*/
-typedef RZRESULT	(*PLUGIN_SET_EFFECT)(const ChromaSDK::FChromaSDKGuid& effectId);
-/*
-	SetEffectCustom1D will display the referenced colors immediately
-*/
-typedef RZRESULT	(*PLUGIN_SET_EFFECT_CUSTOM_1D)(const int device, const int* colors);
-/*
-	SetEffectCustom2D will display the referenced colors immediately.
-*/
-typedef RZRESULT	(*PLUGIN_SET_EFFECT_CUSTOM_2D)(const int device, const int* colors);
-/*
-	SetEffectKeyboardCustom2D will display the referenced custom keyboard colors 
-	immediately. Colors represent a visual grid layout. Keys represent the 
-	hotkeys for any layout.
-*/
-typedef RZRESULT	(*PLUGIN_SET_EFFECT_KEYBOARD_CUSTOM_2D)(const int device, const int* colors, const int* keys);
-/*
-	When the idle animation is used, the named animation will play when no other 
-	animations are playing. Reference the animation by id.
-*/
-typedef void		(*PLUGIN_SET_IDLE_ANIMATION)(int animationId);
-/*
-	When the idle animation is used, the named animation will play when no other 
-	animations are playing. Reference the animation by name.
-*/
-typedef void		(*PLUGIN_SET_IDLE_ANIMATION_NAME)(const wchar_t* path);
-/*
-	Set animation key to a static color for the given frame.
-*/
-typedef void		(*PLUGIN_SET_KEY_COLOR)(int animationId, int frameId, int rzkey, int color);
-/*
-	Set the key to the specified key color for all frames. Animation is referenced 
-	by id.
-*/
-typedef void		(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES)(int animationId, int rzkey, int color);
-/*
-	Set the key to the specified key color for all frames. Animation is referenced 
-	by name.
-*/
-typedef void		(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES_NAME)(const wchar_t* path, int rzkey, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES_NAME_D)(const wchar_t* path, double rzkey, double color);
-/*
-	Set the key to the specified key color for all frames. Animation is referenced 
-	by id.
-*/
-typedef void		(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES_RGB)(int animationId, int rzkey, int red, int green, int blue);
-/*
-	Set the key to the specified key color for all frames. Animation is referenced 
-	by name.
-*/
-typedef void		(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES_RGB_NAME)(const wchar_t* path, int rzkey, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SET_KEY_COLOR_ALL_FRAMES_RGB_NAME_D)(const wchar_t* path, double rzkey, double red, double green, double blue);
-/*
-	Set animation key to a static color for the given frame.
-*/
-typedef void		(*PLUGIN_SET_KEY_COLOR_NAME)(const wchar_t* path, int frameId, int rzkey, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SET_KEY_COLOR_NAME_D)(const wchar_t* path, double frameId, double rzkey, double color);
-/*
-	Set the key to the specified key color for the specified frame. Animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_KEY_COLOR_RGB)(int animationId, int frameId, int rzkey, int red, int green, int blue);
-/*
-	Set the key to the specified key color for the specified frame. Animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_SET_KEY_COLOR_RGB_NAME)(const wchar_t* path, int frameId, int rzkey, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SET_KEY_COLOR_RGB_NAME_D)(const wchar_t* path, double frameId, double rzkey, double red, double green, double blue);
-/*
-	Set animation key to a static color for the given frame if the existing 
-	color is not already black.
-*/
-typedef void		(*PLUGIN_SET_KEY_NON_ZERO_COLOR)(int animationId, int frameId, int rzkey, int color);
-/*
-	Set animation key to a static color for the given frame if the existing 
-	color is not already black.
-*/
-typedef void		(*PLUGIN_SET_KEY_NON_ZERO_COLOR_NAME)(const wchar_t* path, int frameId, int rzkey, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SET_KEY_NON_ZERO_COLOR_NAME_D)(const wchar_t* path, double frameId, double rzkey, double color);
-/*
-	Set the key to the specified key color for the specified frame where color 
-	is not black. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_KEY_NON_ZERO_COLOR_RGB)(int animationId, int frameId, int rzkey, int red, int green, int blue);
-/*
-	Set the key to the specified key color for the specified frame where color 
-	is not black. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_SET_KEY_NON_ZERO_COLOR_RGB_NAME)(const wchar_t* path, int frameId, int rzkey, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SET_KEY_NON_ZERO_COLOR_RGB_NAME_D)(const wchar_t* path, double frameId, double rzkey, double red, double green, double blue);
-/*
-	Set animation key by row and column to a static color for the given frame.
-*/
-typedef void		(*PLUGIN_SET_KEY_ROW_COLUMN_COLOR_NAME)(const wchar_t* path, int frameId, int row, int column, int color);
-/*
-	Set an array of animation keys to a static color for the given frame. Animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_KEYS_COLOR)(int animationId, int frameId, const int* rzkeys, int keyCount, int color);
-/*
-	Set an array of animation keys to a static color for all frames. Animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_KEYS_COLOR_ALL_FRAMES)(int animationId, const int* rzkeys, int keyCount, int color);
-/*
-	Set an array of animation keys to a static color for all frames. Animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_SET_KEYS_COLOR_ALL_FRAMES_NAME)(const wchar_t* path, const int* rzkeys, int keyCount, int color);
-/*
-	Set an array of animation keys to a static color for all frames. Animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_KEYS_COLOR_ALL_FRAMES_RGB)(int animationId, const int* rzkeys, int keyCount, int red, int green, int blue);
-/*
-	Set an array of animation keys to a static color for all frames. Animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_SET_KEYS_COLOR_ALL_FRAMES_RGB_NAME)(const wchar_t* path, const int* rzkeys, int keyCount, int red, int green, int blue);
-/*
-	Set an array of animation keys to a static color for the given frame.
-*/
-typedef void		(*PLUGIN_SET_KEYS_COLOR_NAME)(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int color);
-/*
-	Set an array of animation keys to a static color for the given frame. Animation 
-	is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_KEYS_COLOR_RGB)(int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
-/*
-	Set an array of animation keys to a static color for the given frame. Animation 
-	is referenced by name.
-*/
-typedef void		(*PLUGIN_SET_KEYS_COLOR_RGB_NAME)(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
-/*
-	Set an array of animation keys to a static color for the given frame if 
-	the existing color is not already black.
-*/
-typedef void		(*PLUGIN_SET_KEYS_NON_ZERO_COLOR)(int animationId, int frameId, const int* rzkeys, int keyCount, int color);
-/*
-	Set an array of animation keys to a static color for the given frame where 
-	the color is not black. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_KEYS_NON_ZERO_COLOR_ALL_FRAMES)(int animationId, const int* rzkeys, int keyCount, int color);
-/*
-	Set an array of animation keys to a static color for all frames if the existing 
-	color is not already black. Reference animation by name.
-*/
-typedef void		(*PLUGIN_SET_KEYS_NON_ZERO_COLOR_ALL_FRAMES_NAME)(const wchar_t* path, const int* rzkeys, int keyCount, int color);
-/*
-	Set an array of animation keys to a static color for the given frame if 
-	the existing color is not already black. Reference animation by name.
-*/
-typedef void		(*PLUGIN_SET_KEYS_NON_ZERO_COLOR_NAME)(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int color);
-/*
-	Set an array of animation keys to a static color for the given frame where 
-	the color is not black. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_KEYS_NON_ZERO_COLOR_RGB)(int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
-/*
-	Set an array of animation keys to a static color for the given frame where 
-	the color is not black. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_SET_KEYS_NON_ZERO_COLOR_RGB_NAME)(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
-/*
-	Set an array of animation keys to a static color for the given frame where 
-	the color is black. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_KEYS_ZERO_COLOR)(int animationId, int frameId, const int* rzkeys, int keyCount, int color);
-/*
-	Set an array of animation keys to a static color for all frames where the 
-	color is black. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_KEYS_ZERO_COLOR_ALL_FRAMES)(int animationId, const int* rzkeys, int keyCount, int color);
-/*
-	Set an array of animation keys to a static color for all frames where the 
-	color is black. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_SET_KEYS_ZERO_COLOR_ALL_FRAMES_NAME)(const wchar_t* path, const int* rzkeys, int keyCount, int color);
-/*
-	Set an array of animation keys to a static color for all frames where the 
-	color is black. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_KEYS_ZERO_COLOR_ALL_FRAMES_RGB)(int animationId, const int* rzkeys, int keyCount, int red, int green, int blue);
-/*
-	Set an array of animation keys to a static color for all frames where the 
-	color is black. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_SET_KEYS_ZERO_COLOR_ALL_FRAMES_RGB_NAME)(const wchar_t* path, const int* rzkeys, int keyCount, int red, int green, int blue);
-/*
-	Set an array of animation keys to a static color for the given frame where 
-	the color is black. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_SET_KEYS_ZERO_COLOR_NAME)(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int color);
-/*
-	Set an array of animation keys to a static color for the given frame where 
-	the color is black. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_KEYS_ZERO_COLOR_RGB)(int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
-/*
-	Set an array of animation keys to a static color for the given frame where 
-	the color is black. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_SET_KEYS_ZERO_COLOR_RGB_NAME)(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
-/*
-	Set animation key to a static color for the given frame where the color 
-	is black. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_KEY_ZERO_COLOR)(int animationId, int frameId, int rzkey, int color);
-/*
-	Set animation key to a static color for the given frame where the color 
-	is black. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_SET_KEY_ZERO_COLOR_NAME)(const wchar_t* path, int frameId, int rzkey, int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SET_KEY_ZERO_COLOR_NAME_D)(const wchar_t* path, double frameId, double rzkey, double color);
-/*
-	Set animation key to a static color for the given frame where the color 
-	is black. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_SET_KEY_ZERO_COLOR_RGB)(int animationId, int frameId, int rzkey, int red, int green, int blue);
-/*
-	Set animation key to a static color for the given frame where the color 
-	is black. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_SET_KEY_ZERO_COLOR_RGB_NAME)(const wchar_t* path, int frameId, int rzkey, int red, int green, int blue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SET_KEY_ZERO_COLOR_RGB_NAME_D)(const wchar_t* path, double frameId, double rzkey, double red, double green, double blue);
-/*
-	Invokes the setup for a debug logging callback so that `stdout` is redirected 
-	to the callback. This is used by `Unity` so that debug messages can appear 
-	in the console window.
-*/
-typedef void		(*PLUGIN_SET_LOG_DELEGATE)(DebugLogPtr fp);
-/*
-	Sets the target device to the static color.
-*/
-typedef void		(*PLUGIN_SET_STATIC_COLOR)(int deviceType, int device, int color);
-/*
-	Sets all devices to the static color.
-*/
-typedef void		(*PLUGIN_SET_STATIC_COLOR_ALL)(int color);
-/*
-	Sets the target device to the static color.
-*/
-typedef void		(*PLUGIN_STATIC_COLOR)(int deviceType, int device, int color);
-/*
-	Sets all devices to the static color.
-*/
-typedef void		(*PLUGIN_STATIC_COLOR_ALL)(int color);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_STATIC_COLOR_D)(double deviceType, double device, double color);
-/*
-	`PluginStopAll` will automatically stop all animations that are playing.
-*/
-typedef void		(*PLUGIN_STOP_ALL)();
-/*
-	Stops animation playback if in progress. Returns the animation id upon success. 
-	Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_STOP_ANIMATION)(int animationId);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_STOP_ANIMATION_D)(double animationId);
-/*
-	`PluginStopAnimationName` automatically handles initializing the `ChromaSDK`. 
-	The named `.chroma` animation file will be automatically opened. The animation 
-	will stop if playing.
-*/
-typedef void		(*PLUGIN_STOP_ANIMATION_NAME)(const wchar_t* path);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_STOP_ANIMATION_NAME_D)(const wchar_t* path);
-/*
-	`PluginStopAnimationType` automatically handles initializing the `ChromaSDK`. 
-	If any animation is playing for the `deviceType` and `device` combination, 
-	it will be stopped.
-*/
-typedef void		(*PLUGIN_STOP_ANIMATION_TYPE)(int deviceType, int device);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_STOP_ANIMATION_TYPE_D)(double deviceType, double device);
-/*
-	`PluginStopComposite` automatically handles initializing the `ChromaSDK`. 
-	The named animation files for the `.chroma` set will be automatically opened. 
-	The set of animations will be stopped if playing.
-*/
-typedef void		(*PLUGIN_STOP_COMPOSITE)(const wchar_t* name);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_STOP_COMPOSITE_D)(const wchar_t* name);
-/*
-	Return color1 - color2
-*/
-typedef int			(*PLUGIN_SUBTRACT_COLOR)(const int color1, const int color2);
-/*
-	Subtract the source color from the target color for the frame where the 
-	target color is not black. Source and target are referenced by id.
-*/
-typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS)(int sourceAnimationId, int targetAnimationId, int frameId);
-/*
-	Subtract the source color from the target color for all frames where the 
-	target color is not black. Source and target are referenced by id.
-*/
-typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId);
-/*
-	Subtract the source color from the target color for all frames where the 
-	target color is not black. Source and target are referenced by name.
-*/
-typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	Subtract the source color from the target color for all frames where the 
-	target color is not black starting at offset for the length of the source. 
-	Source and target are referenced by id.
-*/
-typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int offset);
-/*
-	Subtract the source color from the target color for all frames where the 
-	target color is not black starting at offset for the length of the source. 
-	Source and target are referenced by name.
-*/
-typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset);
-/*
-	Subtract the source color from the target color for the frame where the 
-	target color is not black. Source and target are referenced by name.
-*/
-typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
-/*
-	Subtract the source color from the target where color is not black for the 
-	source frame and target offset frame, reference source and target by id.
-*/
-typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
-/*
-	Subtract the source color from the target where color is not black for the 
-	source frame and target offset frame, reference source and target by name.
-*/
-typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_OFFSET_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_OFFSET_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset);
-/*
-	Subtract the source color from the target color where the target color is 
-	not black for all frames. Reference source and target by id.
-*/
-typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES)(int sourceAnimationId, int targetAnimationId);
-/*
-	Subtract the source color from the target color where the target color is 
-	not black for all frames. Reference source and target by name.
-*/
-typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
-/*
-	Subtract the source color from the target color where the target color is 
-	not black for all frames starting at the target offset for the length of 
-	the source. Reference source and target by id.
-*/
-typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET)(int sourceAnimationId, int targetAnimationId, int offset);
-/*
-	Subtract the source color from the target color where the target color is 
-	not black for all frames starting at the target offset for the length of 
-	the source. Reference source and target by name.
-*/
-typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset);
-/*
-	Subtract the source color from the target color where the target color is 
-	not black from the source frame to the target offset frame. Reference source 
-	and target by id.
-*/
-typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_OFFSET)(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
-/*
-	Subtract the source color from the target color where the target color is 
-	not black from the source frame to the target offset frame. Reference source 
-	and target by name.
-*/
-typedef void		(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME_D)(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset);
-/*
-	Subtract all frames with the min RGB color where the animation color is 
-	less than the min threshold AND with the max RGB color where the animation 
-	is more than the max threshold. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_SUBTRACT_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB)(const int animationId, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue);
-/*
-	Subtract all frames with the min RGB color where the animation color is 
-	less than the min threshold AND with the max RGB color where the animation 
-	is more than the max threshold. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_SUBTRACT_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB_NAME)(const wchar_t* path, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SUBTRACT_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB_NAME_D)(const wchar_t* path, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
-/*
-	Subtract the specified frame with the min RGB color where the animation 
-	color is less than the min threshold AND with the max RGB color where the 
-	animation is more than the max threshold. Animation is referenced by id.
-*/
-typedef void		(*PLUGIN_SUBTRACT_THRESHOLD_COLORS_MIN_MAX_RGB)(const int animationId, const int frameId, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue);
-/*
-	Subtract the specified frame with the min RGB color where the animation 
-	color is less than the min threshold AND with the max RGB color where the 
-	animation is more than the max threshold. Animation is referenced by name.
-*/
-typedef void		(*PLUGIN_SUBTRACT_THRESHOLD_COLORS_MIN_MAX_RGB_NAME)(const wchar_t* path, const int frameId, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_SUBTRACT_THRESHOLD_COLORS_MIN_MAX_RGB_NAME_D)(const wchar_t* path, const int frameId, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue);
-/*
-	Trim the end of the animation. The length of the animation will be the lastFrameId 
-	plus one. Reference the animation by id.
-*/
-typedef void		(*PLUGIN_TRIM_END_FRAMES)(int animationId, int lastFrameId);
-/*
-	Trim the end of the animation. The length of the animation will be the lastFrameId 
-	plus one. Reference the animation by name.
-*/
-typedef void		(*PLUGIN_TRIM_END_FRAMES_NAME)(const wchar_t* path, int lastFrameId);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_TRIM_END_FRAMES_NAME_D)(const wchar_t* path, double lastFrameId);
-/*
-	Remove the frame from the animation. Reference animation by id.
-*/
-typedef void		(*PLUGIN_TRIM_FRAME)(int animationId, int frameId);
-/*
-	Remove the frame from the animation. Reference animation by name.
-*/
-typedef void		(*PLUGIN_TRIM_FRAME_NAME)(const wchar_t* path, int frameId);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_TRIM_FRAME_NAME_D)(const wchar_t* path, double frameId);
-/*
-	Trim the start of the animation starting at frame 0 for the number of frames. 
-	Reference the animation by id.
-*/
-typedef void		(*PLUGIN_TRIM_START_FRAMES)(int animationId, int numberOfFrames);
-/*
-	Trim the start of the animation starting at frame 0 for the number of frames. 
-	Reference the animation by name.
-*/
-typedef void		(*PLUGIN_TRIM_START_FRAMES_NAME)(const wchar_t* path, int numberOfFrames);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_TRIM_START_FRAMES_NAME_D)(const wchar_t* path, double numberOfFrames);
-/*
-	Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns negative 
-	one upon failure.
-*/
-typedef RZRESULT	(*PLUGIN_UNINIT)();
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_UNINIT_D)();
-/*
-	Unloads `Chroma` effects to free up resources. Returns the animation id 
-	upon success. Returns negative one upon failure. Reference the animation 
-	by id.
-*/
-typedef int			(*PLUGIN_UNLOAD_ANIMATION)(int animationId);
-/*
-	D suffix for limited data types.
-*/
-typedef double		(*PLUGIN_UNLOAD_ANIMATION_D)(double animationId);
-/*
-	Unload the animation effects. Reference the animation by name.
-*/
-typedef void		(*PLUGIN_UNLOAD_ANIMATION_NAME)(const wchar_t* path);
-/*
-	Unload the the composite set of animation effects. Reference the animation 
-	by name.
-*/
-typedef void		(*PLUGIN_UNLOAD_COMPOSITE)(const wchar_t* name);
-/*
-	Unload the Razer Chroma SDK Library before exiting the application.
-*/
-typedef void		(*PLUGIN_UNLOAD_LIBRARY_SDK)();
-/*
-	Unload the Razer Chroma Streaming Plugin Library before exiting the application.
-*/
-typedef void		(*PLUGIN_UNLOAD_LIBRARY_STREAMING_PLUGIN)();
-/*
-	Updates the `frameId` of the `Chroma` animation referenced by id and sets 
-	the `duration` (in seconds). The `color` is expected to be an array of 
-	the dimensions for the `deviceType/device`. The `length` parameter is the 
-	size of the `color` array. For `EChromaSDKDevice1DEnum` the array size 
-	should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should 
-	be `MAX ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard 
-	and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the 
-	EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
-*/
-typedef int			(*PLUGIN_UPDATE_FRAME)(int animationId, int frameId, float duration, int* colors, int length, int* keys, int keysLength);
-/*
-	Update the `frameId` of the `Chroma` animation referenced by name and sets 
-	the `duration` (in seconds). The `color` is expected to be an array of 
-	the dimensions for the `deviceType/device`. The `length` parameter is the 
-	size of the `color` array. For `EChromaSDKDevice1DEnum` the array size 
-	should be `MAX LEDS`. For `EChromaSDKDevice2DEnum` the array size should 
-	be `MAX ROW` times `MAX COLUMN`. Keys are populated only for EChromaSDKDevice2DEnum::DE_Keyboard 
-	and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the 
-	EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength. 
-	Returns the animation id upon success. Returns negative one upon failure.
-*/
-typedef int			(*PLUGIN_UPDATE_FRAME_NAME)(const wchar_t* path, int frameId, float duration, int* colors, int length, int* keys, int keysLength);
-/*
-	On by default, `UseForwardChromaEvents` sends the animation name to `CoreSetEventName` 
-	automatically when `PlayAnimationName` is called.
-*/
-typedef void		(*PLUGIN_USE_FORWARD_CHROMA_EVENTS)(bool flag);
-/*
-	When the idle animation flag is true, when no other animations are playing, 
-	the idle animation will be used. The idle animation will not be affected 
-	by the API calls to PluginIsPlaying, PluginStopAnimationType, PluginGetPlayingAnimationId, 
-	and PluginGetPlayingAnimationCount. Then the idle animation flag is false, 
-	the idle animation is disabled. `Device` uses `EChromaSDKDeviceEnum` enums.
-*/
-typedef void		(*PLUGIN_USE_IDLE_ANIMATION)(int device, bool flag);
-/*
-	Set idle animation flag for all devices.
-*/
-typedef void		(*PLUGIN_USE_IDLE_ANIMATIONS)(bool flag);
-/*
-	Set preloading animation flag, which is set to true by default. Reference 
-	animation by id.
-*/
-typedef void		(*PLUGIN_USE_PRELOADING)(int animationId, bool flag);
-/*
-	Set preloading animation flag, which is set to true by default. Reference 
-	animation by name.
-*/
-typedef void		(*PLUGIN_USE_PRELOADING_NAME)(const wchar_t* path, bool flag);
-#pragma endregion
-
-#define CHROMASDK_DECLARE_METHOD(Signature, FieldName) static Signature FieldName;
-
 namespace ChromaSDK
 {
+	/* Setup log mechanism */
+	typedef void (*DebugLogPtr)(const wchar_t*);
+	void LogDebug(const wchar_t *text, ...);
+	void LogError(const wchar_t *text, ...);
+	/* End of setup log mechanism */
+
 	class ChromaAnimationAPI
 	{
-	private:
-		static bool _sIsInitializedAPI;
-		static bool _sInvalidSignature;
-		static HMODULE _sLibrary;
-
 	public:
 
+                
 #pragma region API declare prototypes
 		/*
 			Return the sum of colors
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_COLOR, AddColor);
+		static int AddColor(const int color1, const int color2);
 		/*
 			Adds a frame to the `Chroma` animation and sets the `duration` (in seconds). 
 			The `color` is expected to be an array of the dimensions for the `deviceType/device`. 
@@ -2798,615 +28,610 @@ namespace ChromaSDK
 			size should be `MAX ROW` times `MAX COLUMN`. Returns the animation id upon 
 			success. Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_FRAME, AddFrame);
+		static int AddFrame(int animationId, float duration, int* colors, int length);
 		/*
 			Add source color to target where color is not black for frame id, reference 
 			source and target by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS, AddNonZeroAllKeys);
+		static void AddNonZeroAllKeys(int sourceAnimationId, int targetAnimationId, int frameId);
 		/*
 			Add source color to target where color is not black for all frames, reference 
 			source and target by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES, AddNonZeroAllKeysAllFrames);
+		static void AddNonZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
 		/*
 			Add source color to target where color is not black for all frames, reference 
 			source and target by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME, AddNonZeroAllKeysAllFramesName);
+		static void AddNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D, AddNonZeroAllKeysAllFramesNameD);
+		static double AddNonZeroAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			Add source color to target where color is not black for all frames starting 
 			at offset for the length of the source, reference source and target by 
 			id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET, AddNonZeroAllKeysAllFramesOffset);
+		static void AddNonZeroAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
 		/*
 			Add source color to target where color is not black for all frames starting 
 			at offset for the length of the source, reference source and target by 
 			name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, AddNonZeroAllKeysAllFramesOffsetName);
+		static void AddNonZeroAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, AddNonZeroAllKeysAllFramesOffsetNameD);
+		static double AddNonZeroAllKeysAllFramesOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset);
 		/*
 			Add source color to target where color is not black for frame id, reference 
 			source and target by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_NAME, AddNonZeroAllKeysName);
+		static void AddNonZeroAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
 		/*
 			Add source color to target where color is not black for the source frame 
 			and target offset frame, reference source and target by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET, AddNonZeroAllKeysOffset);
+		static void AddNonZeroAllKeysOffset(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 		/*
 			Add source color to target where color is not black for the source frame 
 			and target offset frame, reference source and target by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET_NAME, AddNonZeroAllKeysOffsetName);
+		static void AddNonZeroAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_ALL_KEYS_OFFSET_NAME_D, AddNonZeroAllKeysOffsetNameD);
+		static double AddNonZeroAllKeysOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset);
 		/*
 			Add source color to target where the target color is not black for all frames, 
 			reference source and target by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES, AddNonZeroTargetAllKeysAllFrames);
+		static void AddNonZeroTargetAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
 		/*
 			Add source color to target where the target color is not black for all frames, 
 			reference source and target by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME, AddNonZeroTargetAllKeysAllFramesName);
+		static void AddNonZeroTargetAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D, AddNonZeroTargetAllKeysAllFramesNameD);
+		static double AddNonZeroTargetAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			Add source color to target where the target color is not black for all frames 
 			starting at offset for the length of the source, reference source and target 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET, AddNonZeroTargetAllKeysAllFramesOffset);
+		static void AddNonZeroTargetAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
 		/*
 			Add source color to target where the target color is not black for all frames 
 			starting at offset for the length of the source, reference source and target 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, AddNonZeroTargetAllKeysAllFramesOffsetName);
+		static void AddNonZeroTargetAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, AddNonZeroTargetAllKeysAllFramesOffsetNameD);
+		static double AddNonZeroTargetAllKeysAllFramesOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset);
 		/*
 			Add source color to target where target color is not blank from the source 
 			frame to the target offset frame, reference source and target by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET, AddNonZeroTargetAllKeysOffset);
+		static void AddNonZeroTargetAllKeysOffset(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 		/*
 			Add source color to target where target color is not blank from the source 
 			frame to the target offset frame, reference source and target by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME, AddNonZeroTargetAllKeysOffsetName);
+		static void AddNonZeroTargetAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_ADD_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME_D, AddNonZeroTargetAllKeysOffsetNameD);
+		static double AddNonZeroTargetAllKeysOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset);
 		/*
 			Append all source frames to the target animation, reference source and target 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_APPEND_ALL_FRAMES, AppendAllFrames);
+		static void AppendAllFrames(int sourceAnimationId, int targetAnimationId);
 		/*
 			Append all source frames to the target animation, reference source and target 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_APPEND_ALL_FRAMES_NAME, AppendAllFramesName);
+		static void AppendAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_APPEND_ALL_FRAMES_NAME_D, AppendAllFramesNameD);
+		static double AppendAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			`PluginClearAll` will issue a `CLEAR` effect for all devices.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CLEAR_ALL, ClearAll);
+		static void ClearAll();
 		/*
 			`PluginClearAnimationType` will issue a `CLEAR` effect for the given device.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CLEAR_ANIMATION_TYPE, ClearAnimationType);
+		static void ClearAnimationType(int deviceType, int device);
 		/*
 			`PluginCloseAll` closes all open animations so they can be reloaded from 
 			disk. The set of animations will be stopped if playing.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ALL, CloseAll);
+		static void CloseAll();
 		/*
 			Closes the `Chroma` animation to free up resources referenced by id. Returns 
 			the animation id upon success. Returns negative one upon failure. This 
 			might be used while authoring effects if there was a change necessitating 
 			re-opening the animation. The animation id can no longer be used once closed.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ANIMATION, CloseAnimation);
+		static int CloseAnimation(int animationId);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ANIMATION_D, CloseAnimationD);
+		static double CloseAnimationD(double animationId);
 		/*
 			Closes the `Chroma` animation referenced by name so that the animation can 
 			be reloaded from disk.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ANIMATION_NAME, CloseAnimationName);
+		static void CloseAnimationName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_ANIMATION_NAME_D, CloseAnimationNameD);
+		static double CloseAnimationNameD(const wchar_t* path);
 		/*
 			`PluginCloseComposite` closes a set of animations so they can be reloaded 
 			from disk. The set of animations will be stopped if playing.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_COMPOSITE, CloseComposite);
+		static void CloseComposite(const wchar_t* name);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CLOSE_COMPOSITE_D, CloseCompositeD);
+		static double CloseCompositeD(const wchar_t* name);
 		/*
 			Copy source animation to target animation for the given frame. Source and 
 			target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ALL_KEYS, CopyAllKeys);
+		static void CopyAllKeys(int sourceAnimationId, int targetAnimationId, int frameId);
 		/*
 			Copy source animation to target animation for the given frame. Source and 
 			target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ALL_KEYS_NAME, CopyAllKeysName);
+		static void CopyAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
 		/*
 			Copy animation to named target animation in memory. If target animation 
 			exists, close first. Source is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ANIMATION, CopyAnimation);
+		static int CopyAnimation(int sourceAnimationId, const wchar_t* targetAnimation);
 		/*
 			Copy animation to named target animation in memory. If target animation 
 			exists, close first. Source is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ANIMATION_NAME, CopyAnimationName);
+		static void CopyAnimationName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ANIMATION_NAME_D, CopyAnimationNameD);
+		static double CopyAnimationNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			Copy blue channel to other channels for all frames. Intensity range is 0.0 
 			to 1.0. Reference the animation by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_BLUE_CHANNEL_ALL_FRAMES, CopyBlueChannelAllFrames);
+		static void CopyBlueChannelAllFrames(int animationId, float redIntensity, float greenIntensity);
 		/*
 			Copy blue channel to other channels for all frames. Intensity range is 0.0 
 			to 1.0. Reference the animation by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_BLUE_CHANNEL_ALL_FRAMES_NAME, CopyBlueChannelAllFramesName);
+		static void CopyBlueChannelAllFramesName(const wchar_t* path, float redIntensity, float greenIntensity);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_BLUE_CHANNEL_ALL_FRAMES_NAME_D, CopyBlueChannelAllFramesNameD);
+		static double CopyBlueChannelAllFramesNameD(const wchar_t* path, double redIntensity, double greenIntensity);
 		/*
 			Copy green channel to other channels for all frames. Intensity range is 
 			0.0 to 1.0. Reference the animation by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_GREEN_CHANNEL_ALL_FRAMES, CopyGreenChannelAllFrames);
+		static void CopyGreenChannelAllFrames(int animationId, float redIntensity, float blueIntensity);
 		/*
 			Copy green channel to other channels for all frames. Intensity range is 
 			0.0 to 1.0. Reference the animation by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_GREEN_CHANNEL_ALL_FRAMES_NAME, CopyGreenChannelAllFramesName);
+		static void CopyGreenChannelAllFramesName(const wchar_t* path, float redIntensity, float blueIntensity);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_GREEN_CHANNEL_ALL_FRAMES_NAME_D, CopyGreenChannelAllFramesNameD);
+		static double CopyGreenChannelAllFramesNameD(const wchar_t* path, double redIntensity, double blueIntensity);
 		/*
 			Copy animation key color from the source animation to the target animation 
 			for the given frame. Reference the source and target by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR, CopyKeyColor);
+		static void CopyKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
 		/*
 			Copy animation key color from the source animation to the target animation 
 			for all frames. Reference the source and target by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES, CopyKeyColorAllFrames);
+		static void CopyKeyColorAllFrames(int sourceAnimationId, int targetAnimationId, int rzkey);
 		/*
 			Copy animation key color from the source animation to the target animation 
 			for all frames. Reference the source and target by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_NAME, CopyKeyColorAllFramesName);
+		static void CopyKeyColorAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int rzkey);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_NAME_D, CopyKeyColorAllFramesNameD);
+		static double CopyKeyColorAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double rzkey);
 		/*
 			Copy animation key color from the source animation to the target animation 
 			for all frames, starting at the offset for the length of the source animation. 
 			Source and target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET, CopyKeyColorAllFramesOffset);
+		static void CopyKeyColorAllFramesOffset(int sourceAnimationId, int targetAnimationId, int rzkey, int offset);
 		/*
 			Copy animation key color from the source animation to the target animation 
 			for all frames, starting at the offset for the length of the source animation. 
 			Source and target are referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET_NAME, CopyKeyColorAllFramesOffsetName);
+		static void CopyKeyColorAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int rzkey, int offset);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET_NAME_D, CopyKeyColorAllFramesOffsetNameD);
+		static double CopyKeyColorAllFramesOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double rzkey, double offset);
 		/*
 			Copy animation key color from the source animation to the target animation 
 			for the given frame.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_NAME, CopyKeyColorName);
+		static void CopyKeyColorName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int rzkey);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_NAME_D, CopyKeyColorNameD);
-		/*
-			Copy animation key color from the source animation to the target animation
-			for the given frame with an offseet
-		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEY_COLOR_OFFSET, CopyKeyColorOffset);
+		static double CopyKeyColorNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double rzkey);
 		/*
 			Copy animation color for a set of keys from the source animation to the 
 			target animation for the given frame. Reference the source and target by 
 			id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEYS_COLOR, CopyKeysColor);
+		static void CopyKeysColor(int sourceAnimationId, int targetAnimationId, int frameId, const int* keys, int size);
 		/*
 			Copy animation color for a set of keys from the source animation to the 
 			target animation for all frames. Reference the source and target by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEYS_COLOR_ALL_FRAMES, CopyKeysColorAllFrames);
+		static void CopyKeysColorAllFrames(int sourceAnimationId, int targetAnimationId, const int* keys, int size);
 		/*
 			Copy animation color for a set of keys from the source animation to the 
 			target animation for all frames. Reference the source and target by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEYS_COLOR_ALL_FRAMES_NAME, CopyKeysColorAllFramesName);
+		static void CopyKeysColorAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, const int* keys, int size);
 		/*
 			Copy animation color for a set of keys from the source animation to the 
 			target animation for the given frame. Reference the source and target by 
 			name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEYS_COLOR_NAME, CopyKeysColorName);
+		static void CopyKeysColorName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, const int* keys, int size);
 		/*
 			Copy animation color for a set of keys from the source animation to the 
 			target animation from the source frame to the target frame. Reference the 
 			source and target by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEYS_COLOR_OFFSET, CopyKeysColorOffset);
+		static void CopyKeysColorOffset(int sourceAnimationId, int targetAnimationId, int sourceFrameId, int targetFrameId, const int* keys, int size);
 		/*
 			Copy animation color for a set of keys from the source animation to the 
 			target animation from the source frame to the target frame. Reference the 
 			source and target by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_KEYS_COLOR_OFFSET_NAME, CopyKeysColorOffsetName);
+		static void CopyKeysColorOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int sourceFrameId, int targetFrameId, const int* keys, int size);
 		/*
 			Copy source animation to target animation for the given frame. Source and 
 			target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS, CopyNonZeroAllKeys);
+		static void CopyNonZeroAllKeys(int sourceAnimationId, int targetAnimationId, int frameId);
 		/*
 			Copy nonzero colors from a source animation to a target animation for all 
 			frames. Reference source and target by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES, CopyNonZeroAllKeysAllFrames);
+		static void CopyNonZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
 		/*
 			Copy nonzero colors from a source animation to a target animation for all 
 			frames. Reference source and target by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME, CopyNonZeroAllKeysAllFramesName);
+		static void CopyNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D, CopyNonZeroAllKeysAllFramesNameD);
+		static double CopyNonZeroAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			Copy nonzero colors from a source animation to a target animation for all 
 			frames starting at the offset for the length of the source animation. The 
 			source and target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET, CopyNonZeroAllKeysAllFramesOffset);
+		static void CopyNonZeroAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
 		/*
 			Copy nonzero colors from a source animation to a target animation for all 
 			frames starting at the offset for the length of the source animation. The 
 			source and target are referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, CopyNonZeroAllKeysAllFramesOffsetName);
+		static void CopyNonZeroAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, CopyNonZeroAllKeysAllFramesOffsetNameD);
+		static double CopyNonZeroAllKeysAllFramesOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset);
 		/*
 			Copy nonzero colors from source animation to target animation for the specified 
 			frame. Source and target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_NAME, CopyNonZeroAllKeysName);
+		static void CopyNonZeroAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_NAME_D, CopyNonZeroAllKeysNameD);
+		static double CopyNonZeroAllKeysNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId);
 		/*
 			Copy nonzero colors from the source animation to the target animation from 
 			the source frame to the target offset frame. Source and target are referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_OFFSET, CopyNonZeroAllKeysOffset);
+		static void CopyNonZeroAllKeysOffset(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 		/*
 			Copy nonzero colors from the source animation to the target animation from 
 			the source frame to the target offset frame. Source and target are referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_OFFSET_NAME, CopyNonZeroAllKeysOffsetName);
+		static void CopyNonZeroAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_ALL_KEYS_OFFSET_NAME_D, CopyNonZeroAllKeysOffsetNameD);
+		static double CopyNonZeroAllKeysOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset);
 		/*
 			Copy animation key color from the source animation to the target animation 
 			for the given frame where color is not zero.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_KEY_COLOR, CopyNonZeroKeyColor);
+		static void CopyNonZeroKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
 		/*
 			Copy animation key color from the source animation to the target animation 
 			for the given frame where color is not zero.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_KEY_COLOR_NAME, CopyNonZeroKeyColorName);
+		static void CopyNonZeroKeyColorName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int rzkey);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_KEY_COLOR_NAME_D, CopyNonZeroKeyColorNameD);
+		static double CopyNonZeroKeyColorNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double rzkey);
 		/*
 			Copy nonzero colors from the source animation to the target animation where 
 			the target color is nonzero for the specified frame. Source and target 
 			are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS, CopyNonZeroTargetAllKeys);
+		static void CopyNonZeroTargetAllKeys(int sourceAnimationId, int targetAnimationId, int frameId);
 		/*
 			Copy nonzero colors from the source animation to the target animation where 
 			the target color is nonzero for all frames. Source and target are referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES, CopyNonZeroTargetAllKeysAllFrames);
+		static void CopyNonZeroTargetAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
 		/*
 			Copy nonzero colors from the source animation to the target animation where 
 			the target color is nonzero for all frames. Source and target are referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME, CopyNonZeroTargetAllKeysAllFramesName);
+		static void CopyNonZeroTargetAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D, CopyNonZeroTargetAllKeysAllFramesNameD);
+		static double CopyNonZeroTargetAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			Copy nonzero colors from the source animation to the target animation where 
 			the target color is nonzero for all frames. Source and target are referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET, CopyNonZeroTargetAllKeysAllFramesOffset);
+		static void CopyNonZeroTargetAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
 		/*
 			Copy nonzero colors from the source animation to the target animation where 
 			the target color is nonzero for all frames starting at the target offset 
 			for the length of the source animation. Source and target animations are 
 			referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, CopyNonZeroTargetAllKeysAllFramesOffsetName);
+		static void CopyNonZeroTargetAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, CopyNonZeroTargetAllKeysAllFramesOffsetNameD);
+		static double CopyNonZeroTargetAllKeysAllFramesOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset);
 		/*
 			Copy nonzero colors from the source animation to the target animation where 
 			the target color is nonzero for the specified frame. The source and target 
 			are referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_NAME, CopyNonZeroTargetAllKeysName);
+		static void CopyNonZeroTargetAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_NAME_D, CopyNonZeroTargetAllKeysNameD);
+		static double CopyNonZeroTargetAllKeysNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId);
 		/*
 			Copy nonzero colors from the source animation to the target animation where 
 			the target color is nonzero for the specified source frame and target offset 
 			frame. The source and target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_OFFSET, CopyNonZeroTargetAllKeysOffset);
+		static void CopyNonZeroTargetAllKeysOffset(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 		/*
 			Copy nonzero colors from the source animation to the target animation where 
 			the target color is nonzero for the specified source frame and target offset 
 			frame. The source and target are referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME, CopyNonZeroTargetAllKeysOffsetName);
+		static void CopyNonZeroTargetAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME_D, CopyNonZeroTargetAllKeysOffsetNameD);
+		static double CopyNonZeroTargetAllKeysOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset);
 		/*
 			Copy nonzero colors from the source animation to the target animation where 
 			the target color is zero for all frames. Source and target are referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ZERO_ALL_KEYS_ALL_FRAMES, CopyNonZeroTargetZeroAllKeysAllFrames);
+		static void CopyNonZeroTargetZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
 		/*
 			Copy nonzero colors from the source animation to the target animation where 
 			the target color is zero for all frames. Source and target are referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ZERO_ALL_KEYS_ALL_FRAMES_NAME, CopyNonZeroTargetZeroAllKeysAllFramesName);
+		static void CopyNonZeroTargetZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_NON_ZERO_TARGET_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D, CopyNonZeroTargetZeroAllKeysAllFramesNameD);
+		static double CopyNonZeroTargetZeroAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			Copy red channel to other channels for all frames. Intensity range is 0.0 
 			to 1.0. Reference the animation by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_RED_CHANNEL_ALL_FRAMES, CopyRedChannelAllFrames);
+		static void CopyRedChannelAllFrames(int animationId, float greenIntensity, float blueIntensity);
 		/*
 			Copy green channel to other channels for all frames. Intensity range is 
 			0.0 to 1.0. Reference the animation by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_RED_CHANNEL_ALL_FRAMES_NAME, CopyRedChannelAllFramesName);
+		static void CopyRedChannelAllFramesName(const wchar_t* path, float greenIntensity, float blueIntensity);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_RED_CHANNEL_ALL_FRAMES_NAME_D, CopyRedChannelAllFramesNameD);
+		static double CopyRedChannelAllFramesNameD(const wchar_t* path, double greenIntensity, double blueIntensity);
 		/*
 			Copy zero colors from source animation to target animation for the frame. 
 			Source and target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS, CopyZeroAllKeys);
+		static void CopyZeroAllKeys(int sourceAnimationId, int targetAnimationId, int frameId);
 		/*
 			Copy zero colors from source animation to target animation for all frames. 
 			Source and target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES, CopyZeroAllKeysAllFrames);
+		static void CopyZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
 		/*
 			Copy zero colors from source animation to target animation for all frames. 
 			Source and target are referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_NAME, CopyZeroAllKeysAllFramesName);
+		static void CopyZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D, CopyZeroAllKeysAllFramesNameD);
+		static double CopyZeroAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			Copy zero colors from source animation to target animation for all frames 
 			starting at the target offset for the length of the source animation. Source 
 			and target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET, CopyZeroAllKeysAllFramesOffset);
+		static void CopyZeroAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
 		/*
 			Copy zero colors from source animation to target animation for all frames 
 			starting at the target offset for the length of the source animation. Source 
 			and target are referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, CopyZeroAllKeysAllFramesOffsetName);
+		static void CopyZeroAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, CopyZeroAllKeysAllFramesOffsetNameD);
+		static double CopyZeroAllKeysAllFramesOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset);
 		/*
 			Copy zero colors from source animation to target animation for the frame. 
 			Source and target are referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_NAME, CopyZeroAllKeysName);
+		static void CopyZeroAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
 		/*
 			Copy zero colors from source animation to target animation for the frame 
 			id starting at the target offset for the length of the source animation. 
 			Source and target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_OFFSET, CopyZeroAllKeysOffset);
+		static void CopyZeroAllKeysOffset(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 		/*
 			Copy zero colors from source animation to target animation for the frame 
 			id starting at the target offset for the length of the source animation. 
 			Source and target are referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_ALL_KEYS_OFFSET_NAME, CopyZeroAllKeysOffsetName);
+		static void CopyZeroAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset);
 		/*
 			Copy zero key color from source animation to target animation for the specified 
 			frame. Source and target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_KEY_COLOR, CopyZeroKeyColor);
+		static void CopyZeroKeyColor(int sourceAnimationId, int targetAnimationId, int frameId, int rzkey);
 		/*
 			Copy zero key color from source animation to target animation for the specified 
 			frame. Source and target are referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_KEY_COLOR_NAME, CopyZeroKeyColorName);
+		static void CopyZeroKeyColorName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int rzkey);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_KEY_COLOR_NAME_D, CopyZeroKeyColorNameD);
+		static double CopyZeroKeyColorNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double rzkey);
 		/*
 			Copy nonzero color from source animation to target animation where target 
 			is zero for the frame. Source and target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_TARGET_ALL_KEYS, CopyZeroTargetAllKeys);
+		static void CopyZeroTargetAllKeys(int sourceAnimationId, int targetAnimationId, int frameId);
 		/*
 			Copy nonzero color from source animation to target animation where target 
 			is zero for all frames. Source and target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES, CopyZeroTargetAllKeysAllFrames);
+		static void CopyZeroTargetAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
 		/*
 			Copy nonzero color from source animation to target animation where target 
 			is zero for all frames. Source and target are referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME, CopyZeroTargetAllKeysAllFramesName);
+		static void CopyZeroTargetAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D, CopyZeroTargetAllKeysAllFramesNameD);
+		static double CopyZeroTargetAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			Copy nonzero color from source animation to target animation where target 
 			is zero for the frame. Source and target are referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_COPY_ZERO_TARGET_ALL_KEYS_NAME, CopyZeroTargetAllKeysName);
+		static void CopyZeroTargetAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
 		/*
 			Direct access to low level API.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_CREATE_CHROMA_LINK_EFFECT, CoreCreateChromaLinkEffect);
+		static RZRESULT CoreCreateChromaLinkEffect(ChromaSDK::ChromaLink::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 		/*
 			Direct access to low level API.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_CREATE_EFFECT, CoreCreateEffect);
+		static RZRESULT CoreCreateEffect(RZDEVICEID DeviceId, ChromaSDK::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 		/*
 			Direct access to low level API.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_CREATE_HEADSET_EFFECT, CoreCreateHeadsetEffect);
+		static RZRESULT CoreCreateHeadsetEffect(ChromaSDK::Headset::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 		/*
 			Direct access to low level API.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_CREATE_KEYBOARD_EFFECT, CoreCreateKeyboardEffect);
+		static RZRESULT CoreCreateKeyboardEffect(ChromaSDK::Keyboard::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 		/*
 			Direct access to low level API.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_CREATE_KEYPAD_EFFECT, CoreCreateKeypadEffect);
+		static RZRESULT CoreCreateKeypadEffect(ChromaSDK::Keypad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 		/*
 			Direct access to low level API.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_CREATE_MOUSE_EFFECT, CoreCreateMouseEffect);
+		static RZRESULT CoreCreateMouseEffect(ChromaSDK::Mouse::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 		/*
 			Direct access to low level API.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_CREATE_MOUSEPAD_EFFECT, CoreCreateMousepadEffect);
+		static RZRESULT CoreCreateMousepadEffect(ChromaSDK::Mousepad::EFFECT_TYPE Effect, PRZPARAM pParam, RZEFFECTID* pEffectId);
 		/*
 			Direct access to low level API.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_DELETE_EFFECT, CoreDeleteEffect);
+		static RZRESULT CoreDeleteEffect(RZEFFECTID EffectId);
 		/*
 			Direct access to low level API.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_INIT, CoreInit);
+		static RZRESULT CoreInit();
 		/*
 			Direct access to low level API.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_INIT_SDK, CoreInitSDK);
+		static RZRESULT CoreInitSDK(ChromaSDK::APPINFOTYPE* AppInfo);
 		/*
 			Direct access to low level API.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_IS_ACTIVE, CoreIsActive);
+		static RZRESULT CoreIsActive(BOOL& Active);
 		/*
 			Direct access to low level API.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_IS_CONNECTED, CoreIsConnected);
+		static RZRESULT CoreIsConnected(ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
 		/*
 			Direct access to low level API.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_QUERY_DEVICE, CoreQueryDevice);
+		static RZRESULT CoreQueryDevice(RZDEVICEID DeviceId, ChromaSDK::DEVICE_INFO_TYPE& DeviceInfo);
 		/*
 			Direct access to low level API.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_SET_EFFECT, CoreSetEffect);
+		static RZRESULT CoreSetEffect(RZEFFECTID EffectId);
 		/*
 			Direct access to low level API.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_SET_EVENT_NAME, CoreSetEventName);
+		static RZRESULT CoreSetEventName(LPCTSTR Name);
 		/*
 			Begin broadcasting Chroma RGB data using the stored stream key as the endpoint. 
 			Intended for Cloud Gaming Platforms, restore the streaming key when the 
@@ -3414,12 +639,12 @@ namespace ChromaSDK
 			string streamKey is a null terminated string StreamGetStatus() should return 
 			the READY status to use this method.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_STREAM_BROADCAST, CoreStreamBroadcast);
+		static bool CoreStreamBroadcast(const char* streamId, const char* streamKey);
 		/*
 			End broadcasting Chroma RGB data. StreamGetStatus() should return the BROADCASTING 
 			status to use this method.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_STREAM_BROADCAST_END, CoreStreamBroadcastEnd);
+		static bool CoreStreamBroadcastEnd();
 		/*
 			shortcode: Pass the address of a preallocated character buffer to get the 
 			streaming auth code. The buffer should have a minimum length of 6. length: 
@@ -3432,14 +657,14 @@ namespace ChromaSDK
 			GEFORCE_NOW, LUNA, STADIA, GAME_PASS } title: is the null terminated string 
 			that identifies the application or game.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_STREAM_GET_AUTH_SHORTCODE, CoreStreamGetAuthShortcode);
+		static void CoreStreamGetAuthShortcode(char* shortcode, unsigned char* length, const wchar_t* platform, const wchar_t* title);
 		/*
 			focus: Pass the address of a preallocated character buffer to get the stream 
 			focus. The buffer should have a length of 48 length: Length will return 
 			as zero if the stream focus could not be obtained. If length is greater 
 			than zero, it will be the length of the returned stream focus.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_STREAM_GET_FOCUS, CoreStreamGetFocus);
+		static bool CoreStreamGetFocus(char* focus, unsigned char* length);
 		/*
 			Intended for Cloud Gaming Platforms, store the stream id to persist in user 
 			preferences to continue streaming if the game is suspended or closed. shortcode: 
@@ -3452,7 +677,7 @@ namespace ChromaSDK
 			will expire in 5 minutes. Be sure to save the stream key before the window 
 			expires. StreamGetStatus() should return the READY status to use this method.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_STREAM_GET_ID, CoreStreamGetId);
+		static void CoreStreamGetId(const char* shortcode, char* streamId, unsigned char* length);
 		/*
 			Intended for Cloud Gaming Platforms, store the streaming key to persist 
 			in user preferences to continue streaming if the game is suspended or closed. 
@@ -3467,48 +692,48 @@ namespace ChromaSDK
 			will expire in 5 minutes. Be sure to save the stream key before the window 
 			expires. StreamGetStatus() should return the READY status to use this method.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_STREAM_GET_KEY, CoreStreamGetKey);
+		static void CoreStreamGetKey(const char* shortcode, char* streamKey, unsigned char* length);
 		/*
 			Returns StreamStatus, the current status of the service
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_STREAM_GET_STATUS, CoreStreamGetStatus);
+		static ChromaSDK::Stream::StreamStatusType CoreStreamGetStatus();
 		/*
 			Convert StreamStatusType to a printable string
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_STREAM_GET_STATUS_STRING, CoreStreamGetStatusString);
+		static const char* CoreStreamGetStatusString(ChromaSDK::Stream::StreamStatusType status);
 		/*
 			This prevents the stream id and stream key from being obtained through the 
 			shortcode. This closes the auth window. shortcode is a null terminated 
 			string. StreamGetStatus() should return the READY status to use this method. 
 			returns success when shortcode has been released
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_STREAM_RELEASE_SHORTCODE, CoreStreamReleaseShortcode);
+		static bool CoreStreamReleaseShortcode(const char* shortcode);
 		/*
 			The focus is a null terminated string. Set the focus identifer for the application 
 			designated to automatically change the streaming state. Returns true on 
 			success.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_STREAM_SET_FOCUS, CoreStreamSetFocus);
+		static bool CoreStreamSetFocus(const char* focus);
 		/*
 			Returns true if the Chroma streaming is supported. If false is returned, 
 			avoid calling stream methods.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_STREAM_SUPPORTS_STREAMING, CoreStreamSupportsStreaming);
+		static bool CoreStreamSupportsStreaming();
 		/*
 			Begin watching the Chroma RGB data using streamID parameter. streamId is 
 			a null terminated string. StreamGetStatus() should return the READY status 
 			to use this method.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_STREAM_WATCH, CoreStreamWatch);
+		static bool CoreStreamWatch(const char* streamId, unsigned long long timestamp);
 		/*
 			End watching Chroma RGB data stream. StreamGetStatus() should return the 
 			WATCHING status to use this method.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_STREAM_WATCH_END, CoreStreamWatchEnd);
+		static bool CoreStreamWatchEnd();
 		/*
 			Direct access to low level API.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CORE_UNINIT, CoreUnInit);
+		static RZRESULT CoreUnInit();
 		/*
 			Creates a `Chroma` animation at the given path. The `deviceType` parameter 
 			uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter uses 
@@ -3518,7 +743,7 @@ namespace ChromaSDK
 			at the given path. Returns the animation id upon success. Returns negative 
 			one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CREATE_ANIMATION, CreateAnimation);
+		static int CreateAnimation(const wchar_t* path, int deviceType, int device);
 		/*
 			Creates a `Chroma` animation in memory without creating a file. The `deviceType` 
 			parameter uses `EChromaSDKDeviceTypeEnum` as an integer. The `device` parameter 
@@ -3527,540 +752,540 @@ namespace ChromaSDK
 			Returns negative one upon failure. Returns the animation id upon success. 
 			Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CREATE_ANIMATION_IN_MEMORY, CreateAnimationInMemory);
+		static int CreateAnimationInMemory(int deviceType, int device);
 		/*
 			Create a device specific effect.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_CREATE_EFFECT, CreateEffect);
+		static RZRESULT CreateEffect(RZDEVICEID deviceId, ChromaSDK::EFFECT_TYPE effect, int* colors, int size, ChromaSDK::FChromaSDKGuid* effectId);
 		/*
 			Delete an effect given the effect id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_DELETE_EFFECT, DeleteEffect);
+		static RZRESULT DeleteEffect(const ChromaSDK::FChromaSDKGuid& effectId);
 		/*
 			Duplicate the first animation frame so that the animation length matches 
 			the frame count. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_DUPLICATE_FIRST_FRAME, DuplicateFirstFrame);
+		static void DuplicateFirstFrame(int animationId, int frameCount);
 		/*
 			Duplicate the first animation frame so that the animation length matches 
 			the frame count. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_DUPLICATE_FIRST_FRAME_NAME, DuplicateFirstFrameName);
+		static void DuplicateFirstFrameName(const wchar_t* path, int frameCount);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_DUPLICATE_FIRST_FRAME_NAME_D, DuplicateFirstFrameNameD);
+		static double DuplicateFirstFrameNameD(const wchar_t* path, double frameCount);
 		/*
 			Duplicate all the frames of the animation to double the animation length. 
 			Frame 1 becomes frame 1 and 2. Frame 2 becomes frame 3 and 4. And so on. 
 			The animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_DUPLICATE_FRAMES, DuplicateFrames);
+		static void DuplicateFrames(int animationId);
 		/*
 			Duplicate all the frames of the animation to double the animation length. 
 			Frame 1 becomes frame 1 and 2. Frame 2 becomes frame 3 and 4. And so on. 
 			The animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_DUPLICATE_FRAMES_NAME, DuplicateFramesName);
+		static void DuplicateFramesName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_DUPLICATE_FRAMES_NAME_D, DuplicateFramesNameD);
+		static double DuplicateFramesNameD(const wchar_t* path);
 		/*
 			Duplicate all the animation frames in reverse so that the animation plays 
 			forwards and backwards. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_DUPLICATE_MIRROR_FRAMES, DuplicateMirrorFrames);
+		static void DuplicateMirrorFrames(int animationId);
 		/*
 			Duplicate all the animation frames in reverse so that the animation plays 
 			forwards and backwards. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_DUPLICATE_MIRROR_FRAMES_NAME, DuplicateMirrorFramesName);
+		static void DuplicateMirrorFramesName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_DUPLICATE_MIRROR_FRAMES_NAME_D, DuplicateMirrorFramesNameD);
+		static double DuplicateMirrorFramesNameD(const wchar_t* path);
 		/*
 			Fade the animation to black starting at the fade frame index to the end 
 			of the animation. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FADE_END_FRAMES, FadeEndFrames);
+		static void FadeEndFrames(int animationId, int fade);
 		/*
 			Fade the animation to black starting at the fade frame index to the end 
 			of the animation. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FADE_END_FRAMES_NAME, FadeEndFramesName);
+		static void FadeEndFramesName(const wchar_t* path, int fade);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FADE_END_FRAMES_NAME_D, FadeEndFramesNameD);
+		static double FadeEndFramesNameD(const wchar_t* path, double fade);
 		/*
 			Fade the animation from black to full color starting at 0 to the fade frame 
 			index. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FADE_START_FRAMES, FadeStartFrames);
+		static void FadeStartFrames(int animationId, int fade);
 		/*
 			Fade the animation from black to full color starting at 0 to the fade frame 
 			index. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FADE_START_FRAMES_NAME, FadeStartFramesName);
+		static void FadeStartFramesName(const wchar_t* path, int fade);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FADE_START_FRAMES_NAME_D, FadeStartFramesNameD);
+		static double FadeStartFramesNameD(const wchar_t* path, double fade);
 		/*
 			Set the RGB value for all colors in the specified frame. Animation is referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR, FillColor);
+		static void FillColor(int animationId, int frameId, int color);
 		/*
 			Set the RGB value for all colors for all frames. Animation is referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_ALL_FRAMES, FillColorAllFrames);
+		static void FillColorAllFrames(int animationId, int color);
 		/*
 			Set the RGB value for all colors for all frames. Animation is referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_ALL_FRAMES_NAME, FillColorAllFramesName);
+		static void FillColorAllFramesName(const wchar_t* path, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_ALL_FRAMES_NAME_D, FillColorAllFramesNameD);
+		static double FillColorAllFramesNameD(const wchar_t* path, double color);
 		/*
 			Set the RGB value for all colors for all frames. Use the range of 0 to 255 
 			for red, green, and blue parameters. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_ALL_FRAMES_RGB, FillColorAllFramesRGB);
+		static void FillColorAllFramesRGB(int animationId, int red, int green, int blue);
 		/*
 			Set the RGB value for all colors for all frames. Use the range of 0 to 255 
 			for red, green, and blue parameters. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_ALL_FRAMES_RGB_NAME, FillColorAllFramesRGBName);
+		static void FillColorAllFramesRGBName(const wchar_t* path, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_ALL_FRAMES_RGB_NAME_D, FillColorAllFramesRGBNameD);
+		static double FillColorAllFramesRGBNameD(const wchar_t* path, double red, double green, double blue);
 		/*
 			Set the RGB value for all colors in the specified frame. Animation is referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_NAME, FillColorName);
+		static void FillColorName(const wchar_t* path, int frameId, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_NAME_D, FillColorNameD);
+		static double FillColorNameD(const wchar_t* path, double frameId, double color);
 		/*
 			Set the RGB value for all colors in the specified frame. Animation is referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_RGB, FillColorRGB);
+		static void FillColorRGB(int animationId, int frameId, int red, int green, int blue);
 		/*
 			Set the RGB value for all colors in the specified frame. Animation is referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_RGB_NAME, FillColorRGBName);
+		static void FillColorRGBName(const wchar_t* path, int frameId, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_COLOR_RGB_NAME_D, FillColorRGBNameD);
+		static double FillColorRGBNameD(const wchar_t* path, double frameId, double red, double green, double blue);
 		/*
 			This method will only update colors in the animation that are not already 
 			set to black. Set the RGB value for a subset of colors in the specified 
 			frame. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR, FillNonZeroColor);
+		static void FillNonZeroColor(int animationId, int frameId, int color);
 		/*
 			This method will only update colors in the animation that are not already 
 			set to black. Set the RGB value for a subset of colors for all frames. 
 			Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES, FillNonZeroColorAllFrames);
+		static void FillNonZeroColorAllFrames(int animationId, int color);
 		/*
 			This method will only update colors in the animation that are not already 
 			set to black. Set the RGB value for a subset of colors for all frames. 
 			Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_NAME, FillNonZeroColorAllFramesName);
+		static void FillNonZeroColorAllFramesName(const wchar_t* path, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_NAME_D, FillNonZeroColorAllFramesNameD);
+		static double FillNonZeroColorAllFramesNameD(const wchar_t* path, double color);
 		/*
 			This method will only update colors in the animation that are not already 
 			set to black. Set the RGB value for a subset of colors for all frames. 
 			Use the range of 0 to 255 for red, green, and blue parameters. Animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_RGB, FillNonZeroColorAllFramesRGB);
+		static void FillNonZeroColorAllFramesRGB(int animationId, int red, int green, int blue);
 		/*
 			This method will only update colors in the animation that are not already 
 			set to black. Set the RGB value for a subset of colors for all frames. 
 			Use the range of 0 to 255 for red, green, and blue parameters. Animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_RGB_NAME, FillNonZeroColorAllFramesRGBName);
+		static void FillNonZeroColorAllFramesRGBName(const wchar_t* path, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_ALL_FRAMES_RGB_NAME_D, FillNonZeroColorAllFramesRGBNameD);
+		static double FillNonZeroColorAllFramesRGBNameD(const wchar_t* path, double red, double green, double blue);
 		/*
 			This method will only update colors in the animation that are not already 
 			set to black. Set the RGB value for a subset of colors in the specified 
 			frame. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_NAME, FillNonZeroColorName);
+		static void FillNonZeroColorName(const wchar_t* path, int frameId, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_NAME_D, FillNonZeroColorNameD);
+		static double FillNonZeroColorNameD(const wchar_t* path, double frameId, double color);
 		/*
 			This method will only update colors in the animation that are not already 
 			set to black. Set the RGB value for a subset of colors in the specified 
 			frame. Use the range of 0 to 255 for red, green, and blue parameters. Animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_RGB, FillNonZeroColorRGB);
+		static void FillNonZeroColorRGB(int animationId, int frameId, int red, int green, int blue);
 		/*
 			This method will only update colors in the animation that are not already 
 			set to black. Set the RGB value for a subset of colors in the specified 
 			frame. Use the range of 0 to 255 for red, green, and blue parameters. Animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_RGB_NAME, FillNonZeroColorRGBName);
+		static void FillNonZeroColorRGBName(const wchar_t* path, int frameId, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_NON_ZERO_COLOR_RGB_NAME_D, FillNonZeroColorRGBNameD);
+		static double FillNonZeroColorRGBNameD(const wchar_t* path, double frameId, double red, double green, double blue);
 		/*
 			Fill the frame with random RGB values for the given frame. Animation is 
 			referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS, FillRandomColors);
+		static void FillRandomColors(int animationId, int frameId);
 		/*
 			Fill the frame with random RGB values for all frames. Animation is referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_ALL_FRAMES, FillRandomColorsAllFrames);
+		static void FillRandomColorsAllFrames(int animationId);
 		/*
 			Fill the frame with random RGB values for all frames. Animation is referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_ALL_FRAMES_NAME, FillRandomColorsAllFramesName);
+		static void FillRandomColorsAllFramesName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_ALL_FRAMES_NAME_D, FillRandomColorsAllFramesNameD);
+		static double FillRandomColorsAllFramesNameD(const wchar_t* path);
 		/*
 			Fill the frame with random black and white values for the specified frame. 
 			Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE, FillRandomColorsBlackAndWhite);
+		static void FillRandomColorsBlackAndWhite(int animationId, int frameId);
 		/*
 			Fill the frame with random black and white values for all frames. Animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_ALL_FRAMES, FillRandomColorsBlackAndWhiteAllFrames);
+		static void FillRandomColorsBlackAndWhiteAllFrames(int animationId);
 		/*
 			Fill the frame with random black and white values for all frames. Animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_ALL_FRAMES_NAME, FillRandomColorsBlackAndWhiteAllFramesName);
+		static void FillRandomColorsBlackAndWhiteAllFramesName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_ALL_FRAMES_NAME_D, FillRandomColorsBlackAndWhiteAllFramesNameD);
+		static double FillRandomColorsBlackAndWhiteAllFramesNameD(const wchar_t* path);
 		/*
 			Fill the frame with random black and white values for the specified frame. 
 			Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_NAME, FillRandomColorsBlackAndWhiteName);
+		static void FillRandomColorsBlackAndWhiteName(const wchar_t* path, int frameId);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_BLACK_AND_WHITE_NAME_D, FillRandomColorsBlackAndWhiteNameD);
+		static double FillRandomColorsBlackAndWhiteNameD(const wchar_t* path, double frameId);
 		/*
 			Fill the frame with random RGB values for the given frame. Animation is 
 			referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_NAME, FillRandomColorsName);
+		static void FillRandomColorsName(const wchar_t* path, int frameId);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_RANDOM_COLORS_NAME_D, FillRandomColorsNameD);
+		static double FillRandomColorsNameD(const wchar_t* path, double frameId);
 		/*
 			Fill the specified frame with RGB color where the animation color is less 
 			than the RGB threshold. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS, FillThresholdColors);
+		static void FillThresholdColors(int animationId, int frameId, int threshold, int color);
 		/*
 			Fill all frames with RGB color where the animation color is less than the 
 			RGB threshold. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES, FillThresholdColorsAllFrames);
+		static void FillThresholdColorsAllFrames(int animationId, int threshold, int color);
 		/*
 			Fill all frames with RGB color where the animation color is less than the 
 			RGB threshold. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_NAME, FillThresholdColorsAllFramesName);
+		static void FillThresholdColorsAllFramesName(const wchar_t* path, int threshold, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_NAME_D, FillThresholdColorsAllFramesNameD);
+		static double FillThresholdColorsAllFramesNameD(const wchar_t* path, double threshold, double color);
 		/*
 			Fill all frames with RGB color where the animation color is less than the 
 			threshold. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_RGB, FillThresholdColorsAllFramesRGB);
+		static void FillThresholdColorsAllFramesRGB(int animationId, int threshold, int red, int green, int blue);
 		/*
 			Fill all frames with RGB color where the animation color is less than the 
 			threshold. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_RGB_NAME, FillThresholdColorsAllFramesRGBName);
+		static void FillThresholdColorsAllFramesRGBName(const wchar_t* path, int threshold, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_ALL_FRAMES_RGB_NAME_D, FillThresholdColorsAllFramesRGBNameD);
+		static double FillThresholdColorsAllFramesRGBNameD(const wchar_t* path, double threshold, double red, double green, double blue);
 		/*
 			Fill all frames with the min RGB color where the animation color is less 
 			than the min threshold AND with the max RGB color where the animation is 
 			more than the max threshold. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB, FillThresholdColorsMinMaxAllFramesRGB);
+		static void FillThresholdColorsMinMaxAllFramesRGB(int animationId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 		/*
 			Fill all frames with the min RGB color where the animation color is less 
 			than the min threshold AND with the max RGB color where the animation is 
 			more than the max threshold. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB_NAME, FillThresholdColorsMinMaxAllFramesRGBName);
+		static void FillThresholdColorsMinMaxAllFramesRGBName(const wchar_t* path, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB_NAME_D, FillThresholdColorsMinMaxAllFramesRGBNameD);
+		static double FillThresholdColorsMinMaxAllFramesRGBNameD(const wchar_t* path, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 		/*
 			Fill the specified frame with the min RGB color where the animation color 
 			is less than the min threshold AND with the max RGB color where the animation 
 			is more than the max threshold. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_RGB, FillThresholdColorsMinMaxRGB);
+		static void FillThresholdColorsMinMaxRGB(int animationId, int frameId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 		/*
 			Fill the specified frame with the min RGB color where the animation color 
 			is less than the min threshold AND with the max RGB color where the animation 
 			is more than the max threshold. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_RGB_NAME, FillThresholdColorsMinMaxRGBName);
+		static void FillThresholdColorsMinMaxRGBName(const wchar_t* path, int frameId, int minThreshold, int minRed, int minGreen, int minBlue, int maxThreshold, int maxRed, int maxGreen, int maxBlue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_MIN_MAX_RGB_NAME_D, FillThresholdColorsMinMaxRGBNameD);
+		static double FillThresholdColorsMinMaxRGBNameD(const wchar_t* path, double frameId, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 		/*
 			Fill the specified frame with RGB color where the animation color is less 
 			than the RGB threshold. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_NAME, FillThresholdColorsName);
+		static void FillThresholdColorsName(const wchar_t* path, int frameId, int threshold, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_NAME_D, FillThresholdColorsNameD);
+		static double FillThresholdColorsNameD(const wchar_t* path, double frameId, double threshold, double color);
 		/*
 			Fill the specified frame with RGB color where the animation color is less 
 			than the RGB threshold. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_RGB, FillThresholdColorsRGB);
+		static void FillThresholdColorsRGB(int animationId, int frameId, int threshold, int red, int green, int blue);
 		/*
 			Fill the specified frame with RGB color where the animation color is less 
 			than the RGB threshold. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_RGB_NAME, FillThresholdColorsRGBName);
+		static void FillThresholdColorsRGBName(const wchar_t* path, int frameId, int threshold, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_COLORS_RGB_NAME_D, FillThresholdColorsRGBNameD);
+		static double FillThresholdColorsRGBNameD(const wchar_t* path, double frameId, double threshold, double red, double green, double blue);
 		/*
 			Fill all frames with RGB color where the animation color is less than the 
 			RGB threshold. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_RGB_COLORS_ALL_FRAMES_RGB, FillThresholdRGBColorsAllFramesRGB);
+		static void FillThresholdRGBColorsAllFramesRGB(int animationId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue);
 		/*
 			Fill all frames with RGB color where the animation color is less than the 
 			RGB threshold. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_RGB_COLORS_ALL_FRAMES_RGB_NAME, FillThresholdRGBColorsAllFramesRGBName);
+		static void FillThresholdRGBColorsAllFramesRGBName(const wchar_t* path, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_RGB_COLORS_ALL_FRAMES_RGB_NAME_D, FillThresholdRGBColorsAllFramesRGBNameD);
+		static double FillThresholdRGBColorsAllFramesRGBNameD(const wchar_t* path, double redThreshold, double greenThreshold, double blueThreshold, double red, double green, double blue);
 		/*
 			Fill the specified frame with RGB color where the animation color is less 
 			than the RGB threshold. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_RGB_COLORS_RGB, FillThresholdRGBColorsRGB);
+		static void FillThresholdRGBColorsRGB(int animationId, int frameId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue);
 		/*
 			Fill the specified frame with RGB color where the animation color is less 
 			than the RGB threshold. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_RGB_COLORS_RGB_NAME, FillThresholdRGBColorsRGBName);
+		static void FillThresholdRGBColorsRGBName(const wchar_t* path, int frameId, int redThreshold, int greenThreshold, int blueThreshold, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_THRESHOLD_RGB_COLORS_RGB_NAME_D, FillThresholdRGBColorsRGBNameD);
+		static double FillThresholdRGBColorsRGBNameD(const wchar_t* path, double frameId, double redThreshold, double greenThreshold, double blueThreshold, double red, double green, double blue);
 		/*
 			Fill the specified frame with RGB color where the animation color is zero. 
 			Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR, FillZeroColor);
+		static void FillZeroColor(int animationId, int frameId, int color);
 		/*
 			Fill all frames with RGB color where the animation color is zero. Animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES, FillZeroColorAllFrames);
+		static void FillZeroColorAllFrames(int animationId, int color);
 		/*
 			Fill all frames with RGB color where the animation color is zero. Animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_NAME, FillZeroColorAllFramesName);
+		static void FillZeroColorAllFramesName(const wchar_t* path, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_NAME_D, FillZeroColorAllFramesNameD);
+		static double FillZeroColorAllFramesNameD(const wchar_t* path, double color);
 		/*
 			Fill all frames with RGB color where the animation color is zero. Animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_RGB, FillZeroColorAllFramesRGB);
+		static void FillZeroColorAllFramesRGB(int animationId, int red, int green, int blue);
 		/*
 			Fill all frames with RGB color where the animation color is zero. Animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_RGB_NAME, FillZeroColorAllFramesRGBName);
+		static void FillZeroColorAllFramesRGBName(const wchar_t* path, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_ALL_FRAMES_RGB_NAME_D, FillZeroColorAllFramesRGBNameD);
+		static double FillZeroColorAllFramesRGBNameD(const wchar_t* path, double red, double green, double blue);
 		/*
 			Fill the specified frame with RGB color where the animation color is zero. 
 			Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_NAME, FillZeroColorName);
+		static void FillZeroColorName(const wchar_t* path, int frameId, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_NAME_D, FillZeroColorNameD);
+		static double FillZeroColorNameD(const wchar_t* path, double frameId, double color);
 		/*
 			Fill the specified frame with RGB color where the animation color is zero. 
 			Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_RGB, FillZeroColorRGB);
+		static void FillZeroColorRGB(int animationId, int frameId, int red, int green, int blue);
 		/*
 			Fill the specified frame with RGB color where the animation color is zero. 
 			Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_RGB_NAME, FillZeroColorRGBName);
+		static void FillZeroColorRGBName(const wchar_t* path, int frameId, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_FILL_ZERO_COLOR_RGB_NAME_D, FillZeroColorRGBNameD);
+		static double FillZeroColorRGBNameD(const wchar_t* path, double frameId, double red, double green, double blue);
 		/*
 			Get the animation color for a frame given the `1D` `led`. The `led` should 
 			be greater than or equal to 0 and less than the `MaxLeds`. Animation is 
 			referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_1D_COLOR, Get1DColor);
+		static int Get1DColor(int animationId, int frameId, int led);
 		/*
 			Get the animation color for a frame given the `1D` `led`. The `led` should 
 			be greater than or equal to 0 and less than the `MaxLeds`. Animation is 
 			referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_1D_COLOR_NAME, Get1DColorName);
+		static int Get1DColorName(const wchar_t* path, int frameId, int led);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_1D_COLOR_NAME_D, Get1DColorNameD);
+		static double Get1DColorNameD(const wchar_t* path, double frameId, double led);
 		/*
 			Get the animation color for a frame given the `2D` `row` and `column`. The 
 			`row` should be greater than or equal to 0 and less than the `MaxRow`. 
 			The `column` should be greater than or equal to 0 and less than the `MaxColumn`. 
 			Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_2D_COLOR, Get2DColor);
+		static int Get2DColor(int animationId, int frameId, int row, int column);
 		/*
 			Get the animation color for a frame given the `2D` `row` and `column`. The 
 			`row` should be greater than or equal to 0 and less than the `MaxRow`. 
 			The `column` should be greater than or equal to 0 and less than the `MaxColumn`. 
 			Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_2D_COLOR_NAME, Get2DColorName);
+		static int Get2DColorName(const wchar_t* path, int frameId, int row, int column);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_2D_COLOR_NAME_D, Get2DColorNameD);
+		static double Get2DColorNameD(const wchar_t* path, double frameId, double row, double column);
 		/*
 			Get the animation id for the named animation.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION, GetAnimation);
+		static int GetAnimation(const wchar_t* name);
 		/*
 			`PluginGetAnimationCount` will return the number of loaded animations.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION_COUNT, GetAnimationCount);
+		static int GetAnimationCount();
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION_D, GetAnimationD);
+		static double GetAnimationD(const wchar_t* name);
 		/*
 			`PluginGetAnimationId` will return the `animationId` given the `index` of 
 			the loaded animation. The `index` is zero-based and less than the number 
 			returned by `PluginGetAnimationCount`. Use `PluginGetAnimationName` to 
 			get the name of the animation.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION_ID, GetAnimationId);
+		static int GetAnimationId(int index);
 		/*
 			`PluginGetAnimationName` takes an `animationId` and returns the name of 
 			the animation of the `.chroma` animation file. If a name is not available 
 			then an empty string will be returned.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_ANIMATION_NAME, GetAnimationName);
+		static const wchar_t* GetAnimationName(int animationId);
 		/*
 			Get the current frame of the animation referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_CURRENT_FRAME, GetCurrentFrame);
+		static int GetCurrentFrame(int animationId);
 		/*
 			Get the current frame of the animation referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_CURRENT_FRAME_NAME, GetCurrentFrameName);
+		static int GetCurrentFrameName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_CURRENT_FRAME_NAME_D, GetCurrentFrameNameD);
+		static double GetCurrentFrameNameD(const wchar_t* path);
 		/*
 			Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma` 
 			animation respective to the `deviceType`, as an integer upon success. Returns 
 			negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_DEVICE, GetDevice);
+		static int GetDevice(int animationId);
 		/*
 			Returns the `EChromaSDKDevice1DEnum` or `EChromaSDKDevice2DEnum` of a `Chroma` 
 			animation respective to the `deviceType`, as an integer upon success. Returns 
 			negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_DEVICE_NAME, GetDeviceName);
+		static int GetDeviceName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_DEVICE_NAME_D, GetDeviceNameD);
+		static double GetDeviceNameD(const wchar_t* path);
 		/*
 			Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer 
 			upon success. Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_DEVICE_TYPE, GetDeviceType);
+		static int GetDeviceType(int animationId);
 		/*
 			Returns the `EChromaSDKDeviceTypeEnum` of a `Chroma` animation as an integer 
 			upon success. Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_DEVICE_TYPE_NAME, GetDeviceTypeName);
+		static int GetDeviceTypeName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_DEVICE_TYPE_NAME_D, GetDeviceTypeNameD);
+		static double GetDeviceTypeNameD(const wchar_t* path);
 		/*
 			Get the frame colors and duration (in seconds) for a `Chroma` animation 
 			referenced by id. The `color` is expected to be an array of the expected 
@@ -4072,31 +1297,31 @@ namespace ChromaSDK
 			EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength. 
 			Returns the animation id upon success. Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME, GetFrame);
+		static int GetFrame(int animationId, int frameId, float* duration, int* colors, int length, int* keys, int keysLength);
 		/*
 			Returns the frame count of a `Chroma` animation upon success. Returns negative 
 			one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME_COUNT, GetFrameCount);
+		static int GetFrameCount(int animationId);
 		/*
 			Returns the frame count of a `Chroma` animation upon success. Returns negative 
 			one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME_COUNT_NAME, GetFrameCountName);
+		static int GetFrameCountName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME_COUNT_NAME_D, GetFrameCountNameD);
+		static double GetFrameCountNameD(const wchar_t* path);
 		/*
 			Returns the duration of an animation frame in seconds upon success. Returns 
 			zero upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME_DURATION, GetFrameDuration);
+		static float GetFrameDuration(int animationId, int frameId);
 		/*
 			Returns the duration of an animation frame in seconds upon success. Returns 
 			zero upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME_DURATION_NAME, GetFrameDurationName);
+		static float GetFrameDurationName(const wchar_t* path, int frameId);
 		/*
 			Get the frame colors and duration (in seconds) for a `Chroma` animation 
 			referenced by name. The `color` is expected to be an array of the expected 
@@ -4108,599 +1333,599 @@ namespace ChromaSDK
 			EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength. 
 			Returns the animation id upon success. Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_FRAME_NAME, GetFrameName);
+		static int GetFrameName(const wchar_t* path, int frameId, float* duration, int* colors, int length, int* keys, int keysLength);
 		/*
 			Get the color of an animation key for the given frame referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_KEY_COLOR, GetKeyColor);
+		static int GetKeyColor(int animationId, int frameId, int rzkey);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_KEY_COLOR_D, GetKeyColorD);
+		static double GetKeyColorD(const wchar_t* path, double frameId, double rzkey);
 		/*
 			Get the color of an animation key for the given frame referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_KEY_COLOR_NAME, GetKeyColorName);
+		static int GetKeyColorName(const wchar_t* path, int frameId, int rzkey);
 		/*
 			Returns `RZRESULT_SUCCESS` if the plugin has been initialized successfully. 
 			Returns `RZRESULT_DLL_NOT_FOUND` if core Chroma library is not found. Returns 
 			`RZRESULT_DLL_INVALID_SIGNATURE` if core Chroma library has an invalid 
 			signature.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_LIBRARY_LOADED_STATE, GetLibraryLoadedState);
+		static RZRESULT GetLibraryLoadedState();
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_LIBRARY_LOADED_STATE_D, GetLibraryLoadedStateD);
+		static double GetLibraryLoadedStateD();
 		/*
 			Returns the `MAX COLUMN` given the `EChromaSDKDevice2DEnum` device as an 
 			integer upon success. Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_COLUMN, GetMaxColumn);
+		static int GetMaxColumn(int device);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_COLUMN_D, GetMaxColumnD);
+		static double GetMaxColumnD(double device);
 		/*
 			Returns the MAX LEDS given the `EChromaSDKDevice1DEnum` device as an integer 
 			upon success. Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_LEDS, GetMaxLeds);
+		static int GetMaxLeds(int device);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_LEDS_D, GetMaxLedsD);
+		static double GetMaxLedsD(double device);
 		/*
 			Returns the `MAX ROW` given the `EChromaSDKDevice2DEnum` device as an integer 
 			upon success. Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_ROW, GetMaxRow);
+		static int GetMaxRow(int device);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_MAX_ROW_D, GetMaxRowD);
+		static double GetMaxRowD(double device);
 		/*
 			`PluginGetPlayingAnimationCount` will return the number of playing animations.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_PLAYING_ANIMATION_COUNT, GetPlayingAnimationCount);
+		static int GetPlayingAnimationCount();
 		/*
 			`PluginGetPlayingAnimationId` will return the `animationId` given the `index` 
 			of the playing animation. The `index` is zero-based and less than the number 
 			returned by `PluginGetPlayingAnimationCount`. Use `PluginGetAnimationName` 
 			to get the name of the animation.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_PLAYING_ANIMATION_ID, GetPlayingAnimationId);
+		static int GetPlayingAnimationId(int index);
 		/*
 			Get the RGB color given red, green, and blue.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_RGB, GetRGB);
+		static int GetRGB(int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_RGBD, GetRGBD);
+		static double GetRGBD(double red, double green, double blue);
 		/*
 			Returns the total duration of an animation in seconds upon success. Returns 
 			zero upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_TOTAL_DURATION, GetTotalDuration);
+		static float GetTotalDuration(int animationId);
 		/*
 			Returns the total duration of an animation in seconds upon success. Returns 
 			zero upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_GET_TOTAL_DURATION_NAME, GetTotalDurationName);
+		static float GetTotalDurationName(const wchar_t* path);
 		/*
 			Check if the animation has loop enabled referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_HAS_ANIMATION_LOOP, HasAnimationLoop);
+		static bool HasAnimationLoop(int animationId);
 		/*
 			Check if the animation has loop enabled referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_HAS_ANIMATION_LOOP_NAME, HasAnimationLoopName);
+		static bool HasAnimationLoopName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_HAS_ANIMATION_LOOP_NAME_D, HasAnimationLoopNameD);
+		static double HasAnimationLoopNameD(const wchar_t* path);
 		/*
 			Initialize the ChromaSDK. Zero indicates success, otherwise failure. Many 
 			API methods auto initialize the ChromaSDK if not already initialized.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_INIT, Init);
+		static RZRESULT Init();
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_INIT_D, InitD);
+		static double InitD();
 		/*
 			Initialize the ChromaSDK. AppInfo populates the details in Synapse. Zero 
 			indicates success, otherwise failure. Many API methods auto initialize 
 			the ChromaSDK if not already initialized.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_INIT_SDK, InitSDK);
+		static RZRESULT InitSDK(ChromaSDK::APPINFOTYPE* AppInfo);
 		/*
 			Insert an animation delay by duplicating the frame by the delay number of 
 			times. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_INSERT_DELAY, InsertDelay);
+		static void InsertDelay(int animationId, int frameId, int delay);
 		/*
 			Insert an animation delay by duplicating the frame by the delay number of 
 			times. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_INSERT_DELAY_NAME, InsertDelayName);
+		static void InsertDelayName(const wchar_t* path, int frameId, int delay);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_INSERT_DELAY_NAME_D, InsertDelayNameD);
+		static double InsertDelayNameD(const wchar_t* path, double frameId, double delay);
 		/*
 			Duplicate the source frame index at the target frame index. Animation is 
 			referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_INSERT_FRAME, InsertFrame);
+		static void InsertFrame(int animationId, int sourceFrame, int targetFrame);
 		/*
 			Duplicate the source frame index at the target frame index. Animation is 
 			referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_INSERT_FRAME_NAME, InsertFrameName);
+		static void InsertFrameName(const wchar_t* path, int sourceFrame, int targetFrame);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_INSERT_FRAME_NAME_D, InsertFrameNameD);
+		static double InsertFrameNameD(const wchar_t* path, double sourceFrame, double targetFrame);
 		/*
 			Invert all the colors at the specified frame. Animation is referenced by 
 			id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_INVERT_COLORS, InvertColors);
+		static void InvertColors(int animationId, int frameId);
 		/*
 			Invert all the colors for all frames. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_INVERT_COLORS_ALL_FRAMES, InvertColorsAllFrames);
+		static void InvertColorsAllFrames(int animationId);
 		/*
 			Invert all the colors for all frames. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_INVERT_COLORS_ALL_FRAMES_NAME, InvertColorsAllFramesName);
+		static void InvertColorsAllFramesName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_INVERT_COLORS_ALL_FRAMES_NAME_D, InvertColorsAllFramesNameD);
+		static double InvertColorsAllFramesNameD(const wchar_t* path);
 		/*
 			Invert all the colors at the specified frame. Animation is referenced by 
 			name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_INVERT_COLORS_NAME, InvertColorsName);
+		static void InvertColorsName(const wchar_t* path, int frameId);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_INVERT_COLORS_NAME_D, InvertColorsNameD);
+		static double InvertColorsNameD(const wchar_t* path, double frameId);
 		/*
 			Check if the animation is paused referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_ANIMATION_PAUSED, IsAnimationPaused);
+		static bool IsAnimationPaused(int animationId);
 		/*
 			Check if the animation is paused referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_ANIMATION_PAUSED_NAME, IsAnimationPausedName);
+		static bool IsAnimationPausedName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_ANIMATION_PAUSED_NAME_D, IsAnimationPausedNameD);
+		static double IsAnimationPausedNameD(const wchar_t* path);
 		/*
 			The editor dialog is a non-blocking modal window, this method returns true 
 			if the modal window is open, otherwise false.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_DIALOG_OPEN, IsDialogOpen);
+		static bool IsDialogOpen();
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_DIALOG_OPEN_D, IsDialogOpenD);
+		static double IsDialogOpenD();
 		/*
 			Returns true if the plugin has been initialized. Returns false if the plugin 
 			is uninitialized.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_INITIALIZED, IsInitialized);
+		static bool IsInitialized();
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_INITIALIZED_D, IsInitializedD);
+		static double IsInitializedD();
 		/*
 			If the method can be invoked the method returns true.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLATFORM_SUPPORTED, IsPlatformSupported);
+		static bool IsPlatformSupported();
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLATFORM_SUPPORTED_D, IsPlatformSupportedD);
+		static double IsPlatformSupportedD();
 		/*
 			`PluginIsPlayingName` automatically handles initializing the `ChromaSDK`. 
 			The named `.chroma` animation file will be automatically opened. The method 
 			will return whether the animation is playing or not. Animation is referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLAYING, IsPlaying);
+		static bool IsPlaying(int animationId);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLAYING_D, IsPlayingD);
+		static double IsPlayingD(double animationId);
 		/*
 			`PluginIsPlayingName` automatically handles initializing the `ChromaSDK`. 
 			The named `.chroma` animation file will be automatically opened. The method 
 			will return whether the animation is playing or not. Animation is referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLAYING_NAME, IsPlayingName);
+		static bool IsPlayingName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLAYING_NAME_D, IsPlayingNameD);
+		static double IsPlayingNameD(const wchar_t* path);
 		/*
 			`PluginIsPlayingType` automatically handles initializing the `ChromaSDK`. 
 			If any animation is playing for the `deviceType` and `device` combination, 
 			the method will return true, otherwise false.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLAYING_TYPE, IsPlayingType);
+		static bool IsPlayingType(int deviceType, int device);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_IS_PLAYING_TYPE_D, IsPlayingTypeD);
+		static double IsPlayingTypeD(double deviceType, double device);
 		/*
 			Do a lerp math operation on a float.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_LERP, Lerp);
+		static float Lerp(float start, float end, float amt);
 		/*
 			Lerp from one color to another given t in the range 0.0 to 1.0.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_LERP_COLOR, LerpColor);
+		static int LerpColor(int from, int to, float t);
 		/*
 			Loads `Chroma` effects so that the animation can be played immediately. 
 			Returns the animation id upon success. Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_LOAD_ANIMATION, LoadAnimation);
+		static int LoadAnimation(int animationId);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_LOAD_ANIMATION_D, LoadAnimationD);
+		static double LoadAnimationD(double animationId);
 		/*
 			Load the named animation.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_LOAD_ANIMATION_NAME, LoadAnimationName);
+		static void LoadAnimationName(const wchar_t* path);
 		/*
 			Load a composite set of animations.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_LOAD_COMPOSITE, LoadComposite);
+		static void LoadComposite(const wchar_t* name);
 		/*
 			Make a blank animation for the length of the frame count. Frame duration 
 			defaults to the duration. The frame color defaults to color. Animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES, MakeBlankFrames);
+		static void MakeBlankFrames(int animationId, int frameCount, float duration, int color);
 		/*
 			Make a blank animation for the length of the frame count. Frame duration 
 			defaults to the duration. The frame color defaults to color. Animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_NAME, MakeBlankFramesName);
+		static void MakeBlankFramesName(const wchar_t* path, int frameCount, float duration, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_NAME_D, MakeBlankFramesNameD);
+		static double MakeBlankFramesNameD(const wchar_t* path, double frameCount, double duration, double color);
 		/*
 			Make a blank animation for the length of the frame count. Frame duration 
 			defaults to the duration. The frame color is random. Animation is referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_RANDOM, MakeBlankFramesRandom);
+		static void MakeBlankFramesRandom(int animationId, int frameCount, float duration);
 		/*
 			Make a blank animation for the length of the frame count. Frame duration 
 			defaults to the duration. The frame color is random black and white. Animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_RANDOM_BLACK_AND_WHITE, MakeBlankFramesRandomBlackAndWhite);
+		static void MakeBlankFramesRandomBlackAndWhite(int animationId, int frameCount, float duration);
 		/*
 			Make a blank animation for the length of the frame count. Frame duration 
 			defaults to the duration. The frame color is random black and white. Animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_RANDOM_BLACK_AND_WHITE_NAME, MakeBlankFramesRandomBlackAndWhiteName);
+		static void MakeBlankFramesRandomBlackAndWhiteName(const wchar_t* path, int frameCount, float duration);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_RANDOM_BLACK_AND_WHITE_NAME_D, MakeBlankFramesRandomBlackAndWhiteNameD);
+		static double MakeBlankFramesRandomBlackAndWhiteNameD(const wchar_t* path, double frameCount, double duration);
 		/*
 			Make a blank animation for the length of the frame count. Frame duration 
 			defaults to the duration. The frame color is random. Animation is referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_RANDOM_NAME, MakeBlankFramesRandomName);
+		static void MakeBlankFramesRandomName(const wchar_t* path, int frameCount, float duration);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_RANDOM_NAME_D, MakeBlankFramesRandomNameD);
+		static double MakeBlankFramesRandomNameD(const wchar_t* path, double frameCount, double duration);
 		/*
 			Make a blank animation for the length of the frame count. Frame duration 
 			defaults to the duration. The frame color defaults to color. Animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_RGB, MakeBlankFramesRGB);
+		static void MakeBlankFramesRGB(int animationId, int frameCount, float duration, int red, int green, int blue);
 		/*
 			Make a blank animation for the length of the frame count. Frame duration 
 			defaults to the duration. The frame color defaults to color. Animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_RGB_NAME, MakeBlankFramesRGBName);
+		static void MakeBlankFramesRGBName(const wchar_t* path, int frameCount, float duration, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MAKE_BLANK_FRAMES_RGB_NAME_D, MakeBlankFramesRGBNameD);
+		static double MakeBlankFramesRGBNameD(const wchar_t* path, double frameCount, double duration, double red, double green, double blue);
 		/*
 			Flips the color grid horizontally for all `Chroma` animation frames. Returns 
 			the animation id upon success. Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MIRROR_HORIZONTALLY, MirrorHorizontally);
+		static int MirrorHorizontally(int animationId);
 		/*
 			Flips the color grid vertically for all `Chroma` animation frames. This 
 			method has no effect for `EChromaSDKDevice1DEnum` devices. Returns the 
 			animation id upon success. Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MIRROR_VERTICALLY, MirrorVertically);
+		static int MirrorVertically(int animationId);
 		/*
 			Multiply the color intensity with the lerp result from color 1 to color 
 			2 using the frame index divided by the frame count for the `t` parameter. 
 			Animation is referenced in id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_COLOR_LERP_ALL_FRAMES, MultiplyColorLerpAllFrames);
+		static void MultiplyColorLerpAllFrames(int animationId, int color1, int color2);
 		/*
 			Multiply the color intensity with the lerp result from color 1 to color 
 			2 using the frame index divided by the frame count for the `t` parameter. 
 			Animation is referenced in name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_COLOR_LERP_ALL_FRAMES_NAME, MultiplyColorLerpAllFramesName);
+		static void MultiplyColorLerpAllFramesName(const wchar_t* path, int color1, int color2);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_COLOR_LERP_ALL_FRAMES_NAME_D, MultiplyColorLerpAllFramesNameD);
+		static double MultiplyColorLerpAllFramesNameD(const wchar_t* path, double color1, double color2);
 		/*
 			Multiply all the colors in the frame by the intensity value. The valid the 
 			intensity range is from 0.0 to 255.0. RGB components are multiplied equally. 
 			An intensity of 0.5 would half the color value. Black colors in the frame 
 			will not be affected by this method.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY, MultiplyIntensity);
+		static void MultiplyIntensity(int animationId, int frameId, float intensity);
 		/*
 			Multiply all the colors for all frames by the intensity value. The valid 
 			the intensity range is from 0.0 to 255.0. RGB components are multiplied 
 			equally. An intensity of 0.5 would half the color value. Black colors in 
 			the frame will not be affected by this method.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES, MultiplyIntensityAllFrames);
+		static void MultiplyIntensityAllFrames(int animationId, float intensity);
 		/*
 			Multiply all the colors for all frames by the intensity value. The valid 
 			the intensity range is from 0.0 to 255.0. RGB components are multiplied 
 			equally. An intensity of 0.5 would half the color value. Black colors in 
 			the frame will not be affected by this method.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME, MultiplyIntensityAllFramesName);
+		static void MultiplyIntensityAllFramesName(const wchar_t* path, float intensity);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_NAME_D, MultiplyIntensityAllFramesNameD);
+		static double MultiplyIntensityAllFramesNameD(const wchar_t* path, double intensity);
 		/*
 			Multiply all frames by the RBG color intensity. Animation is referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB, MultiplyIntensityAllFramesRGB);
+		static void MultiplyIntensityAllFramesRGB(int animationId, int red, int green, int blue);
 		/*
 			Multiply all frames by the RBG color intensity. Animation is referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB_NAME, MultiplyIntensityAllFramesRGBName);
+		static void MultiplyIntensityAllFramesRGBName(const wchar_t* path, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_ALL_FRAMES_RGB_NAME_D, MultiplyIntensityAllFramesRGBNameD);
+		static double MultiplyIntensityAllFramesRGBNameD(const wchar_t* path, double red, double green, double blue);
 		/*
 			Multiply the specific frame by the RBG color intensity. Animation is referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_COLOR, MultiplyIntensityColor);
+		static void MultiplyIntensityColor(int animationId, int frameId, int color);
 		/*
 			Multiply all frames by the RBG color intensity. Animation is referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_COLOR_ALL_FRAMES, MultiplyIntensityColorAllFrames);
+		static void MultiplyIntensityColorAllFrames(int animationId, int color);
 		/*
 			Multiply all frames by the RBG color intensity. Animation is referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_COLOR_ALL_FRAMES_NAME, MultiplyIntensityColorAllFramesName);
+		static void MultiplyIntensityColorAllFramesName(const wchar_t* path, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_COLOR_ALL_FRAMES_NAME_D, MultiplyIntensityColorAllFramesNameD);
+		static double MultiplyIntensityColorAllFramesNameD(const wchar_t* path, double color);
 		/*
 			Multiply the specific frame by the RBG color intensity. Animation is referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_COLOR_NAME, MultiplyIntensityColorName);
+		static void MultiplyIntensityColorName(const wchar_t* path, int frameId, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_COLOR_NAME_D, MultiplyIntensityColorNameD);
+		static double MultiplyIntensityColorNameD(const wchar_t* path, double frameId, double color);
 		/*
 			Multiply all the colors in the frame by the intensity value. The valid the 
 			intensity range is from 0.0 to 255.0. RGB components are multiplied equally. 
 			An intensity of 0.5 would half the color value. Black colors in the frame 
 			will not be affected by this method.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_NAME, MultiplyIntensityName);
+		static void MultiplyIntensityName(const wchar_t* path, int frameId, float intensity);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_NAME_D, MultiplyIntensityNameD);
+		static double MultiplyIntensityNameD(const wchar_t* path, double frameId, double intensity);
 		/*
 			Multiply the specific frame by the RBG color intensity. Animation is referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_RGB, MultiplyIntensityRGB);
+		static void MultiplyIntensityRGB(int animationId, int frameId, int red, int green, int blue);
 		/*
 			Multiply the specific frame by the RBG color intensity. Animation is referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_RGB_NAME, MultiplyIntensityRGBName);
+		static void MultiplyIntensityRGBName(const wchar_t* path, int frameId, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_INTENSITY_RGB_NAME_D, MultiplyIntensityRGBNameD);
+		static double MultiplyIntensityRGBNameD(const wchar_t* path, double frameId, double red, double green, double blue);
 		/*
 			Multiply the specific frame by the color lerp result between color 1 and 
 			2 using the frame color value as the `t` value. Animation is referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP, MultiplyNonZeroTargetColorLerp);
+		static void MultiplyNonZeroTargetColorLerp(int animationId, int frameId, int color1, int color2);
 		/*
 			Multiply all frames by the color lerp result between color 1 and 2 using 
 			the frame color value as the `t` value. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES, MultiplyNonZeroTargetColorLerpAllFrames);
+		static void MultiplyNonZeroTargetColorLerpAllFrames(int animationId, int color1, int color2);
 		/*
 			Multiply all frames by the color lerp result between color 1 and 2 using 
 			the frame color value as the `t` value. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_NAME, MultiplyNonZeroTargetColorLerpAllFramesName);
+		static void MultiplyNonZeroTargetColorLerpAllFramesName(const wchar_t* path, int color1, int color2);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_NAME_D, MultiplyNonZeroTargetColorLerpAllFramesNameD);
+		static double MultiplyNonZeroTargetColorLerpAllFramesNameD(const wchar_t* path, double color1, double color2);
 		/*
 			Multiply the specific frame by the color lerp result between RGB 1 and 2 
 			using the frame color value as the `t` value. Animation is referenced by 
 			id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_RGB, MultiplyNonZeroTargetColorLerpAllFramesRGB);
+		static void MultiplyNonZeroTargetColorLerpAllFramesRGB(int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
 		/*
 			Multiply the specific frame by the color lerp result between RGB 1 and 2 
 			using the frame color value as the `t` value. Animation is referenced by 
 			name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME, MultiplyNonZeroTargetColorLerpAllFramesRGBName);
+		static void MultiplyNonZeroTargetColorLerpAllFramesRGBName(const wchar_t* path, int red1, int green1, int blue1, int red2, int green2, int blue2);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_NON_ZERO_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME_D, MultiplyNonZeroTargetColorLerpAllFramesRGBNameD);
+		static double MultiplyNonZeroTargetColorLerpAllFramesRGBNameD(const wchar_t* path, double red1, double green1, double blue1, double red2, double green2, double blue2);
 		/*
 			Multiply the specific frame by the color lerp result between color 1 and 
 			2 using the frame color value as the `t` value. Animation is referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_TARGET_COLOR_LERP, MultiplyTargetColorLerp);
+		static void MultiplyTargetColorLerp(int animationId, int frameId, int color1, int color2);
 		/*
 			Multiply all frames by the color lerp result between color 1 and 2 using 
 			the frame color value as the `t` value. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES, MultiplyTargetColorLerpAllFrames);
+		static void MultiplyTargetColorLerpAllFrames(int animationId, int color1, int color2);
 		/*
 			Multiply all frames by the color lerp result between color 1 and 2 using 
 			the frame color value as the `t` value. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_NAME, MultiplyTargetColorLerpAllFramesName);
+		static void MultiplyTargetColorLerpAllFramesName(const wchar_t* path, int color1, int color2);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_NAME_D, MultiplyTargetColorLerpAllFramesNameD);
+		static double MultiplyTargetColorLerpAllFramesNameD(const wchar_t* path, double color1, double color2);
 		/*
 			Multiply all frames by the color lerp result between RGB 1 and 2 using the 
 			frame color value as the `t` value. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_RGB, MultiplyTargetColorLerpAllFramesRGB);
+		static void MultiplyTargetColorLerpAllFramesRGB(int animationId, int red1, int green1, int blue1, int red2, int green2, int blue2);
 		/*
 			Multiply all frames by the color lerp result between RGB 1 and 2 using the 
 			frame color value as the `t` value. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME, MultiplyTargetColorLerpAllFramesRGBName);
+		static void MultiplyTargetColorLerpAllFramesRGBName(const wchar_t* path, int red1, int green1, int blue1, int red2, int green2, int blue2);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_TARGET_COLOR_LERP_ALL_FRAMES_RGB_NAME_D, MultiplyTargetColorLerpAllFramesRGBNameD);
+		static double MultiplyTargetColorLerpAllFramesRGBNameD(const wchar_t* path, double red1, double green1, double blue1, double red2, double green2, double blue2);
 		/*
 			Multiply the specific frame by the color lerp result between color 1 and 
 			2 using the frame color value as the `t` value. Animation is referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_MULTIPLY_TARGET_COLOR_LERP_NAME, MultiplyTargetColorLerpName);
+		static void MultiplyTargetColorLerpName(const wchar_t* path, int frameId, int color1, int color2);
 		/*
 			Offset all colors in the frame using the RGB offset. Use the range of -255 
 			to 255 for red, green, and blue parameters. Negative values remove color. 
 			Positive values add color.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_COLORS, OffsetColors);
+		static void OffsetColors(int animationId, int frameId, int red, int green, int blue);
 		/*
 			Offset all colors for all frames using the RGB offset. Use the range of 
 			-255 to 255 for red, green, and blue parameters. Negative values remove 
 			color. Positive values add color.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_COLORS_ALL_FRAMES, OffsetColorsAllFrames);
+		static void OffsetColorsAllFrames(int animationId, int red, int green, int blue);
 		/*
 			Offset all colors for all frames using the RGB offset. Use the range of 
 			-255 to 255 for red, green, and blue parameters. Negative values remove 
 			color. Positive values add color.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME, OffsetColorsAllFramesName);
+		static void OffsetColorsAllFramesName(const wchar_t* path, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_COLORS_ALL_FRAMES_NAME_D, OffsetColorsAllFramesNameD);
+		static double OffsetColorsAllFramesNameD(const wchar_t* path, double red, double green, double blue);
 		/*
 			Offset all colors in the frame using the RGB offset. Use the range of -255 
 			to 255 for red, green, and blue parameters. Negative values remove color. 
 			Positive values add color.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_COLORS_NAME, OffsetColorsName);
+		static void OffsetColorsName(const wchar_t* path, int frameId, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_COLORS_NAME_D, OffsetColorsNameD);
+		static double OffsetColorsNameD(const wchar_t* path, double frameId, double red, double green, double blue);
 		/*
 			This method will only update colors in the animation that are not already 
 			set to black. Offset a subset of colors in the frame using the RGB offset. 
 			Use the range of -255 to 255 for red, green, and blue parameters. Negative 
 			values remove color. Positive values add color.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_NON_ZERO_COLORS, OffsetNonZeroColors);
+		static void OffsetNonZeroColors(int animationId, int frameId, int red, int green, int blue);
 		/*
 			This method will only update colors in the animation that are not already 
 			set to black. Offset a subset of colors for all frames using the RGB offset. 
 			Use the range of -255 to 255 for red, green, and blue parameters. Negative 
 			values remove color. Positive values add color.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_NON_ZERO_COLORS_ALL_FRAMES, OffsetNonZeroColorsAllFrames);
+		static void OffsetNonZeroColorsAllFrames(int animationId, int red, int green, int blue);
 		/*
 			This method will only update colors in the animation that are not already 
 			set to black. Offset a subset of colors for all frames using the RGB offset. 
 			Use the range of -255 to 255 for red, green, and blue parameters. Negative 
 			values remove color. Positive values add color.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_NON_ZERO_COLORS_ALL_FRAMES_NAME, OffsetNonZeroColorsAllFramesName);
+		static void OffsetNonZeroColorsAllFramesName(const wchar_t* path, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_NON_ZERO_COLORS_ALL_FRAMES_NAME_D, OffsetNonZeroColorsAllFramesNameD);
+		static double OffsetNonZeroColorsAllFramesNameD(const wchar_t* path, double red, double green, double blue);
 		/*
 			This method will only update colors in the animation that are not already 
 			set to black. Offset a subset of colors in the frame using the RGB offset. 
 			Use the range of -255 to 255 for red, green, and blue parameters. Negative 
 			values remove color. Positive values add color.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_NON_ZERO_COLORS_NAME, OffsetNonZeroColorsName);
+		static void OffsetNonZeroColorsName(const wchar_t* path, int frameId, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OFFSET_NON_ZERO_COLORS_NAME_D, OffsetNonZeroColorsNameD);
+		static double OffsetNonZeroColorsNameD(const wchar_t* path, double frameId, double red, double green, double blue);
 		/*
 			Opens a `Chroma` animation file so that it can be played. Returns an animation 
 			id >= 0 upon success. Returns negative one if there was a failure. The 
 			animation id is used in most of the API methods.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_ANIMATION, OpenAnimation);
+		static int OpenAnimation(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_ANIMATION_D, OpenAnimationD);
+		static double OpenAnimationD(const wchar_t* path);
 		/*
 			Opens a `Chroma` animation data from memory so that it can be played. `Data` 
 			is a pointer to BYTE array of the loaded animation in memory. `Name` will 
@@ -4708,795 +1933,795 @@ namespace ChromaSDK
 			upon success. Returns negative one if there was a failure. The animation 
 			id is used in most of the API methods.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_ANIMATION_FROM_MEMORY, OpenAnimationFromMemory);
+		static int OpenAnimationFromMemory(const BYTE* data, const wchar_t* name);
 		/*
 			Opens a `Chroma` animation file with the `.chroma` extension. Returns zero 
 			upon success. Returns negative one if there was a failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG, OpenEditorDialog);
+		static int OpenEditorDialog(const wchar_t* path);
 		/*
 			Open the named animation in the editor dialog and play the animation at 
 			start.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY, OpenEditorDialogAndPlay);
+		static int OpenEditorDialogAndPlay(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG_AND_PLAY_D, OpenEditorDialogAndPlayD);
+		static double OpenEditorDialogAndPlayD(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OPEN_EDITOR_DIALOG_D, OpenEditorDialogD);
+		static double OpenEditorDialogD(const wchar_t* path);
 		/*
 			Sets the `duration` for all grames in the `Chroma` animation to the `duration` 
 			parameter. Returns the animation id upon success. Returns negative one 
 			upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OVERRIDE_FRAME_DURATION, OverrideFrameDuration);
+		static int OverrideFrameDuration(int animationId, float duration);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OVERRIDE_FRAME_DURATION_D, OverrideFrameDurationD);
+		static double OverrideFrameDurationD(double animationId, double duration);
 		/*
 			Override the duration of all frames with the `duration` value. Animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_OVERRIDE_FRAME_DURATION_NAME, OverrideFrameDurationName);
+		static void OverrideFrameDurationName(const wchar_t* path, float duration);
 		/*
 			Pause the current animation referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_PAUSE_ANIMATION, PauseAnimation);
+		static void PauseAnimation(int animationId);
 		/*
 			Pause the current animation referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_PAUSE_ANIMATION_NAME, PauseAnimationName);
+		static void PauseAnimationName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_PAUSE_ANIMATION_NAME_D, PauseAnimationNameD);
+		static double PauseAnimationNameD(const wchar_t* path);
 		/*
 			Plays the `Chroma` animation. This will load the animation, if not loaded 
 			previously. Returns the animation id upon success. Returns negative one 
 			upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION, PlayAnimation);
+		static int PlayAnimation(int animationId);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION_D, PlayAnimationD);
+		static double PlayAnimationD(double animationId);
 		/*
 			`PluginPlayAnimationFrame` automatically handles initializing the `ChromaSDK`. 
 			The method will play the animation given the `animationId` with looping 
 			`on` or `off` starting at the `frameId`.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION_FRAME, PlayAnimationFrame);
+		static void PlayAnimationFrame(int animationId, int frameId, bool loop);
 		/*
 			`PluginPlayAnimationFrameName` automatically handles initializing the `ChromaSDK`. 
 			The named `.chroma` animation file will be automatically opened. The animation 
 			will play with looping `on` or `off` starting at the `frameId`.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION_FRAME_NAME, PlayAnimationFrameName);
+		static void PlayAnimationFrameName(const wchar_t* path, int frameId, bool loop);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION_FRAME_NAME_D, PlayAnimationFrameNameD);
+		static double PlayAnimationFrameNameD(const wchar_t* path, double frameId, double loop);
 		/*
 			`PluginPlayAnimationLoop` automatically handles initializing the `ChromaSDK`. 
 			The method will play the animation given the `animationId` with looping 
 			`on` or `off`.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION_LOOP, PlayAnimationLoop);
+		static void PlayAnimationLoop(int animationId, bool loop);
 		/*
 			`PluginPlayAnimationName` automatically handles initializing the `ChromaSDK`. 
 			The named `.chroma` animation file will be automatically opened. The animation 
 			will play with looping `on` or `off`.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION_NAME, PlayAnimationName);
+		static void PlayAnimationName(const wchar_t* path, bool loop);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_ANIMATION_NAME_D, PlayAnimationNameD);
+		static double PlayAnimationNameD(const wchar_t* path, double loop);
 		/*
 			`PluginPlayComposite` automatically handles initializing the `ChromaSDK`. 
 			The named animation files for the `.chroma` set will be automatically opened. 
 			The set of animations will play with looping `on` or `off`.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_COMPOSITE, PlayComposite);
+		static void PlayComposite(const wchar_t* name, bool loop);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_PLAY_COMPOSITE_D, PlayCompositeD);
+		static double PlayCompositeD(const wchar_t* name, double loop);
 		/*
 			Displays the `Chroma` animation frame on `Chroma` hardware given the `frameId`. 
 			Returns the animation id upon success. Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_PREVIEW_FRAME, PreviewFrame);
+		static int PreviewFrame(int animationId, int frameId);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_PREVIEW_FRAME_D, PreviewFrameD);
+		static double PreviewFrameD(double animationId, double frameId);
 		/*
 			Displays the `Chroma` animation frame on `Chroma` hardware given the `frameId`. 
 			Animaton is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_PREVIEW_FRAME_NAME, PreviewFrameName);
+		static void PreviewFrameName(const wchar_t* path, int frameId);
 		/*
 			Reduce the frames of the animation by removing every nth element. Animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_REDUCE_FRAMES, ReduceFrames);
+		static void ReduceFrames(int animationId, int n);
 		/*
 			Reduce the frames of the animation by removing every nth element. Animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_REDUCE_FRAMES_NAME, ReduceFramesName);
+		static void ReduceFramesName(const wchar_t* path, int n);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_REDUCE_FRAMES_NAME_D, ReduceFramesNameD);
+		static double ReduceFramesNameD(const wchar_t* path, double n);
 		/*
 			Resets the `Chroma` animation to 1 blank frame. Returns the animation id 
 			upon success. Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_RESET_ANIMATION, ResetAnimation);
+		static int ResetAnimation(int animationId);
 		/*
 			Resume the animation with loop `ON` or `OFF` referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_RESUME_ANIMATION, ResumeAnimation);
+		static void ResumeAnimation(int animationId, bool loop);
 		/*
 			Resume the animation with loop `ON` or `OFF` referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_RESUME_ANIMATION_NAME, ResumeAnimationName);
+		static void ResumeAnimationName(const wchar_t* path, bool loop);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_RESUME_ANIMATION_NAME_D, ResumeAnimationNameD);
+		static double ResumeAnimationNameD(const wchar_t* path, double loop);
 		/*
 			Reverse the animation frame order of the `Chroma` animation. Returns the 
 			animation id upon success. Returns negative one upon failure. Animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_REVERSE, Reverse);
+		static int Reverse(int animationId);
 		/*
 			Reverse the animation frame order of the `Chroma` animation. Animation is 
 			referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_REVERSE_ALL_FRAMES, ReverseAllFrames);
+		static void ReverseAllFrames(int animationId);
 		/*
 			Reverse the animation frame order of the `Chroma` animation. Animation is 
 			referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_REVERSE_ALL_FRAMES_NAME, ReverseAllFramesName);
+		static void ReverseAllFramesName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_REVERSE_ALL_FRAMES_NAME_D, ReverseAllFramesNameD);
+		static double ReverseAllFramesNameD(const wchar_t* path);
 		/*
 			Save the animation referenced by id to the path specified.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SAVE_ANIMATION, SaveAnimation);
+		static int SaveAnimation(int animationId, const wchar_t* path);
 		/*
 			Save the named animation to the target path specified.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SAVE_ANIMATION_NAME, SaveAnimationName);
+		static int SaveAnimationName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			Set the animation color for a frame given the `1D` `led`. The `led` should 
 			be greater than or equal to 0 and less than the `MaxLeds`. The animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_1D_COLOR, Set1DColor);
+		static void Set1DColor(int animationId, int frameId, int led, int color);
 		/*
 			Set the animation color for a frame given the `1D` `led`. The `led` should 
 			be greater than or equal to 0 and less than the `MaxLeds`. The animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_1D_COLOR_NAME, Set1DColorName);
+		static void Set1DColorName(const wchar_t* path, int frameId, int led, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_1D_COLOR_NAME_D, Set1DColorNameD);
+		static double Set1DColorNameD(const wchar_t* path, double frameId, double led, double color);
 		/*
 			Set the animation color for a frame given the `2D` `row` and `column`. The 
 			`row` should be greater than or equal to 0 and less than the `MaxRow`. 
 			The `column` should be greater than or equal to 0 and less than the `MaxColumn`. 
 			The animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_2D_COLOR, Set2DColor);
+		static void Set2DColor(int animationId, int frameId, int row, int column, int color);
 		/*
 			Set the animation color for a frame given the `2D` `row` and `column`. The 
 			`row` should be greater than or equal to 0 and less than the `MaxRow`. 
 			The `column` should be greater than or equal to 0 and less than the `MaxColumn`. 
 			The animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_2D_COLOR_NAME, Set2DColorName);
+		static void Set2DColorName(const wchar_t* path, int frameId, int row, int column, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_2D_COLOR_NAME_D, Set2DColorNameD);
+		static double Set2DColorNameD(const wchar_t* path, double frameId, double rowColumnIndex, double color);
 		/*
 			When custom color is set, the custom key mode will be used. The animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES, SetChromaCustomColorAllFrames);
+		static void SetChromaCustomColorAllFrames(int animationId);
 		/*
 			When custom color is set, the custom key mode will be used. The animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES_NAME, SetChromaCustomColorAllFramesName);
+		static void SetChromaCustomColorAllFramesName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_COLOR_ALL_FRAMES_NAME_D, SetChromaCustomColorAllFramesNameD);
+		static double SetChromaCustomColorAllFramesNameD(const wchar_t* path);
 		/*
 			Set the Chroma custom key color flag on all frames. `True` changes the layout 
 			from grid to key. `True` changes the layout from key to grid. Animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_FLAG, SetChromaCustomFlag);
+		static void SetChromaCustomFlag(int animationId, bool flag);
 		/*
 			Set the Chroma custom key color flag on all frames. `True` changes the layout 
 			from grid to key. `True` changes the layout from key to grid. Animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_FLAG_NAME, SetChromaCustomFlagName);
+		static void SetChromaCustomFlagName(const wchar_t* path, bool flag);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CHROMA_CUSTOM_FLAG_NAME_D, SetChromaCustomFlagNameD);
+		static double SetChromaCustomFlagNameD(const wchar_t* path, double flag);
 		/*
 			Set the current frame of the animation referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CURRENT_FRAME, SetCurrentFrame);
+		static void SetCurrentFrame(int animationId, int frameId);
 		/*
 			Set the current frame of the animation referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CURRENT_FRAME_NAME, SetCurrentFrameName);
+		static void SetCurrentFrameName(const wchar_t* path, int frameId);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CURRENT_FRAME_NAME_D, SetCurrentFrameNameD);
+		static double SetCurrentFrameNameD(const wchar_t* path, double frameId);
 		/*
 			Set the custom alpha flag on the color array
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_CUSTOM_COLOR_FLAG_2D, SetCustomColorFlag2D);
+		static RZRESULT SetCustomColorFlag2D(int device, int* colors);
 		/*
 			Changes the `deviceType` and `device` of a `Chroma` animation. If the device 
 			is changed, the `Chroma` animation will be reset with 1 blank frame. Returns 
 			the animation id upon success. Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_DEVICE, SetDevice);
+		static int SetDevice(int animationId, int deviceType, int device);
 		/*
 			SetEffect will display the referenced effect id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_EFFECT, SetEffect);
+		static RZRESULT SetEffect(const ChromaSDK::FChromaSDKGuid& effectId);
 		/*
 			SetEffectCustom1D will display the referenced colors immediately
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_EFFECT_CUSTOM_1D, SetEffectCustom1D);
+		static RZRESULT SetEffectCustom1D(const int device, const int* colors);
 		/*
 			SetEffectCustom2D will display the referenced colors immediately.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_EFFECT_CUSTOM_2D, SetEffectCustom2D);
+		static RZRESULT SetEffectCustom2D(const int device, const int* colors);
 		/*
 			SetEffectKeyboardCustom2D will display the referenced custom keyboard colors 
 			immediately. Colors represent a visual grid layout. Keys represent the 
 			hotkeys for any layout.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_EFFECT_KEYBOARD_CUSTOM_2D, SetEffectKeyboardCustom2D);
+		static RZRESULT SetEffectKeyboardCustom2D(const int device, const int* colors, const int* keys);
 		/*
 			When the idle animation is used, the named animation will play when no other 
 			animations are playing. Reference the animation by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_IDLE_ANIMATION, SetIdleAnimation);
+		static void SetIdleAnimation(int animationId);
 		/*
 			When the idle animation is used, the named animation will play when no other 
 			animations are playing. Reference the animation by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_IDLE_ANIMATION_NAME, SetIdleAnimationName);
+		static void SetIdleAnimationName(const wchar_t* path);
 		/*
 			Set animation key to a static color for the given frame.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR, SetKeyColor);
+		static void SetKeyColor(int animationId, int frameId, int rzkey, int color);
 		/*
 			Set the key to the specified key color for all frames. Animation is referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_ALL_FRAMES, SetKeyColorAllFrames);
+		static void SetKeyColorAllFrames(int animationId, int rzkey, int color);
 		/*
 			Set the key to the specified key color for all frames. Animation is referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_ALL_FRAMES_NAME, SetKeyColorAllFramesName);
+		static void SetKeyColorAllFramesName(const wchar_t* path, int rzkey, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_ALL_FRAMES_NAME_D, SetKeyColorAllFramesNameD);
+		static double SetKeyColorAllFramesNameD(const wchar_t* path, double rzkey, double color);
 		/*
 			Set the key to the specified key color for all frames. Animation is referenced 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_ALL_FRAMES_RGB, SetKeyColorAllFramesRGB);
+		static void SetKeyColorAllFramesRGB(int animationId, int rzkey, int red, int green, int blue);
 		/*
 			Set the key to the specified key color for all frames. Animation is referenced 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_ALL_FRAMES_RGB_NAME, SetKeyColorAllFramesRGBName);
+		static void SetKeyColorAllFramesRGBName(const wchar_t* path, int rzkey, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_ALL_FRAMES_RGB_NAME_D, SetKeyColorAllFramesRGBNameD);
+		static double SetKeyColorAllFramesRGBNameD(const wchar_t* path, double rzkey, double red, double green, double blue);
 		/*
 			Set animation key to a static color for the given frame.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_NAME, SetKeyColorName);
+		static void SetKeyColorName(const wchar_t* path, int frameId, int rzkey, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_NAME_D, SetKeyColorNameD);
+		static double SetKeyColorNameD(const wchar_t* path, double frameId, double rzkey, double color);
 		/*
 			Set the key to the specified key color for the specified frame. Animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_RGB, SetKeyColorRGB);
+		static void SetKeyColorRGB(int animationId, int frameId, int rzkey, int red, int green, int blue);
 		/*
 			Set the key to the specified key color for the specified frame. Animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_RGB_NAME, SetKeyColorRGBName);
+		static void SetKeyColorRGBName(const wchar_t* path, int frameId, int rzkey, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_COLOR_RGB_NAME_D, SetKeyColorRGBNameD);
+		static double SetKeyColorRGBNameD(const wchar_t* path, double frameId, double rzkey, double red, double green, double blue);
 		/*
 			Set animation key to a static color for the given frame if the existing 
 			color is not already black.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_NON_ZERO_COLOR, SetKeyNonZeroColor);
+		static void SetKeyNonZeroColor(int animationId, int frameId, int rzkey, int color);
 		/*
 			Set animation key to a static color for the given frame if the existing 
 			color is not already black.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_NON_ZERO_COLOR_NAME, SetKeyNonZeroColorName);
+		static void SetKeyNonZeroColorName(const wchar_t* path, int frameId, int rzkey, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_NON_ZERO_COLOR_NAME_D, SetKeyNonZeroColorNameD);
+		static double SetKeyNonZeroColorNameD(const wchar_t* path, double frameId, double rzkey, double color);
 		/*
 			Set the key to the specified key color for the specified frame where color 
 			is not black. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_NON_ZERO_COLOR_RGB, SetKeyNonZeroColorRGB);
+		static void SetKeyNonZeroColorRGB(int animationId, int frameId, int rzkey, int red, int green, int blue);
 		/*
 			Set the key to the specified key color for the specified frame where color 
 			is not black. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_NON_ZERO_COLOR_RGB_NAME, SetKeyNonZeroColorRGBName);
+		static void SetKeyNonZeroColorRGBName(const wchar_t* path, int frameId, int rzkey, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_NON_ZERO_COLOR_RGB_NAME_D, SetKeyNonZeroColorRGBNameD);
+		static double SetKeyNonZeroColorRGBNameD(const wchar_t* path, double frameId, double rzkey, double red, double green, double blue);
 		/*
 			Set animation key by row and column to a static color for the given frame.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_ROW_COLUMN_COLOR_NAME, SetKeyRowColumnColorName);
+		static void SetKeyRowColumnColorName(const wchar_t* path, int frameId, int row, int column, int color);
 		/*
 			Set an array of animation keys to a static color for the given frame. Animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_COLOR, SetKeysColor);
+		static void SetKeysColor(int animationId, int frameId, const int* rzkeys, int keyCount, int color);
 		/*
 			Set an array of animation keys to a static color for all frames. Animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_COLOR_ALL_FRAMES, SetKeysColorAllFrames);
+		static void SetKeysColorAllFrames(int animationId, const int* rzkeys, int keyCount, int color);
 		/*
 			Set an array of animation keys to a static color for all frames. Animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_COLOR_ALL_FRAMES_NAME, SetKeysColorAllFramesName);
+		static void SetKeysColorAllFramesName(const wchar_t* path, const int* rzkeys, int keyCount, int color);
 		/*
 			Set an array of animation keys to a static color for all frames. Animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_COLOR_ALL_FRAMES_RGB, SetKeysColorAllFramesRGB);
+		static void SetKeysColorAllFramesRGB(int animationId, const int* rzkeys, int keyCount, int red, int green, int blue);
 		/*
 			Set an array of animation keys to a static color for all frames. Animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_COLOR_ALL_FRAMES_RGB_NAME, SetKeysColorAllFramesRGBName);
+		static void SetKeysColorAllFramesRGBName(const wchar_t* path, const int* rzkeys, int keyCount, int red, int green, int blue);
 		/*
 			Set an array of animation keys to a static color for the given frame.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_COLOR_NAME, SetKeysColorName);
+		static void SetKeysColorName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int color);
 		/*
 			Set an array of animation keys to a static color for the given frame. Animation 
 			is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_COLOR_RGB, SetKeysColorRGB);
+		static void SetKeysColorRGB(int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
 		/*
 			Set an array of animation keys to a static color for the given frame. Animation 
 			is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_COLOR_RGB_NAME, SetKeysColorRGBName);
+		static void SetKeysColorRGBName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
 		/*
 			Set an array of animation keys to a static color for the given frame if 
 			the existing color is not already black.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_NON_ZERO_COLOR, SetKeysNonZeroColor);
+		static void SetKeysNonZeroColor(int animationId, int frameId, const int* rzkeys, int keyCount, int color);
 		/*
 			Set an array of animation keys to a static color for the given frame where 
 			the color is not black. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_NON_ZERO_COLOR_ALL_FRAMES, SetKeysNonZeroColorAllFrames);
+		static void SetKeysNonZeroColorAllFrames(int animationId, const int* rzkeys, int keyCount, int color);
 		/*
 			Set an array of animation keys to a static color for all frames if the existing 
 			color is not already black. Reference animation by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_NON_ZERO_COLOR_ALL_FRAMES_NAME, SetKeysNonZeroColorAllFramesName);
+		static void SetKeysNonZeroColorAllFramesName(const wchar_t* path, const int* rzkeys, int keyCount, int color);
 		/*
 			Set an array of animation keys to a static color for the given frame if 
 			the existing color is not already black. Reference animation by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_NON_ZERO_COLOR_NAME, SetKeysNonZeroColorName);
+		static void SetKeysNonZeroColorName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int color);
 		/*
 			Set an array of animation keys to a static color for the given frame where 
 			the color is not black. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_NON_ZERO_COLOR_RGB, SetKeysNonZeroColorRGB);
+		static void SetKeysNonZeroColorRGB(int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
 		/*
 			Set an array of animation keys to a static color for the given frame where 
 			the color is not black. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_NON_ZERO_COLOR_RGB_NAME, SetKeysNonZeroColorRGBName);
+		static void SetKeysNonZeroColorRGBName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
 		/*
 			Set an array of animation keys to a static color for the given frame where 
 			the color is black. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR, SetKeysZeroColor);
+		static void SetKeysZeroColor(int animationId, int frameId, const int* rzkeys, int keyCount, int color);
 		/*
 			Set an array of animation keys to a static color for all frames where the 
 			color is black. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR_ALL_FRAMES, SetKeysZeroColorAllFrames);
+		static void SetKeysZeroColorAllFrames(int animationId, const int* rzkeys, int keyCount, int color);
 		/*
 			Set an array of animation keys to a static color for all frames where the 
 			color is black. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR_ALL_FRAMES_NAME, SetKeysZeroColorAllFramesName);
+		static void SetKeysZeroColorAllFramesName(const wchar_t* path, const int* rzkeys, int keyCount, int color);
 		/*
 			Set an array of animation keys to a static color for all frames where the 
 			color is black. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR_ALL_FRAMES_RGB, SetKeysZeroColorAllFramesRGB);
+		static void SetKeysZeroColorAllFramesRGB(int animationId, const int* rzkeys, int keyCount, int red, int green, int blue);
 		/*
 			Set an array of animation keys to a static color for all frames where the 
 			color is black. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR_ALL_FRAMES_RGB_NAME, SetKeysZeroColorAllFramesRGBName);
+		static void SetKeysZeroColorAllFramesRGBName(const wchar_t* path, const int* rzkeys, int keyCount, int red, int green, int blue);
 		/*
 			Set an array of animation keys to a static color for the given frame where 
 			the color is black. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR_NAME, SetKeysZeroColorName);
+		static void SetKeysZeroColorName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int color);
 		/*
 			Set an array of animation keys to a static color for the given frame where 
 			the color is black. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR_RGB, SetKeysZeroColorRGB);
+		static void SetKeysZeroColorRGB(int animationId, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
 		/*
 			Set an array of animation keys to a static color for the given frame where 
 			the color is black. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEYS_ZERO_COLOR_RGB_NAME, SetKeysZeroColorRGBName);
+		static void SetKeysZeroColorRGBName(const wchar_t* path, int frameId, const int* rzkeys, int keyCount, int red, int green, int blue);
 		/*
 			Set animation key to a static color for the given frame where the color 
 			is black. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_ZERO_COLOR, SetKeyZeroColor);
+		static void SetKeyZeroColor(int animationId, int frameId, int rzkey, int color);
 		/*
 			Set animation key to a static color for the given frame where the color 
 			is black. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_ZERO_COLOR_NAME, SetKeyZeroColorName);
+		static void SetKeyZeroColorName(const wchar_t* path, int frameId, int rzkey, int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_ZERO_COLOR_NAME_D, SetKeyZeroColorNameD);
+		static double SetKeyZeroColorNameD(const wchar_t* path, double frameId, double rzkey, double color);
 		/*
 			Set animation key to a static color for the given frame where the color 
 			is black. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_ZERO_COLOR_RGB, SetKeyZeroColorRGB);
+		static void SetKeyZeroColorRGB(int animationId, int frameId, int rzkey, int red, int green, int blue);
 		/*
 			Set animation key to a static color for the given frame where the color 
 			is black. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_ZERO_COLOR_RGB_NAME, SetKeyZeroColorRGBName);
+		static void SetKeyZeroColorRGBName(const wchar_t* path, int frameId, int rzkey, int red, int green, int blue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_KEY_ZERO_COLOR_RGB_NAME_D, SetKeyZeroColorRGBNameD);
+		static double SetKeyZeroColorRGBNameD(const wchar_t* path, double frameId, double rzkey, double red, double green, double blue);
 		/*
 			Invokes the setup for a debug logging callback so that `stdout` is redirected 
 			to the callback. This is used by `Unity` so that debug messages can appear 
 			in the console window.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_LOG_DELEGATE, SetLogDelegate);
+		static void SetLogDelegate(DebugLogPtr fp);
 		/*
 			Sets the target device to the static color.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_STATIC_COLOR, SetStaticColor);
+		static void SetStaticColor(int deviceType, int device, int color);
 		/*
 			Sets all devices to the static color.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SET_STATIC_COLOR_ALL, SetStaticColorAll);
+		static void SetStaticColorAll(int color);
 		/*
 			Sets the target device to the static color.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_STATIC_COLOR, StaticColor);
+		static void StaticColor(int deviceType, int device, int color);
 		/*
 			Sets all devices to the static color.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_STATIC_COLOR_ALL, StaticColorAll);
+		static void StaticColorAll(int color);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_STATIC_COLOR_D, StaticColorD);
+		static double StaticColorD(double deviceType, double device, double color);
 		/*
 			`PluginStopAll` will automatically stop all animations that are playing.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ALL, StopAll);
+		static void StopAll();
 		/*
 			Stops animation playback if in progress. Returns the animation id upon success. 
 			Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ANIMATION, StopAnimation);
+		static int StopAnimation(int animationId);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ANIMATION_D, StopAnimationD);
+		static double StopAnimationD(double animationId);
 		/*
 			`PluginStopAnimationName` automatically handles initializing the `ChromaSDK`. 
 			The named `.chroma` animation file will be automatically opened. The animation 
 			will stop if playing.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ANIMATION_NAME, StopAnimationName);
+		static void StopAnimationName(const wchar_t* path);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ANIMATION_NAME_D, StopAnimationNameD);
+		static double StopAnimationNameD(const wchar_t* path);
 		/*
 			`PluginStopAnimationType` automatically handles initializing the `ChromaSDK`. 
 			If any animation is playing for the `deviceType` and `device` combination, 
 			it will be stopped.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ANIMATION_TYPE, StopAnimationType);
+		static void StopAnimationType(int deviceType, int device);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_ANIMATION_TYPE_D, StopAnimationTypeD);
+		static double StopAnimationTypeD(double deviceType, double device);
 		/*
 			`PluginStopComposite` automatically handles initializing the `ChromaSDK`. 
 			The named animation files for the `.chroma` set will be automatically opened. 
 			The set of animations will be stopped if playing.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_COMPOSITE, StopComposite);
+		static void StopComposite(const wchar_t* name);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_STOP_COMPOSITE_D, StopCompositeD);
+		static double StopCompositeD(const wchar_t* name);
 		/*
 			Return color1 - color2
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_COLOR, SubtractColor);
+		static int SubtractColor(const int color1, const int color2);
 		/*
 			Subtract the source color from the target color for the frame where the 
 			target color is not black. Source and target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS, SubtractNonZeroAllKeys);
+		static void SubtractNonZeroAllKeys(int sourceAnimationId, int targetAnimationId, int frameId);
 		/*
 			Subtract the source color from the target color for all frames where the 
 			target color is not black. Source and target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES, SubtractNonZeroAllKeysAllFrames);
+		static void SubtractNonZeroAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
 		/*
 			Subtract the source color from the target color for all frames where the 
 			target color is not black. Source and target are referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME, SubtractNonZeroAllKeysAllFramesName);
+		static void SubtractNonZeroAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_NAME_D, SubtractNonZeroAllKeysAllFramesNameD);
+		static double SubtractNonZeroAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			Subtract the source color from the target color for all frames where the 
 			target color is not black starting at offset for the length of the source. 
 			Source and target are referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET, SubtractNonZeroAllKeysAllFramesOffset);
+		static void SubtractNonZeroAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
 		/*
 			Subtract the source color from the target color for all frames where the 
 			target color is not black starting at offset for the length of the source. 
 			Source and target are referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, SubtractNonZeroAllKeysAllFramesOffsetName);
+		static void SubtractNonZeroAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, SubtractNonZeroAllKeysAllFramesOffsetNameD);
+		static double SubtractNonZeroAllKeysAllFramesOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset);
 		/*
 			Subtract the source color from the target color for the frame where the 
 			target color is not black. Source and target are referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_NAME, SubtractNonZeroAllKeysName);
+		static void SubtractNonZeroAllKeysName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId);
 		/*
 			Subtract the source color from the target where color is not black for the 
 			source frame and target offset frame, reference source and target by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_OFFSET, SubtractNonZeroAllKeysOffset);
+		static void SubtractNonZeroAllKeysOffset(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 		/*
 			Subtract the source color from the target where color is not black for the 
 			source frame and target offset frame, reference source and target by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_OFFSET_NAME, SubtractNonZeroAllKeysOffsetName);
+		static void SubtractNonZeroAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_ALL_KEYS_OFFSET_NAME_D, SubtractNonZeroAllKeysOffsetNameD);
+		static double SubtractNonZeroAllKeysOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset);
 		/*
 			Subtract the source color from the target color where the target color is 
 			not black for all frames. Reference source and target by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES, SubtractNonZeroTargetAllKeysAllFrames);
+		static void SubtractNonZeroTargetAllKeysAllFrames(int sourceAnimationId, int targetAnimationId);
 		/*
 			Subtract the source color from the target color where the target color is 
 			not black for all frames. Reference source and target by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME, SubtractNonZeroTargetAllKeysAllFramesName);
+		static void SubtractNonZeroTargetAllKeysAllFramesName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_NAME_D, SubtractNonZeroTargetAllKeysAllFramesNameD);
+		static double SubtractNonZeroTargetAllKeysAllFramesNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation);
 		/*
 			Subtract the source color from the target color where the target color is 
 			not black for all frames starting at the target offset for the length of 
 			the source. Reference source and target by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET, SubtractNonZeroTargetAllKeysAllFramesOffset);
+		static void SubtractNonZeroTargetAllKeysAllFramesOffset(int sourceAnimationId, int targetAnimationId, int offset);
 		/*
 			Subtract the source color from the target color where the target color is 
 			not black for all frames starting at the target offset for the length of 
 			the source. Reference source and target by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME, SubtractNonZeroTargetAllKeysAllFramesOffsetName);
+		static void SubtractNonZeroTargetAllKeysAllFramesOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int offset);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_ALL_FRAMES_OFFSET_NAME_D, SubtractNonZeroTargetAllKeysAllFramesOffsetNameD);
+		static double SubtractNonZeroTargetAllKeysAllFramesOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double offset);
 		/*
 			Subtract the source color from the target color where the target color is 
 			not black from the source frame to the target offset frame. Reference source 
 			and target by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_OFFSET, SubtractNonZeroTargetAllKeysOffset);
+		static void SubtractNonZeroTargetAllKeysOffset(int sourceAnimationId, int targetAnimationId, int frameId, int offset);
 		/*
 			Subtract the source color from the target color where the target color is 
 			not black from the source frame to the target offset frame. Reference source 
 			and target by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME, SubtractNonZeroTargetAllKeysOffsetName);
+		static void SubtractNonZeroTargetAllKeysOffsetName(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, int frameId, int offset);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_NON_ZERO_TARGET_ALL_KEYS_OFFSET_NAME_D, SubtractNonZeroTargetAllKeysOffsetNameD);
+		static double SubtractNonZeroTargetAllKeysOffsetNameD(const wchar_t* sourceAnimation, const wchar_t* targetAnimation, double frameId, double offset);
 		/*
 			Subtract all frames with the min RGB color where the animation color is 
 			less than the min threshold AND with the max RGB color where the animation 
 			is more than the max threshold. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB, SubtractThresholdColorsMinMaxAllFramesRGB);
+		static void SubtractThresholdColorsMinMaxAllFramesRGB(const int animationId, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue);
 		/*
 			Subtract all frames with the min RGB color where the animation color is 
 			less than the min threshold AND with the max RGB color where the animation 
 			is more than the max threshold. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB_NAME, SubtractThresholdColorsMinMaxAllFramesRGBName);
+		static void SubtractThresholdColorsMinMaxAllFramesRGBName(const wchar_t* path, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_THRESHOLD_COLORS_MIN_MAX_ALL_FRAMES_RGB_NAME_D, SubtractThresholdColorsMinMaxAllFramesRGBNameD);
+		static double SubtractThresholdColorsMinMaxAllFramesRGBNameD(const wchar_t* path, double minThreshold, double minRed, double minGreen, double minBlue, double maxThreshold, double maxRed, double maxGreen, double maxBlue);
 		/*
 			Subtract the specified frame with the min RGB color where the animation 
 			color is less than the min threshold AND with the max RGB color where the 
 			animation is more than the max threshold. Animation is referenced by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_THRESHOLD_COLORS_MIN_MAX_RGB, SubtractThresholdColorsMinMaxRGB);
+		static void SubtractThresholdColorsMinMaxRGB(const int animationId, const int frameId, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue);
 		/*
 			Subtract the specified frame with the min RGB color where the animation 
 			color is less than the min threshold AND with the max RGB color where the 
 			animation is more than the max threshold. Animation is referenced by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_THRESHOLD_COLORS_MIN_MAX_RGB_NAME, SubtractThresholdColorsMinMaxRGBName);
+		static void SubtractThresholdColorsMinMaxRGBName(const wchar_t* path, const int frameId, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_SUBTRACT_THRESHOLD_COLORS_MIN_MAX_RGB_NAME_D, SubtractThresholdColorsMinMaxRGBNameD);
+		static double SubtractThresholdColorsMinMaxRGBNameD(const wchar_t* path, const int frameId, const int minThreshold, const int minRed, const int minGreen, const int minBlue, const int maxThreshold, const int maxRed, const int maxGreen, const int maxBlue);
 		/*
 			Trim the end of the animation. The length of the animation will be the lastFrameId 
 			plus one. Reference the animation by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_END_FRAMES, TrimEndFrames);
+		static void TrimEndFrames(int animationId, int lastFrameId);
 		/*
 			Trim the end of the animation. The length of the animation will be the lastFrameId 
 			plus one. Reference the animation by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_END_FRAMES_NAME, TrimEndFramesName);
+		static void TrimEndFramesName(const wchar_t* path, int lastFrameId);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_END_FRAMES_NAME_D, TrimEndFramesNameD);
+		static double TrimEndFramesNameD(const wchar_t* path, double lastFrameId);
 		/*
 			Remove the frame from the animation. Reference animation by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_FRAME, TrimFrame);
+		static void TrimFrame(int animationId, int frameId);
 		/*
 			Remove the frame from the animation. Reference animation by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_FRAME_NAME, TrimFrameName);
+		static void TrimFrameName(const wchar_t* path, int frameId);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_FRAME_NAME_D, TrimFrameNameD);
+		static double TrimFrameNameD(const wchar_t* path, double frameId);
 		/*
 			Trim the start of the animation starting at frame 0 for the number of frames. 
 			Reference the animation by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_START_FRAMES, TrimStartFrames);
+		static void TrimStartFrames(int animationId, int numberOfFrames);
 		/*
 			Trim the start of the animation starting at frame 0 for the number of frames. 
 			Reference the animation by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_START_FRAMES_NAME, TrimStartFramesName);
+		static void TrimStartFramesName(const wchar_t* path, int numberOfFrames);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_TRIM_START_FRAMES_NAME_D, TrimStartFramesNameD);
+		static double TrimStartFramesNameD(const wchar_t* path, double numberOfFrames);
 		/*
 			Uninitializes the `ChromaSDK`. Returns 0 upon success. Returns negative 
 			one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_UNINIT, Uninit);
+		static RZRESULT Uninit();
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_UNINIT_D, UninitD);
+		static double UninitD();
 		/*
 			Unloads `Chroma` effects to free up resources. Returns the animation id 
 			upon success. Returns negative one upon failure. Reference the animation 
 			by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_UNLOAD_ANIMATION, UnloadAnimation);
+		static int UnloadAnimation(int animationId);
 		/*
 			D suffix for limited data types.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_UNLOAD_ANIMATION_D, UnloadAnimationD);
+		static double UnloadAnimationD(double animationId);
 		/*
 			Unload the animation effects. Reference the animation by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_UNLOAD_ANIMATION_NAME, UnloadAnimationName);
+		static void UnloadAnimationName(const wchar_t* path);
 		/*
 			Unload the the composite set of animation effects. Reference the animation 
 			by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_UNLOAD_COMPOSITE, UnloadComposite);
+		static void UnloadComposite(const wchar_t* name);
 		/*
 			Unload the Razer Chroma SDK Library before exiting the application.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_UNLOAD_LIBRARY_SDK, UnloadLibrarySDK);
+		static void UnloadLibrarySDK();
 		/*
 			Unload the Razer Chroma Streaming Plugin Library before exiting the application.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_UNLOAD_LIBRARY_STREAMING_PLUGIN, UnloadLibraryStreamingPlugin);
+		static void UnloadLibraryStreamingPlugin();
 		/*
 			Updates the `frameId` of the `Chroma` animation referenced by id and sets 
 			the `duration` (in seconds). The `color` is expected to be an array of 
@@ -5507,7 +2732,7 @@ namespace ChromaSDK
 			and EChromaSDKDevice2DEnum::DE_KeyboardExtended. Keys will only use the 
 			EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_UPDATE_FRAME, UpdateFrame);
+		static int UpdateFrame(int animationId, int frameId, float duration, int* colors, int length, int* keys, int keysLength);
 		/*
 			Update the `frameId` of the `Chroma` animation referenced by name and sets 
 			the `duration` (in seconds). The `color` is expected to be an array of 
@@ -5519,12 +2744,12 @@ namespace ChromaSDK
 			EChromaSDKDevice2DEnum::DE_Keyboard `MAX_ROW` times `MAX_COLUMN` keysLength. 
 			Returns the animation id upon success. Returns negative one upon failure.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_UPDATE_FRAME_NAME, UpdateFrameName);
+		static int UpdateFrameName(const wchar_t* path, int frameId, float duration, int* colors, int length, int* keys, int keysLength);
 		/*
 			On by default, `UseForwardChromaEvents` sends the animation name to `CoreSetEventName` 
 			automatically when `PlayAnimationName` is called.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_FORWARD_CHROMA_EVENTS, UseForwardChromaEvents);
+		static void UseForwardChromaEvents(bool flag);
 		/*
 			When the idle animation flag is true, when no other animations are playing, 
 			the idle animation will be used. The idle animation will not be affected 
@@ -5532,25 +2757,28 @@ namespace ChromaSDK
 			and PluginGetPlayingAnimationCount. Then the idle animation flag is false, 
 			the idle animation is disabled. `Device` uses `EChromaSDKDeviceEnum` enums.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_IDLE_ANIMATION, UseIdleAnimation);
+		static void UseIdleAnimation(int device, bool flag);
 		/*
 			Set idle animation flag for all devices.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_IDLE_ANIMATIONS, UseIdleAnimations);
+		static void UseIdleAnimations(bool flag);
 		/*
 			Set preloading animation flag, which is set to true by default. Reference 
 			animation by id.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_PRELOADING, UsePreloading);
+		static void UsePreloading(int animationId, bool flag);
 		/*
 			Set preloading animation flag, which is set to true by default. Reference 
 			animation by name.
 		*/
-		CHROMASDK_DECLARE_METHOD(PLUGIN_USE_PRELOADING_NAME, UsePreloadingName);
+		static void UsePreloadingName(const wchar_t* path, bool flag);
 #pragma endregion
+
 
 		static int InitAPI();
 		static int UninitAPI();
 		static bool GetIsInitializedAPI();
+		static bool _sIsInitializedAPI;
+		static bool _sInitialized;
 	};
 }

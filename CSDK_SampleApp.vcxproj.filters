@@ -33,7 +33,7 @@
     <ClInclude Include="HandleInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Razer\ChromaAnimationAPI.h">
+    <ClInclude Include="Razer\UnicodeChromaAnimationAPI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RazerKeyboardMapping.h">
@@ -48,12 +48,15 @@
     <ClInclude Include="Razer\VerifyLibrarySignature.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Razer\ChromaAnimationAPI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Razer\ChromaSDKPluginTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Razer\ChromaAnimationAPI.cpp">
+    <ClCompile Include="Razer\UnicodeChromaAnimationAPI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sample.cpp">
@@ -72,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Razer\VerifyLibrarySignature.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Razer\ChromaAnimationAPI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
