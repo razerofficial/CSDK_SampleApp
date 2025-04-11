@@ -5,10 +5,17 @@
 #include <tchar.h>
 
 
-#ifdef _WIN64
-#define CHROMA_EDITOR_DLL	L"CChromaEditorLibrary64.dll"
+//#define RAZER_CHROMATIC_DEBUGGING true
+#if defined(PLATFORM_XBOXONE) && PLATFORM_XBOXONE
+#define CHROMA_EDITOR_DLL	L"RzChromatic64.dll"
 #else
-#define CHROMA_EDITOR_DLL	L"CChromaEditorLibrary.dll"
+#ifdef _WIN64
+#define RAZER_CHROMATIC_DLL	L"RzChromatic64.dll"
+#else
+#define RAZER_CHROMATIC_DLL	L"RzChromatic.dll"
+#endif
+
+
 #endif
 
 
@@ -76,6 +83,7 @@ CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET_NAME, Copy
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET_NAME_D, CopyKeyColorAllFramesOffsetNameD);
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_COPY_KEY_COLOR_NAME, CopyKeyColorName);
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_COPY_KEY_COLOR_NAME_D, CopyKeyColorNameD);
+CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_COPY_KEY_COLOR_OFFSET, CopyKeyColorOffset);
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_COPY_KEYS_COLOR, CopyKeysColor);
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_COPY_KEYS_COLOR_ALL_FRAMES, CopyKeysColorAllFrames);
 CHROMASDK_DECLARE_METHOD_IMPL(PLUGIN_COPY_KEYS_COLOR_ALL_FRAMES_NAME, CopyKeysColorAllFramesName);
@@ -595,6 +603,10 @@ int ChromaAnimationAPI::InitAPI()
 		return 0;
 	}
 
+#ifdef RAZER_CHROMATIC_DEBUGGING
+
+	// looking for the DLL in the current module path
+
 	wchar_t filename[MAX_PATH]; //this is a char buffer
 	GetModuleFileNameW(NULL, filename, sizeof(filename));
 
@@ -606,12 +618,32 @@ int ChromaAnimationAPI::InitAPI()
 	}
 
 	path += L"\\";
-	path += CHROMA_EDITOR_DLL;
+	path += RAZER_CHROMATIC_DLL;
+
+#else
+
+	wstring path = RAZER_CHROMATIC_DLL;
+
+	// 2. The system directory.Use the GetSystemDirectory function to get the path of this directory.
+
+	wchar_t pathTemp[MAX_PATH];
+	if (GetSystemDirectory(pathTemp, sizeof(pathTemp)))
+	{
+		path = pathTemp;
+
+		if (path.length() > 0 && path.compare(path.length() - 1, 1, L"\\") != 0) //not endsWith slash
+		{
+			path += L"\\";
+		}
+		path += RAZER_CHROMATIC_DLL;
+	}
+
+#endif
 
 	// check the library file version
-	if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path.c_str(), 2, 0, 1, 6))
+	if (!VerifyLibrarySignature::IsFileVersionSameOrNewer(path.c_str(), 2, 0, 2, 0))
 	{
-		ChromaLogger::fprintf(stderr, "Detected old version of Chroma Editor Library!\r\n");
+		ChromaLogger::fprintf(stderr, "Detected old version of Chromatic Library!\r\n");
 		return RZRESULT_DLL_NOT_FOUND;
 	}
 
@@ -622,20 +654,20 @@ int ChromaAnimationAPI::InitAPI()
 
 	if (_sInvalidSignature)
 	{
-		ChromaLogger::fprintf(stderr, "Chroma Editor Library has an invalid signature!\r\n");
+		ChromaLogger::fprintf(stderr, "Chromatic Library has an invalid signature!\r\n");
 		return RZRESULT_DLL_INVALID_SIGNATURE;
 	}
 
 	HMODULE library = LoadLibrary(path.c_str());
 	if (library == NULL)
 	{ 
-		ChromaLogger::fprintf(stderr, "Failed to load Chroma Editor Library!\r\n");
+		ChromaLogger::fprintf(stderr, "Failed to load Chromatic Library!\r\n");
         return RZRESULT_DLL_NOT_FOUND;
 	}
 
 	_sLibrary = library;
 	
-	//ChromaLogger::fprintf(stderr, "Loaded Chroma Editor DLL!\r\n");
+	//ChromaLogger::fprintf(stderr, "Loaded Chromatic DLL!\r\n");
 
 #pragma region API validation
 CHROMASDK_VALIDATE_METHOD(PLUGIN_ADD_COLOR, AddColor);
@@ -692,6 +724,7 @@ CHROMASDK_VALIDATE_METHOD(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET_NAME, CopyKeyC
 CHROMASDK_VALIDATE_METHOD(PLUGIN_COPY_KEY_COLOR_ALL_FRAMES_OFFSET_NAME_D, CopyKeyColorAllFramesOffsetNameD);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_COPY_KEY_COLOR_NAME, CopyKeyColorName);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_COPY_KEY_COLOR_NAME_D, CopyKeyColorNameD);
+CHROMASDK_VALIDATE_METHOD(PLUGIN_COPY_KEY_COLOR_OFFSET, CopyKeyColorOffset);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_COPY_KEYS_COLOR, CopyKeysColor);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_COPY_KEYS_COLOR_ALL_FRAMES, CopyKeysColorAllFrames);
 CHROMASDK_VALIDATE_METHOD(PLUGIN_COPY_KEYS_COLOR_ALL_FRAMES_NAME, CopyKeysColorAllFramesName);
@@ -1278,6 +1311,7 @@ int ChromaAnimationAPI::UninitAPI()
 	CHROMASDK_DECLARE_METHOD_CLEAR(CopyKeyColorAllFramesOffsetNameD);
 	CHROMASDK_DECLARE_METHOD_CLEAR(CopyKeyColorName);
 	CHROMASDK_DECLARE_METHOD_CLEAR(CopyKeyColorNameD);
+	CHROMASDK_DECLARE_METHOD_CLEAR(CopyKeyColorOffset);
 	CHROMASDK_DECLARE_METHOD_CLEAR(CopyKeysColor);
 	CHROMASDK_DECLARE_METHOD_CLEAR(CopyKeysColorAllFrames);
 	CHROMASDK_DECLARE_METHOD_CLEAR(CopyKeysColorAllFramesName);
