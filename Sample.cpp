@@ -5015,10 +5015,6 @@ int main()
 	*/
 
     fprintf(stderr, "App launched!\r\n");
-    if (ChromaAnimationAPI::InitAPI() != RZRESULT_SUCCESS)
-    {
-        return -1;
-    }
 
     ChromaSDK::APPINFOTYPE appInfo = {};
 
@@ -5047,15 +5043,15 @@ int main()
 	}
     else if (result == RZRESULT_DLL_NOT_FOUND)
     {
-        fprintf(stderr, "Chroma DLL is not found! %d", result);
+        fprintf(stderr, "Chroma DLL is not found! %d\r\n", result);
     }
     else if (result == RZRESULT_DLL_INVALID_SIGNATURE)
     {
-        fprintf(stderr, "Chroma DLL has an invalid signature! %d", result);
+        fprintf(stderr, "Chroma DLL has an invalid signature! %d\r\n", result);
     }
 	else
 	{
-		fprintf(stderr, "Failed to initialize Chroma! %d", result);
+		fprintf(stderr, "Failed to initialize Chroma! %d\r\n", result);
 	}
 
     if (result != 0)

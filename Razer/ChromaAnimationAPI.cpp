@@ -47,7 +47,7 @@ namespace ChromaSDK {
 	{
 		if (!_sIsInitializedAPI)
 		{
-			return -1;
+			return RZRESULT_SUCCESS;
 		}
 		RZRESULT result = UnicodeChromaAnimationAPI::UninitAPI();
 		if (result == RZRESULT_SUCCESS)
@@ -1963,7 +1963,15 @@ namespace ChromaSDK {
 	{
 		if (!_sIsInitializedAPI)
 		{
-			return RZRESULT_FAILED;
+			RZRESULT result = ChromaAnimationAPI::InitAPI();
+			if (result != RZRESULT_SUCCESS)
+			{
+				return result;
+			}
+			if (!_sIsInitializedAPI)
+			{
+				return RZRESULT_FAILED;
+			}
 		}
 		if (_sInitialized)
 		{
@@ -1983,7 +1991,15 @@ namespace ChromaSDK {
 	{
 		if (!_sIsInitializedAPI)
 		{
-			return RZRESULT_FAILED;
+			RZRESULT result = ChromaAnimationAPI::InitAPI();
+			if (result != RZRESULT_SUCCESS)
+			{
+				return result;
+			}
+			if (!_sIsInitializedAPI)
+			{
+				return RZRESULT_FAILED;
+			}
 		}
 		if (_sInitialized)
 		{
@@ -2355,7 +2371,7 @@ namespace ChromaSDK {
 	{
 		if (!_sIsInitializedAPI)
 		{
-			return -1;
+			return RZRESULT_SUCCESS;
 		}
 		if (!_sInitialized)
 		{
@@ -4586,7 +4602,15 @@ namespace ChromaSDK {
 	{
 		if (!_sIsInitializedAPI)
 		{
-			return -1;
+			RZRESULT result = ChromaAnimationAPI::InitAPI();
+			if (result != RZRESULT_SUCCESS)
+			{
+				return result;
+			}
+			if (!_sIsInitializedAPI)
+			{
+				return RZRESULT_FAILED;
+			}
 		}
 		if (_sInitialized)
 		{
@@ -4606,13 +4630,21 @@ namespace ChromaSDK {
 	{
 		if (!_sIsInitializedAPI)
 		{
-			return -1;
+			RZRESULT result = ChromaAnimationAPI::InitAPI();
+			if (result != RZRESULT_SUCCESS)
+			{
+				return result;
+			}
+			if (!_sIsInitializedAPI)
+			{
+				return RZRESULT_FAILED;
+			}
 		}
 		if (_sInitialized)
 		{
 			return RZRESULT_SUCCESS;
 		}
-		RZRESULT result = UnicodeChromaAnimationAPI::InitD();
+		RZRESULT result = (RZRESULT)UnicodeChromaAnimationAPI::InitD();
 		if (result == RZRESULT_SUCCESS)
 		{
 			_sInitialized = true;
@@ -4628,7 +4660,15 @@ namespace ChromaSDK {
 	{
 		if (!_sIsInitializedAPI)
 		{
-			return -1;
+			RZRESULT result = ChromaAnimationAPI::InitAPI();
+			if (result != RZRESULT_SUCCESS)
+			{
+				return result;
+			}
+			if (!_sIsInitializedAPI)
+			{
+				return RZRESULT_FAILED;
+			}
 		}
 		if (_sInitialized)
 		{
@@ -8726,7 +8766,7 @@ namespace ChromaSDK {
 		{
 			return RZRESULT_SUCCESS;
 		}
-		RZRESULT result = UnicodeChromaAnimationAPI::UninitD();
+		RZRESULT result = (RZRESULT)UnicodeChromaAnimationAPI::UninitD();
 		if (result == RZRESULT_SUCCESS)
 		{
 			_sInitialized = false;
