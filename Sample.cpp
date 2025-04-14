@@ -4986,22 +4986,19 @@ void ExecuteEffect(bool supportsStreaming, BYTE platform);
 
 void Cleanup()
 {
-	if (ChromaAnimationAPI::GetIsInitializedAPI())
-	{
-		if (ChromaAnimationAPI::IsInitialized())
-		{
-			ChromaAnimationAPI::UseIdleAnimations(false);
-			ChromaAnimationAPI::StopAll();
-			ChromaAnimationAPI::CloseAll();
-			RZRESULT result = ChromaAnimationAPI::Uninit();
-			ChromaAnimationAPI::UninitAPI();
-			if (result != RZRESULT_SUCCESS)
-			{
-				cerr << "Failed to uninitialize Chroma! Result=" << result << endl;
-				exit(1);
-			}
-		}
-	}
+    if (ChromaAnimationAPI::IsInitialized())
+    {
+        ChromaAnimationAPI::UseIdleAnimations(false);
+        ChromaAnimationAPI::StopAll();
+        ChromaAnimationAPI::CloseAll();
+        RZRESULT result = ChromaAnimationAPI::Uninit();
+        ChromaAnimationAPI::UninitAPI();
+        if (result != RZRESULT_SUCCESS)
+        {
+            cerr << "Failed to uninitialize Chroma! Result=" << result << endl;
+            exit(1);
+        }
+    }
 }
 
 int main()
