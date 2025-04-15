@@ -7,7 +7,7 @@
 
 //#define RAZER_CHROMATIC_DEBUGGING true
 #if defined(PLATFORM_XBOXONE) && PLATFORM_XBOXONE
-#define CHROMA_EDITOR_DLL	L"RzChromatic64.dll"
+#define RAZER_CHROMATIC_DLL	L"RzChromatic64.dll"
 #else
 #ifdef _WIN64
 #define RAZER_CHROMATIC_DLL	L"RzChromatic64.dll"
