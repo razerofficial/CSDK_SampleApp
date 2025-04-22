@@ -356,26 +356,26 @@ Initialize the Chroma SDK in order to utilize the API. The `InitSDK` method take
 ![image_5](images/image_5.png)
 
 ```c++
- APPINFOTYPE appInfo = {};
+APPINFOTYPE appInfo = {};
 
- wcscpy_s(appInfo.Title, 256, L"Sample Game Title");
- wcscpy_s(appInfo.Description, 1024, L"Sample Game Description");
- wcscpy_s(appInfo.Author.Name, 256, L"Company Name");
- wcscpy_s(appInfo.Author.Contact, 256, L"Company Website or Email");
+wcscpy_s(appInfo.Title, 256, L"Sample Game Title");
+wcscpy_s(appInfo.Description, 1024, L"Sample Game Description");
+wcscpy_s(appInfo.Author.Name, 256, L"Company Name");
+wcscpy_s(appInfo.Author.Contact, 256, L"Company Website or Email");
 
- //appInfo.SupportedDevice = 
- //    0x01 | // Keyboards
- //    0x02 | // Mice
- //    0x04 | // Headset
- //    0x08 | // Mousepads
- //    0x10 | // Keypads
- //    0x20   // ChromaLink devices
- appInfo.SupportedDevice = (0x01 | 0x02 | 0x04 | 0x08 | 0x10 | 0x20);
- //    0x01 | // Utility. (To specifiy this is an utility application)
- //    0x02   // Game. (To specifiy this is a game);
- appInfo.Category = 0x02;
+//appInfo.SupportedDevice = 
+//    0x01 | // Keyboards
+//    0x02 | // Mice
+//    0x04 | // Headset
+//    0x08 | // Mousepads
+//    0x10 | // Keypads
+//    0x20   // ChromaLink devices
+appInfo.SupportedDevice = (0x01 | 0x02 | 0x04 | 0x08 | 0x10 | 0x20);
+//    0x01 | // Utility. (To specifiy this is an utility application)
+//    0x02   // Game. (To specifiy this is a game);
+appInfo.Category = 0x02;
 
- RZRESULT result = ChromaAnimationAPI::InitSDK(&appInfo);
+RZRESULT result = ChromaAnimationAPI::InitSDK(&appInfo);
 if (result == RZRESULT_SUCCESS)
 {
     // Init Success! Ready to use the Chroma SDK!
