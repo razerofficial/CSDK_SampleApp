@@ -71,7 +71,7 @@ The `CSDK Sample App` is a C++ console app that shows the animations from the [C
 
 **Console App**
 
-![image_1](/images/image_1.png)
+![image_1](images/image_1.png)
 
 **Chroma RGB**
 
