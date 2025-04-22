@@ -85,7 +85,7 @@ The `CSDK Sample App` is a C++ console app that shows the animations from the [C
 
 To avoid a 3rd party injecting malicious code, check for a valid signature on the Razer Chromatic Library. The DLL issuer is validated to be `Razer USA Ltd.` Init and InitSDK will return `RZRESULT_DLL_INVALID_SIGNATURE` if the signature check fails.
 
-The sample apps use the `CHECK_CHROMA_LIBRARY_SIGNATURE` preprocessor definition to enable signature checking on the Razer Chromatic Library. Signature checking should be used on the shipping game builds.
+The sample apps use the `CHECK_CHROMA_LIBRARY_SIGNATURE` preprocessor definition to enable signature checking on the Razer Chromatic Library. Signature checking should be enabled on shipping game builds.
 
 ```
 #ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
@@ -93,14 +93,6 @@ The sample apps use the `CHECK_CHROMA_LIBRARY_SIGNATURE` preprocessor definition
 	_sInvalidSignature = !VerifyLibrarySignature::VerifyModule(path);
 #endif
 ```
-
-The project has `NoSignatureCheck` configurations to debug with unsigned builds for testing feature updates. The `NoSignatureCheck` configurations do not set the `CHECK_CHROMA_LIBRARY_SIGNATURE` preprocessor definition.
-
-![image_4](images/image_4.png)
-
-Video: **C++ Chroma Animation Sample App - Streaming on Windows PC and Cloud**
-
-<a target="_blank" href="https://www.youtube.com/watch?v=zy_VJtSksOU"><img src="https://img.youtube.com/vi/zy_VJtSksOU/0.jpg"/></a>
 
 <a name="windows-pc"></a>
 
