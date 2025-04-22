@@ -358,10 +358,10 @@ Initialize the Chroma SDK in order to utilize the API. The `InitSDK` method take
 ```c++
  APPINFOTYPE appInfo = {};
 
- _tcscpy_s(appInfo.Title, 256, _T("Sample Game Title"));
- _tcscpy_s(appInfo.Description, 1024, _T("Sample Game Description"));
- _tcscpy_s(appInfo.Author.Name, 256, _T("Company Name"));
- _tcscpy_s(appInfo.Author.Contact, 256, _T("Company Website or Email"));
+ wcscpy_s(appInfo.Title, 256, L"Sample Game Title");
+ wcscpy_s(appInfo.Description, 1024, L"Sample Game Description");
+ wcscpy_s(appInfo.Author.Name, 256, L"Company Name");
+ wcscpy_s(appInfo.Author.Contact, 256, L"Company Website or Email");
 
  //appInfo.SupportedDevice = 
  //    0x01 | // Keyboards

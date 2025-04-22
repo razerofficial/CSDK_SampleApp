@@ -5015,10 +5015,10 @@ int main()
 
     ChromaSDK::APPINFOTYPE appInfo = {};
 
-    _tcscpy_s(appInfo.Title, 256, _T("C++ Chroma Sample Application"));
-    _tcscpy_s(appInfo.Description, 1024, _T("A sample application using Razer Chroma SDK"));
-    _tcscpy_s(appInfo.Author.Name, 256, _T("Razer"));
-    _tcscpy_s(appInfo.Author.Contact, 256, _T("https://wyvrn.com"));
+    wcscpy_s(appInfo.Title, 256, L"C++ Chroma Sample Application");
+    wcscpy_s(appInfo.Description, 1024, L"A sample application using Razer Chroma SDK");
+    wcscpy_s(appInfo.Author.Name, 256, L"Razer");
+    wcscpy_s(appInfo.Author.Contact, 256, L"https://wyvrn.com");
 
     //appInfo.SupportedDevice = 
     //    0x01 | // Keyboards
