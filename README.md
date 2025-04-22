@@ -83,9 +83,9 @@ The `CSDK Sample App` is a C++ console app that shows the animations from the [C
 
 ## Security
 
-The C++ Chroma Editor Library loads the core Razer DLL `RzChromatic.dll` and the Razer stream library `RzChromaStreamPlugin.dll`. To avoid a 3rd party injecting malicious code, the C++ Chroma Editor Library checks for a valid signature on the Razer libraries. The DLL issuer is validated to be `Razer USA Ltd.` Init and InitSDK will return `RZRESULT_DLL_INVALID_SIGNATURE` if the signature check fails.
+To avoid a 3rd party injecting malicious code, check for a valid signature on the Razer Chromatic Library. The DLL issuer is validated to be `Razer USA Ltd.` Init and InitSDK will return `RZRESULT_DLL_INVALID_SIGNATURE` if the signature check fails.
 
-The sample apps use the `CHECK_CHROMA_LIBRARY_SIGNATURE` preprocessor definition to enable signature checking on the Chroma Editor Library. Signature checking can be used on the Razer libraries downloaded from Github releases.
+The sample apps use the `CHECK_CHROMA_LIBRARY_SIGNATURE` preprocessor definition to enable signature checking on the Razer Chromatic Library. Signature checking should be used on the shipping game builds.
 
 ```
 #ifdef CHECK_CHROMA_LIBRARY_SIGNATURE
@@ -520,7 +520,7 @@ else
 
 ## API Class
 
-The `ChromaAnimationAPI` class provides a wrapper for the Chroma Editor Library. The wrapper for the API can be found at [Razer/ChromaAnimationAPI.h](Razer/ChromaAnimationAPI.h) and [Razer/ChromaAnimationAPI.cpp](Razer/ChromaAnimationAPI.cpp).
+The `ChromaAnimationAPI` class provides a library wrapper for Chroma Animation playback.
 
 <a name="full-api"></a>
 
