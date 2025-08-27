@@ -1,8 +1,6 @@
-# Chroma SDK
+# This Repository Has Moved
 
-See [https://wyvrn.com](https://wyvrn.com) for the latest documentation about the Chroma SDK.
-
-* Note: This version includes Unicode support for paths with special characters. (RECOMMENDED)
+* Note: This plugin is deprecated. For the latest plugins go to the `WYVRN` documentation at [doc.wyvrn.com](https://doc.wyvrn.com/).
 
 ---
 
