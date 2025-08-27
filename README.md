@@ -1,6 +1,6 @@
-# Latest
+# This Repository Has Moved
 
-* Note: Visit the [Chroma Animation Guide](https://chroma.razer.com/ChromaGuide/) to find the latest supported plugin for Chroma RGB.
+* Note: This plugin is deprecated. For the latest plugins go to the `WYVRN` documentation at [doc.wyvrn.com](https://doc.wyvrn.com/).
 
 # C++ SDK - Chroma Animation Sample App
 
